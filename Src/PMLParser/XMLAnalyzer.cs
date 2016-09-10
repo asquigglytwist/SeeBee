@@ -22,27 +22,28 @@ namespace SeeBee.PMLParser
                                 XmlDocument processListDoc = new XmlDocument();
                                 processListDoc.Load(processListReader);
 #if DEBUG
-                                System.IO.StringWriter stringWriter = new System.IO.StringWriter();
-                                XmlTextWriter xmlTextWriter = new XmlTextWriter(stringWriter);
-                                processListDoc.WriteTo(xmlTextWriter);
-                                System.IO.File.AppendAllText(@"C:\T\SeeBee\Test.log", stringWriter.ToString());
-                                System.IO.File.AppendAllText(@"C:\T\SeeBee\Test.log", "--------------\n--------------\n--------------\n--------------\n--------------\n--------------\n");
-                                Console.WriteLine(stringWriter.ToString());
+                                System.IO.File.AppendAllText(@"C:\T\SeeBee\Test.log", processListDoc.InnerXml);
+                                System.IO.File.AppendAllText(@"C:\T\SeeBee\Test.log", "--------------\n--------------\n--------------\n--------------\n--------------\n");
+                                Console.WriteLine();
+                                Console.WriteLine();
+                                Console.WriteLine();
+                                Console.WriteLine();
+                                Console.WriteLine(processListDoc.GetElementsByTagName("ProcessId")[0].InnerText);
                                 Console.WriteLine();
                                 Console.WriteLine();
                                 Console.WriteLine();
                                 Console.WriteLine();
 #endif
+                                int processId, parentProcessId;
+                                int.TryParse(processListDoc.GetElementsByTagName("ProcessId")[0].InnerText, out processId);
+                                int.TryParse(processListDoc.GetElementsByTagName("ParentProcessId")[0].InnerText, out parentProcessId);
+                                //yield return new ProcessEntry
+                                //{
+                                //    ProcessId = processId,
+                                //    ParentProcessId = parentProcessId
+                                //};
                             }
                         }
-    //                    int processId, parentProcessId;
-    //                    int.TryParse(source.GetAttribute("ProcessId"), out processId);
-    //                    int.TryParse(source.GetAttribute("ParentProcessId"), out parentProcessId);
-                        //yield return new ProcessEntry
-                        //{
-                        //    ProcessId = processId,
-                        //    ParentProcessId = parentProcessId
-                        //};
                     }
                 }
             }
