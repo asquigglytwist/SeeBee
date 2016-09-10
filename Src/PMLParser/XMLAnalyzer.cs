@@ -21,19 +21,6 @@ namespace SeeBee.PMLParser
                             {
                                 XmlDocument processListDoc = new XmlDocument();
                                 processListDoc.Load(processListReader);
-#if DEBUG
-                                System.IO.File.AppendAllText(@"C:\T\SeeBee\Test.log", processListDoc.InnerXml);
-                                System.IO.File.AppendAllText(@"C:\T\SeeBee\Test.log", "--------------\n--------------\n--------------\n--------------\n--------------\n");
-                                Console.WriteLine();
-                                Console.WriteLine();
-                                Console.WriteLine();
-                                Console.WriteLine();
-                                Console.WriteLine(processListDoc.GetElementsByTagName("ProcessId")[0].InnerText);
-                                Console.WriteLine();
-                                Console.WriteLine();
-                                Console.WriteLine();
-                                Console.WriteLine();
-#endif
                                 int processId, parentProcessId;
                                 int.TryParse(processListDoc.GetElementsByTagName("ProcessId")[0].InnerText, out processId);
                                 int.TryParse(processListDoc.GetElementsByTagName("ParentProcessId")[0].InnerText, out parentProcessId);
