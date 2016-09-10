@@ -21,22 +21,40 @@ namespace SeeBee.PMLParser
                             {
                                 XmlDocument processListDoc = new XmlDocument();
                                 processListDoc.Load(processListReader);
-                                int processId, parentProcessId;
+                                int processId, parentProcessId, processIndex, parentProcessIndex;
                                 int.TryParse(processListDoc.GetElementsByTagName("ProcessId")[0].InnerText, out processId);
                                 int.TryParse(processListDoc.GetElementsByTagName("ParentProcessId")[0].InnerText, out parentProcessId);
+                                int.TryParse(processListDoc.GetElementsByTagName("ProcessIndex")[0].InnerText, out processIndex);
+                                int.TryParse(processListDoc.GetElementsByTagName("ParentProcessIndex")[0].InnerText, out parentProcessIndex);
                                 long createTime, finishTime;
                                 long.TryParse(processListDoc.GetElementsByTagName("CreateTime")[0].InnerText, out createTime);
                                 long.TryParse(processListDoc.GetElementsByTagName("FinishTime")[0].InnerText, out finishTime);
                                 bool isVirtualized, is64Bit;
-                                bool.TryParse(processListDoc.GetElementsByTagName("IsVirtualized")[0].InnerText, out isVirtualized);
-                                bool.TryParse(processListDoc.GetElementsByTagName("Is64bit")[0].InnerText, out is64Bit);
-                                string integrityLevelString = processListDoc.GetElementsByTagName("Integrity")[0].InnerText;
+                                string tempString = processListDoc.GetElementsByTagName("IsVirtualized")[0].InnerText;
+                                if (tempString.Equals("0"))
+                                {
+                                    isVirtualized = false;
+                                }
+                                else
+                                {
+                                    isVirtualized = true;
+                                }
+                                tempString = processListDoc.GetElementsByTagName("Is64bit")[0].InnerText;
+                                if (tempString.Equals("0"))
+                                {
+                                    is64Bit = false;
+                                }
+                                else
+                                {
+                                    is64Bit = true;
+                                }
+                                tempString = processListDoc.GetElementsByTagName("Integrity")[0].InnerText;
                                 ProcessIntegrityLevel integrityLevel;
-                                if (integrityLevelString.Equals("High", StringComparison.CurrentCultureIgnoreCase))
+                                if (tempString.Equals("High", StringComparison.CurrentCultureIgnoreCase))
                                 {
                                     integrityLevel = ProcessIntegrityLevel.High;
                                 }
-                                else if (integrityLevelString.Equals("Medium", StringComparison.CurrentCultureIgnoreCase))
+                                else if (tempString.Equals("Medium", StringComparison.CurrentCultureIgnoreCase))
                                 {
                                     integrityLevel = ProcessIntegrityLevel.Medium;
                                 }
@@ -48,6 +66,8 @@ namespace SeeBee.PMLParser
                                 {
                                     ProcessId = processId,
                                     ParentProcessId = parentProcessId,
+                                    ProcessIndex = processIndex,
+                                    ParentProcessIndex = parentProcessIndex,
                                     AuthenticationId = processListDoc.GetElementsByTagName("AuthenticationId")[0].InnerText,
                                     CreateTime = createTime,
                                     IsVirtualized = isVirtualized,
