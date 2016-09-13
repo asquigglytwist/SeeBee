@@ -13,7 +13,7 @@ namespace SeeBee.SeeBeeCmd
             pmlAnalyzer.Init(args);
 #else
             pmlAnalyzer = new PMLAnalyzer(@"C:\T\SeeBee\Procmon.exe");
-            pmlAnalyzer.Init(@"C:\T\SeeBee\Logfile.PML");
+            pmlAnalyzer.ProcessPMLFile(@"C:\T\SeeBee\Logfile.PML");
             Console.ReadKey(true);
 #endif
         }

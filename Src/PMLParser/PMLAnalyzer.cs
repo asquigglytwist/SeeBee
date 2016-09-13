@@ -5,71 +5,43 @@ namespace SeeBee.PMLParser
 {
     public class PMLAnalyzer
     {
-        public PMLAnalyzer(string procMonExeLocation, string pmlFileFirst, string pmlFileSecond = null)
+        public PMLAnalyzer(string procMonExeLocation)
         {
             if (!FSUtils.FileExists(procMonExeLocation))
             {
                 throw new FileNotFoundException("SeeBee was not able to, either find or access the ProcMon executable (file).", ProcMonEXELocation);
             }
             ProcMonEXELocation = procMonExeLocation;
-
-            if (!FSUtils.FileExists(pmlFileFirst))
-            {
-                throw new FileNotFoundException("SeeBee was not able to, either find or access the ProcMon Log file (first).", pmlFileFirst);
-            }
-            PMLFileFirst = pmlFileFirst;
-
-            if(!string.IsNullOrEmpty(pmlFileSecond) && !FSUtils.FileExists(pmlFileSecond))
-            {
-                throw new FileNotFoundException("SeeBee was not able to, either find or access the ProcMon Log file (second).", pmlFileSecond);
-            }
-            else
-            {
-                PMLFileSecond = pmlFileSecond;
-            }
         }
 
         public string ProcMonEXELocation { get; private set; }
-        public string PMLFileFirst { get; private set; }
-        public string XMLFileFirst { get; private set; }
-        public string PMLFileSecond { get; private set; }
-        public string XMLFileSecond { get; private set; }
 
-        public bool Init()
+        public bool ProcessPMLFile(string pmlFile)
         {
-            string xmlFilePath;
-            if (Convert() && !string.IsNullOrEmpty(XMLFileFirst))
+            if (!FSUtils.FileExists(pmlFile))
+            {
+                throw new FileNotFoundException("SeeBee was not able to, either find or access the ProcMon Log file.", pmlFile);
+            }
+            string xmlFile;
+            if (Convert(pmlFile, out xmlFile) && !string.IsNullOrEmpty(xmlFile))
             {
                 XMLProcessor processList = new XMLProcessor();
-                processList.LoadProcesses();
+                processList.LoadProcesses(xmlFile);
                 return true;
             }
             return false;
         }
 
-        private bool Convert(bool useFirstPMLFile = true)
+        private bool Convert(string pmlFile, out string xmlFile)
         {
             PMLToXMLConverter converter;
-            if (useFirstPMLFile)
-            {
-                converter = new PMLToXMLConverter(ProcMonEXELocation, PMLFileFirst);
-            }
-            else
-            {
-                converter = new PMLToXMLConverter(ProcMonEXELocation, PMLFileSecond);
-            }
+            converter = new PMLToXMLConverter(ProcMonEXELocation, pmlFile);
             if (converter.Convert())
             {
-                if (useFirstPMLFile)
-                {
-                    XMLFileFirst = converter.XMLFile;
-                }
-                else
-                {
-                    XMLFileSecond = converter.XMLFile;
-                }
+                xmlFile = converter.XMLFile;
                 return true;
             }
+            xmlFile = null;
             return false;
         }
     }
