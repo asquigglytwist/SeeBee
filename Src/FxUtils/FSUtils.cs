@@ -84,10 +84,6 @@ namespace SeeBee.FxUtils
         #region Functions
         public static bool FileExists(string path)
         {
-            if (string.IsNullOrEmpty(path))
-            {
-                return false;
-            }
             return File.Exists(path);
         }
 
