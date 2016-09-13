@@ -5,7 +5,7 @@ using System.Text;
 
 namespace SeeBee.PMLParser
 {
-    internal class ProcessEntry
+    internal class PMLProcess
     {
         public int ProcessId { get; set; }
         public int ProcessIndex { get; set; }

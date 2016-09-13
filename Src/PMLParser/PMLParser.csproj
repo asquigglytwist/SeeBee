@@ -42,7 +42,7 @@
   <ItemGroup>
     <Compile Include="PMLAnalyzer.cs" />
     <Compile Include="PMLToXMLConverter.cs" />
-    <Compile Include="ProcessEntry.cs" />
+    <Compile Include="PMLProcess.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="XMLProcessor.cs" />
   </ItemGroup>

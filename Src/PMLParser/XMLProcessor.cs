@@ -6,7 +6,7 @@ namespace SeeBee.PMLParser
 {
     internal class XMLProcessor
     {
-        internal IEnumerable<ProcessEntry> ListProcesses(string xmlFilePath)
+        internal IEnumerable<PMLProcess> LoadProcesses(string xmlFilePath)
         {
             using (XmlReader source = XmlReader.Create(xmlFilePath))
             {
@@ -62,7 +62,7 @@ namespace SeeBee.PMLParser
                                 {
                                     integrityLevel = ProcessIntegrityLevel.Low;
                                 }
-                                yield return new ProcessEntry
+                                yield return new PMLProcess
                                 {
                                     ProcessId = processId,
                                     ParentProcessId = parentProcessId,
