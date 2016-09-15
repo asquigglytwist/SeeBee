@@ -2,11 +2,13 @@
 using System.IO;
 using System.Linq;
 using SeeBee.FxUtils;
+using System.Collections.Generic;
 
 namespace SeeBee.PMLParser
 {
     public class PMLAnalyzer
     {
+        public static List<PMLModule> globalModuleList;
         public PMLAnalyzer(string procMonExeLocation)
         {
             if (!FSUtils.FileExists(procMonExeLocation))
