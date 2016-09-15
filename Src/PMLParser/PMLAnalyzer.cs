@@ -8,7 +8,19 @@ namespace SeeBee.PMLParser
 {
     public class PMLAnalyzer
     {
+        internal static List<string> globalOwnerList = new List<string>();
         internal static List<PMLModule> globalModuleList = new List<PMLModule>();
+
+        internal static int LocateOwnerInList(string owner)
+        {
+            return globalOwnerList.FindIndex(o => o.Equals(owner));
+        }
+
+        internal static int AddOwnerToList(string owner)
+        {
+            globalOwnerList.Add(owner);
+            return globalOwnerList.Count - 1;
+        }
 
         internal static int LocateModuleInList(string modulePath)
         {

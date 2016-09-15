@@ -17,7 +17,9 @@ namespace SeeBee.PMLParser
         internal bool IsVirtualized { get; set; }
         internal bool Is64bit { get; set; }
         internal ProcessIntegrityLevel ProcessIntegrity { get; set; }
+        internal int OwnerIndex { get; set; }
         internal string ProcessName { get; set; }
+        internal int ImageIndex { get; set; }
         internal string CommandLine { get; set; }
         internal HashSet<int> ModuleList { get; set; }
 
@@ -33,7 +35,7 @@ namespace SeeBee.PMLParser
                 finishTime = XMLUtils.ParseTagContentAsLong(processListDoc, "FinishTime");
             bool isVirtualized = XMLUtils.ParseTagContentAsBoolean(processListDoc, "IsVirtualized"),
                 is64Bit = XMLUtils.ParseTagContentAsBoolean(processListDoc, "Is64bit");
-            string tempString = processListDoc.GetElementsByTagName("Integrity")[0].InnerText;
+            string tempString = XMLUtils.GetInnerText(processListDoc, "Integrity");
             ProcessIntegrityLevel integrityLevel;
             if (tempString.Equals("System", StringComparison.CurrentCultureIgnoreCase))
             {
@@ -51,20 +53,21 @@ namespace SeeBee.PMLParser
             {
                 integrityLevel = ProcessIntegrityLevel.Low;
             }
+            tempString = XMLUtils.GetInnerText(processListDoc, "Owner");
+            int ownerIndex = PMLAnalyzer.LocateOwnerInList(tempString);
+            if (-1 == ownerIndex)
+            {
+                ownerIndex = PMLAnalyzer.AddOwnerToList(tempString);
+            }
 
+            // Handling ModuleList
             HashSet<int> processModuleList = new HashSet<int>();
             var modules = processListDoc.SelectNodes("/process/modulelist/module");
-#if DEBUG
-            Console.WriteLine("# of module nodes is {0}.", modules.Count);
-#endif
             foreach (XmlElement module in modules)
             {
-//#if DEBUG
-//                Console.WriteLine(module.GetElementsByTagName("Path")[0].InnerText);
-//#endif
                 string path = module.GetElementsByTagName("Path")[0].InnerText;
-                int index = PMLAnalyzer.LocateModuleInList(path);
-                if (-1 == index)
+                int moduleIndex = PMLAnalyzer.LocateModuleInList(path);
+                if (-1 == moduleIndex)
                 {
                     long timeStamp = XMLUtils.ParseTagContentAsLong(module, "Timestamp"),
                         size = XMLUtils.ParseTagContentAsLong(module, "Size");
@@ -72,25 +75,28 @@ namespace SeeBee.PMLParser
                     string version = XMLUtils.GetInnerText(module, "Version"),
                         company = XMLUtils.GetInnerText(module, "Company"),
                         description = XMLUtils.GetInnerText(module, "Description");
-                    index = PMLAnalyzer.AddModuleToList(new PMLModule(timeStamp, baseAddress, size, path, version, company, description));
+                    moduleIndex = PMLAnalyzer.AddModuleToList(new PMLModule(timeStamp, baseAddress, size, path, version, company, description));
                 }
-                if (-1 != index)
+                if (-1 != moduleIndex)
                 {
-                    processModuleList.Add(index);
+                    processModuleList.Add(moduleIndex);
                 }
             }
+
             // Actual object creation i.e., assigning values to members
             ProcessId = processId;
             ParentProcessId = parentProcessId;
             ProcessIndex = processIndex;
             ParentProcessIndex = parentProcessIndex;
-            AuthenticationId = processListDoc.GetElementsByTagName("AuthenticationId")[0].InnerText;
+            AuthenticationId = XMLUtils.GetInnerText(processListDoc, "AuthenticationId");
             CreateTime = createTime;
             IsVirtualized = isVirtualized;
             Is64bit = is64Bit;
             ProcessIntegrity = integrityLevel;
-            ProcessName = processListDoc.GetElementsByTagName("ProcessName")[0].InnerText;
-            CommandLine = processListDoc.GetElementsByTagName("CommandLine")[0].InnerText;
+            OwnerIndex = ownerIndex;
+            ProcessName = XMLUtils.GetInnerText(processListDoc, "ProcessName");
+            ImageIndex = PMLAnalyzer.LocateModuleInList(XMLUtils.GetInnerText(processListDoc, "ImagePath"));
+            CommandLine = XMLUtils.GetInnerText(processListDoc, "CommandLine");
             ModuleList = processModuleList;
         }
     }

@@ -23,6 +23,7 @@ namespace SeeBee.PMLParser
                         }
                     }
                 }
+                source.Close();
             }
         }
     }
