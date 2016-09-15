@@ -29,8 +29,8 @@ namespace SeeBee.PMLParser
                 parentProcessId = XMLUtils.ParseTagContentAsInt(processListDoc, "ParentProcessId"),
                 processIndex = XMLUtils.ParseTagContentAsInt(processListDoc, "ProcessIndex"),
                 parentProcessIndex = XMLUtils.ParseTagContentAsInt(processListDoc, "ParentProcessIndex");
-            long createTime = XMLUtils.ParseTagContentAsInt(processListDoc, "CreateTime"),
-                finishTime = XMLUtils.ParseTagContentAsInt(processListDoc, "FinishTime");
+            long createTime = XMLUtils.ParseTagContentAsLong(processListDoc, "CreateTime"),
+                finishTime = XMLUtils.ParseTagContentAsLong(processListDoc, "FinishTime");
             bool isVirtualized = XMLUtils.ParseTagContentAsBoolean(processListDoc, "IsVirtualized"),
                 is64Bit = XMLUtils.ParseTagContentAsBoolean(processListDoc, "Is64bit");
             string tempString = processListDoc.GetElementsByTagName("Integrity")[0].InnerText;
@@ -66,27 +66,19 @@ namespace SeeBee.PMLParser
                 int index = PMLAnalyzer.LocateModuleInList(path);
                 if (-1 == index)
                 {
-                    long timeStamp, size;
-                    long.TryParse(module.GetElementsByTagName("Timestamp")[0].InnerText, out timeStamp);
-                    long.TryParse(module.GetElementsByTagName("Size")[0].InnerText, out size);
-                    long baseAddress = StringUtils.HexStringToLong(module.GetElementsByTagName("BaseAddress")[0].InnerText);
-                    string version = module.GetElementsByTagName("Version")[0].InnerText,
-                        company = module.GetElementsByTagName("Company")[0].InnerText,
-                        description = module.GetElementsByTagName("Description")[0].InnerText;
+                    long timeStamp = XMLUtils.ParseTagContentAsLong(module, "Timestamp"),
+                        size = XMLUtils.ParseTagContentAsLong(module, "Size");
+                    long baseAddress = StringUtils.HexStringToLong(XMLUtils.GetInnerText(module, "BaseAddress"));
+                    string version = XMLUtils.GetInnerText(module, "Version"),
+                        company = XMLUtils.GetInnerText(module, "Company"),
+                        description = XMLUtils.GetInnerText(module, "Description");
                     index = PMLAnalyzer.AddModuleToList(new PMLModule(timeStamp, baseAddress, size, path, version, company, description));
                 }
                 if (-1 != index)
                 {
                     processModuleList.Add(index);
-//#if DEBUG
-//                    Console.WriteLine(PMLAnalyzer.globalModuleList[index].Path);
-//#endif
                 }
             }
-//#if DEBUG
-//            Console.WriteLine("-- -- -- -- --");
-//            Console.ReadKey(true);
-//#endif
             // Actual object creation i.e., assigning values to members
             ProcessId = processId;
             ParentProcessId = parentProcessId;
