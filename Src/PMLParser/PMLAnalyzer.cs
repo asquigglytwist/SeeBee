@@ -1,14 +1,25 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using SeeBee.FxUtils;
-using System.Collections.Generic;
 
 namespace SeeBee.PMLParser
 {
     public class PMLAnalyzer
     {
-        internal static List<PMLModule> globalModuleList;
+        internal static List<PMLModule> globalModuleList = new List<PMLModule>();
+
+        internal static int LocateModuleInList(string modulePath)
+        {
+            return globalModuleList.FindIndex(module => module.Path.Equals(modulePath));
+        }
+
+        internal static int AddModuleToList(PMLModule module)
+        {
+            globalModuleList.Add(module);
+            return globalModuleList.Count - 1;
+        }
 
         public PMLAnalyzer(string procMonExeLocation)
         {
