@@ -25,34 +25,15 @@ namespace SeeBee.PMLParser
         {
             XmlDocument processListDoc = new XmlDocument();
             processListDoc.Load(processListReader);
-            int processId, parentProcessId, processIndex, parentProcessIndex;
-            int.TryParse(processListDoc.GetElementsByTagName("ProcessId")[0].InnerText, out processId);
-            int.TryParse(processListDoc.GetElementsByTagName("ParentProcessId")[0].InnerText, out parentProcessId);
-            int.TryParse(processListDoc.GetElementsByTagName("ProcessIndex")[0].InnerText, out processIndex);
-            int.TryParse(processListDoc.GetElementsByTagName("ParentProcessIndex")[0].InnerText, out parentProcessIndex);
-            long createTime, finishTime;
-            long.TryParse(processListDoc.GetElementsByTagName("CreateTime")[0].InnerText, out createTime);
-            long.TryParse(processListDoc.GetElementsByTagName("FinishTime")[0].InnerText, out finishTime);
-            bool isVirtualized, is64Bit;
-            string tempString = processListDoc.GetElementsByTagName("IsVirtualized")[0].InnerText;
-            if (tempString.Equals("0"))
-            {
-                isVirtualized = false;
-            }
-            else
-            {
-                isVirtualized = true;
-            }
-            tempString = processListDoc.GetElementsByTagName("Is64bit")[0].InnerText;
-            if (tempString.Equals("0"))
-            {
-                is64Bit = false;
-            }
-            else
-            {
-                is64Bit = true;
-            }
-            tempString = processListDoc.GetElementsByTagName("Integrity")[0].InnerText;
+            int processId = XMLUtils.ParseTagContentAsInt(processListDoc, "ProcessId"),
+                parentProcessId = XMLUtils.ParseTagContentAsInt(processListDoc, "ParentProcessId"),
+                processIndex = XMLUtils.ParseTagContentAsInt(processListDoc, "ProcessIndex"),
+                parentProcessIndex = XMLUtils.ParseTagContentAsInt(processListDoc, "ParentProcessIndex");
+            long createTime = XMLUtils.ParseTagContentAsInt(processListDoc, "CreateTime"),
+                finishTime = XMLUtils.ParseTagContentAsInt(processListDoc, "FinishTime");
+            bool isVirtualized = XMLUtils.ParseTagContentAsBoolean(processListDoc, "IsVirtualized"),
+                is64Bit = XMLUtils.ParseTagContentAsBoolean(processListDoc, "Is64bit");
+            string tempString = processListDoc.GetElementsByTagName("Integrity")[0].InnerText;
             ProcessIntegrityLevel integrityLevel;
             if (tempString.Equals("System", StringComparison.CurrentCultureIgnoreCase))
             {
