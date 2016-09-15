@@ -5,7 +5,7 @@ using System.Text;
 
 namespace SeeBee.PMLParser
 {
-    internal class PMLModule
+    public class PMLModule
     {
         internal PMLModule(long timeStamp, long baseAddress, long size, string path, string version, string company, string description)
         {
@@ -18,12 +18,12 @@ namespace SeeBee.PMLParser
             Description = description;
         }
 
-        internal long TimeStamp { internal get; private set; }
-        internal long BaseAddress { internal get; private set; }
-        internal long Size { internal get; private set; }
-        internal string Path { internal get; private set; }
-        internal string Version { internal get; private set; }
-        internal string Company { internal get; private set; }
-        internal string Description { internal get; private set; }
+        internal long TimeStamp { get; private set; }
+        internal long BaseAddress { get; private set; }
+        internal long Size { get; private set; }
+        internal string Path { get; private set; }
+        internal string Version { get; private set; }
+        internal string Company { get; private set; }
+        internal string Description { get; private set; }
     }
 }
