@@ -25,7 +25,7 @@ namespace SeeBee.PMLParser
             string xmlFile;
             if (Convert(pmlFile, out xmlFile) && !string.IsNullOrEmpty(xmlFile))
             {
-                XMLProcessor processList = new XMLProcessor();
+                ConvertedXMLProcessor processList = new ConvertedXMLProcessor();
                 processList.LoadProcesses(xmlFile);
                 return true;
             }
