@@ -88,7 +88,7 @@ namespace SeeBee.PMLParser
                     long timeStamp, size;
                     long.TryParse(module.GetElementsByTagName("Timestamp")[0].InnerText, out timeStamp);
                     long.TryParse(module.GetElementsByTagName("Size")[0].InnerText, out size);
-                    long baseAddress = MathUtils.HexStringToLong(module.GetElementsByTagName("BaseAddress")[0].InnerText);
+                    long baseAddress = StringUtils.HexStringToLong(module.GetElementsByTagName("BaseAddress")[0].InnerText);
                     string version = module.GetElementsByTagName("Version")[0].InnerText,
                         company = module.GetElementsByTagName("Company")[0].InnerText,
                         description = module.GetElementsByTagName("Description")[0].InnerText;

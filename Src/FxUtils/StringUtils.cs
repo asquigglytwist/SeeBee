@@ -3,7 +3,7 @@ using System.Globalization;
 
 namespace SeeBee.FxUtils
 {
-    public static class MathUtils
+    public static class StringUtils
     {
         public static long HexStringToLong(string hexString)
         {
