@@ -5,7 +5,7 @@ using System.Text;
 
 namespace SeeBee.FxUtils
 {
-    class XMLParser
+    class XMLUtils
     {
     }
 }
