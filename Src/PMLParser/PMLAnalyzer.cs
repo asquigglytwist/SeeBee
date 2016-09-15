@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using System.Linq;
 using SeeBee.FxUtils;
 
 namespace SeeBee.PMLParser
@@ -26,7 +28,10 @@ namespace SeeBee.PMLParser
             if (Convert(pmlFile, out xmlFile) && !string.IsNullOrEmpty(xmlFile))
             {
                 ConvertedXMLProcessor processList = new ConvertedXMLProcessor();
-                processList.LoadProcesses(xmlFile);
+                var processes = from p in processList.LoadProcesses(xmlFile) where (!string.IsNullOrEmpty(p.ProcessName)) select p;
+#if DEBUG
+                Console.WriteLine("# of Processes that match the criteria {0}.", processes.Count());
+#endif
                 File.Delete(xmlFile);
                 return true;
             }
