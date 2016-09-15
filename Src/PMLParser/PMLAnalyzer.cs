@@ -8,7 +8,8 @@ namespace SeeBee.PMLParser
 {
     public class PMLAnalyzer
     {
-        public static List<PMLModule> globalModuleList;
+        internal static List<PMLModule> globalModuleList;
+
         public PMLAnalyzer(string procMonExeLocation)
         {
             if (!FSUtils.FileExists(procMonExeLocation))
