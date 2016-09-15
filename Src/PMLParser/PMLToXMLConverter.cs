@@ -4,13 +4,13 @@ using SeeBee.FxUtils;
 
 namespace SeeBee.PMLParser
 {
-    public class PMLToXMLConverter
+    internal class PMLToXMLConverter
     {
         bool shouldRetryOnceOnFailure;
         ProcessEx procMon;
 
         #region Constructor
-        public PMLToXMLConverter(string procMonExeLocation, string pmlFile, bool shouldRetryOnceOnFailure = false)
+        internal PMLToXMLConverter(string procMonExeLocation, string pmlFile, bool shouldRetryOnceOnFailure = false)
         {
             this.shouldRetryOnceOnFailure = shouldRetryOnceOnFailure;
             PMLFile = pmlFile;
@@ -27,7 +27,7 @@ namespace SeeBee.PMLParser
         }
         #endregion
 
-        public bool Convert()
+        internal bool Convert()
         {
             procMon.Start();
             if (0 == procMon.WaitForExitCode())
@@ -45,14 +45,14 @@ namespace SeeBee.PMLParser
         }
 
         #region Properties
-        public string PMLFile
+        internal string PMLFile
         {
             get;
             private set;
         }
 
         // [BIB]:  http://stackoverflow.com/a/2719761
-        public string XMLFile
+        internal string XMLFile
         {
             get;
             private set;

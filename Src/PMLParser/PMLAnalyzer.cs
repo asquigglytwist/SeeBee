@@ -9,7 +9,7 @@ namespace SeeBee.PMLParser
         {
             if (!FSUtils.FileExists(procMonExeLocation))
             {
-                throw new FileNotFoundException("SeeBee was not able to, either find or access the ProcMon executable (file).", ProcMonEXELocation);
+                throw new FileNotFoundException("Not able to, either find or access the ProcMon executable (file).", ProcMonEXELocation);
             }
             ProcMonEXELocation = procMonExeLocation;
         }
@@ -20,13 +20,14 @@ namespace SeeBee.PMLParser
         {
             if (!FSUtils.FileExists(pmlFile))
             {
-                throw new FileNotFoundException("SeeBee was not able to, either find or access the ProcMon Log file.", pmlFile);
+                throw new FileNotFoundException("Not able to, either find or access the ProcMon Log file.", pmlFile);
             }
             string xmlFile;
             if (Convert(pmlFile, out xmlFile) && !string.IsNullOrEmpty(xmlFile))
             {
                 ConvertedXMLProcessor processList = new ConvertedXMLProcessor();
                 processList.LoadProcesses(xmlFile);
+                File.Delete(xmlFile);
                 return true;
             }
             return false;

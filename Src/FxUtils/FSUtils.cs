@@ -87,6 +87,11 @@ namespace SeeBee.FxUtils
             return File.Exists(path);
         }
 
+        public static void FileDelete(string path)
+        {
+            File.Delete(path);
+        }
+
         public static string PathCombine(string path, string fileNameWithExtension)
         {
             return Path.Combine(path, fileNameWithExtension);
