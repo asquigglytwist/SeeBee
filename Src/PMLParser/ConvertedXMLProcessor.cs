@@ -4,7 +4,7 @@ using System.Xml;
 
 namespace SeeBee.PMLParser
 {
-    internal class XMLProcessor
+    internal class ConvertedXMLProcessor
     {
         internal IEnumerable<PMLProcess> LoadProcesses(string xmlFilePath)
         {
