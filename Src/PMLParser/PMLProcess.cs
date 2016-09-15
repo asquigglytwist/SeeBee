@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Xml;
+using SeeBee.FxUtils;
 
 namespace SeeBee.PMLParser
 {
@@ -55,7 +54,11 @@ namespace SeeBee.PMLParser
             }
             tempString = processListDoc.GetElementsByTagName("Integrity")[0].InnerText;
             ProcessIntegrityLevel integrityLevel;
-            if (tempString.Equals("High", StringComparison.CurrentCultureIgnoreCase))
+            if (tempString.Equals("System", StringComparison.CurrentCultureIgnoreCase))
+            {
+                integrityLevel = ProcessIntegrityLevel.System;
+            }
+            else if (tempString.Equals("High", StringComparison.CurrentCultureIgnoreCase))
             {
                 integrityLevel = ProcessIntegrityLevel.High;
             }
@@ -67,28 +70,64 @@ namespace SeeBee.PMLParser
             {
                 integrityLevel = ProcessIntegrityLevel.Low;
             }
-            HashSet<int> modulelist = new HashSet<int>();
-            //yield return new PMLProcess
+
+            HashSet<int> processModuleList = new HashSet<int>();
+            var modules = processListDoc.SelectNodes("/process/modulelist/module");
+#if DEBUG
+            Console.WriteLine("# of module nodes is {0}.", modules.Count);
+#endif
+            foreach (XmlElement module in modules)
             {
-                ProcessId = processId;
-                ParentProcessId = parentProcessId;
-                ProcessIndex = processIndex;
-                ParentProcessIndex = parentProcessIndex;
-                AuthenticationId = processListDoc.GetElementsByTagName("AuthenticationId")[0].InnerText;
-                CreateTime = createTime;
-                IsVirtualized = isVirtualized;
-                Is64bit = is64Bit;
-                ProcessIntegrity = integrityLevel;
-                ProcessName = processListDoc.GetElementsByTagName("ProcessName")[0].InnerText;
-                CommandLine = processListDoc.GetElementsByTagName("CommandLine")[0].InnerText;
+//#if DEBUG
+//                Console.WriteLine(module.GetElementsByTagName("Path")[0].InnerText);
+//#endif
+                string path = module.GetElementsByTagName("Path")[0].InnerText;
+                int index = PMLAnalyzer.LocateModuleInList(path);
+                if (-1 == index)
+                {
+                    long timeStamp, size;
+                    long.TryParse(module.GetElementsByTagName("Timestamp")[0].InnerText, out timeStamp);
+                    long.TryParse(module.GetElementsByTagName("Size")[0].InnerText, out size);
+                    long baseAddress = MathUtils.HexStringToLong(module.GetElementsByTagName("BaseAddress")[0].InnerText);
+                    string version = module.GetElementsByTagName("Version")[0].InnerText,
+                        company = module.GetElementsByTagName("Company")[0].InnerText,
+                        description = module.GetElementsByTagName("Description")[0].InnerText;
+                    index = PMLAnalyzer.AddModuleToList(new PMLModule(timeStamp, baseAddress, size, path, version, company, description));
+                }
+                if (-1 != index)
+                {
+                    processModuleList.Add(index);
+//#if DEBUG
+//                    Console.WriteLine(PMLAnalyzer.globalModuleList[index].Path);
+//#endif
+                }
             }
+//#if DEBUG
+//            Console.WriteLine("-- -- -- -- --");
+//            Console.ReadKey(true);
+//#endif
+            // Actual object creation i.e., assigning values to members
+            ProcessId = processId;
+            ParentProcessId = parentProcessId;
+            ProcessIndex = processIndex;
+            ParentProcessIndex = parentProcessIndex;
+            AuthenticationId = processListDoc.GetElementsByTagName("AuthenticationId")[0].InnerText;
+            CreateTime = createTime;
+            IsVirtualized = isVirtualized;
+            Is64bit = is64Bit;
+            ProcessIntegrity = integrityLevel;
+            ProcessName = processListDoc.GetElementsByTagName("ProcessName")[0].InnerText;
+            CommandLine = processListDoc.GetElementsByTagName("CommandLine")[0].InnerText;
+            ModuleList = processModuleList;
         }
     }
 
     internal enum ProcessIntegrityLevel
     {
+        None,
         Low,
         Medium,
-        High
+        High,
+        System
     }
 }
