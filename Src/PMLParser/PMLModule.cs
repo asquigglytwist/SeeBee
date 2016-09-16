@@ -7,8 +7,13 @@ namespace SeeBee.PMLParser
 {
     public class PMLModule
     {
+        #region Members
         internal protected const string UnknownValue = "Unknown";
+        private string summary;
+        internal protected static PMLModule System = new PMLModule(DateTime.MinValue, 0, 0, "System", UnknownValue, UnknownValue, UnknownValue);
+        #endregion
 
+        #region Static Methods
         internal static HashSet<int> LoadModules(XmlDocument processXMLDoc)
         {
             HashSet<int> processModuleList = new HashSet<int>();
@@ -21,7 +26,8 @@ namespace SeeBee.PMLParser
                 {
                     var tempModule = new PMLModule(path, module);
 #if DEBUG
-                    Console.WriteLine(tempModule);
+                    //Console.WriteLine(tempModule);
+                    //Console.WriteLine("\n-- -- -- -- --\t-- -- -- -- --\n-- -- -- -- --\t-- -- -- -- --\n");
 #endif
                     moduleIndex = PMLAnalyzer.AddModuleToList(tempModule);
                 }
@@ -32,12 +38,11 @@ namespace SeeBee.PMLParser
             }
             return processModuleList;
         }
+        #endregion
 
+        #region Constructor(s)
         private PMLModule(DateTime timeStamp, long baseAddress, long size, string path, string version, string company, string description)
         {
-#if DEBUG
-            Console.WriteLine("{0} was loaded at {1}.", path, timeStamp);
-#endif
             TimeStamp = timeStamp;
             BaseAddress = baseAddress;
             Size = size;
@@ -70,6 +75,9 @@ namespace SeeBee.PMLParser
             {
                 Description = description;
             }
+            summary = string.Format("Module - [{0}] [Version = {1};  Size {2}], located at \"{3}\", from [{4}], was loaded at [{5}] into address 0x{6}.",
+                Description, Version, NumberUtils.FormatNumberAsFileSize(Size), Path,
+                Company, TimeStamp, NumberUtils.LongToHexString(BaseAddress));
         }
 
         internal PMLModule(string path, XmlElement module) :
@@ -82,7 +90,9 @@ namespace SeeBee.PMLParser
             XMLUtils.GetInnerText(module, "Description"))
         {
         }
+        #endregion
 
+        #region Properties
         internal int ModuleIndex { get; private set; }
         internal DateTime TimeStamp { get; private set; }
         internal long BaseAddress { get; private set; }
@@ -91,6 +101,7 @@ namespace SeeBee.PMLParser
         internal string Version { get; private set; }
         internal string Company { get; private set; }
         internal string Description { get; private set; }
+        #endregion
 
         public override int GetHashCode()
         {
@@ -100,7 +111,7 @@ namespace SeeBee.PMLParser
         public override bool Equals(object obj)
         {
             var otherObj = obj as PMLModule;
-            if ((this.Size == otherObj.Size) && this.Path.Equals(otherObj.Path))
+            if ((this.Size == otherObj.Size) && this.Path.Equals(otherObj.Path, StringComparison.CurrentCultureIgnoreCase))
             {
                 return true;
             }
@@ -109,8 +120,7 @@ namespace SeeBee.PMLParser
 
         public override string ToString()
         {
-            return String.Format("Module - {0} [version = {1}] of size {2} located at {3}, from {4}, was loaded at {5} into address 0x{6}.",
-                Description, Version, Size, Path, Company, TimeStamp, NumberUtils.LongToHexString(BaseAddress));
+            return summary;
         }
     }
 }

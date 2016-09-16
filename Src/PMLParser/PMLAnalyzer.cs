@@ -11,9 +11,15 @@ namespace SeeBee.PMLParser
         internal static List<string> globalOwnerList = new List<string>();
         internal static List<PMLModule> globalModuleList = new List<PMLModule>();
 
+        static PMLAnalyzer()
+        {
+            globalModuleList.Add(PMLModule.System);
+            globalOwnerList.Add("NT AUTHORITY\\SYSTEM");
+        }
+
         internal static int LocateOwnerInList(string owner)
         {
-            return globalOwnerList.FindIndex(o => o.Equals(owner));
+            return globalOwnerList.FindIndex(o => o.Equals(owner, StringComparison.CurrentCultureIgnoreCase));
         }
 
         internal static int AddOwnerToList(string owner)
@@ -24,7 +30,7 @@ namespace SeeBee.PMLParser
 
         internal static int LocateModuleInList(string modulePath)
         {
-            return globalModuleList.FindIndex(module => module.Path.Equals(modulePath));
+            return globalModuleList.FindIndex(module => module.Path.Equals(modulePath, StringComparison.CurrentCultureIgnoreCase));
         }
 
         internal static int AddModuleToList(PMLModule module)
