@@ -61,5 +61,20 @@ namespace SeeBee.PMLParser
         internal string Version { get; private set; }
         internal string Company { get; private set; }
         internal string Description { get; private set; }
+
+        public override int GetHashCode()
+        {
+            return this.Path.GetHashCode();
+        }
+
+        public override bool Equals(object obj)
+        {
+            var otherObj = obj as PMLModule;
+            if ((this.Size == otherObj.Size) && this.Path.Equals(otherObj.Path))
+            {
+                return true;
+            }
+            return false;
+        }
     }
 }
