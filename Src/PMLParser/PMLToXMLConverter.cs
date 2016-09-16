@@ -6,8 +6,10 @@ namespace SeeBee.PMLParser
 {
     internal class PMLToXMLConverter
     {
+        #region Members
         bool shouldRetryOnceOnFailure;
         ProcessEx procMon;
+        #endregion
 
         #region Constructor
         internal PMLToXMLConverter(string procMonExeLocation, string pmlFile, bool shouldRetryOnceOnFailure = false)
