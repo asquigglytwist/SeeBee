@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Xml;
 using SeeBee.FxUtils;
 
@@ -7,6 +8,9 @@ namespace SeeBee.PMLParser
 {
     internal class PMLProcess
     {
+        private string summary;
+
+        #region Properties
         internal int ProcessId { get; set; }
         internal int ProcessIndex { get; set; }
         internal int ParentProcessId { get; set; }
@@ -22,7 +26,9 @@ namespace SeeBee.PMLParser
         internal int ImageIndex { get; set; }
         internal string CommandLine { get; set; }
         internal HashSet<int> ModuleList { get; set; }
+        #endregion
 
+        #region Constructor
         internal PMLProcess(XmlReader processListReader)
         {
             XmlDocument processXMLDoc = new XmlDocument();
@@ -73,9 +79,43 @@ namespace SeeBee.PMLParser
             ProcessIntegrity = integrityLevel;
             OwnerIndex = ownerIndex;
             ProcessName = XMLUtils.GetInnerText(processXMLDoc, "ProcessName");
-            ImageIndex = PMLAnalyzer.LocateModuleInList(XMLUtils.GetInnerText(processXMLDoc, "ImagePath"));
-            CommandLine = XMLUtils.GetInnerText(processXMLDoc, "CommandLine");
+            CommandLine = StringUtils.HTMLUnEscape(XMLUtils.GetInnerText(processXMLDoc, "CommandLine")).Trim();
             ModuleList = PMLModule.LoadModules(processXMLDoc);
+            ImageIndex = PMLAnalyzer.LocateModuleInList(XMLUtils.GetInnerText(processXMLDoc, "ImagePath"));
+
+            StringBuilder buffer = new StringBuilder(string.Format(
+                "{0}{1} Process - {2} [{3}] with ID = {4} was created at {5} with {6} integrity, which loaded {7} modules, as a child of {8} by {9}",
+                (IsVirtualized ? "Virtualized " : ""),
+                (Is64bit ? "64-Bit" : "32-Bit"),
+                ProcessName,
+                PMLAnalyzer.globalModuleList[ImageIndex].Description,
+                ProcessId,
+                CreateTime,
+                ProcessIntegrity,
+                ModuleList.Count,
+                ParentProcessId,
+                PMLAnalyzer.globalOwnerList[OwnerIndex]
+                ));
+            if (!string.IsNullOrWhiteSpace(CommandLine))
+            {
+                buffer.AppendFormat(", using the command line {0}", CommandLine);
+            }
+            buffer.Append(" ");
+            if (FinishTime <= CreateTime)
+            {
+                buffer.Append("and is running.");
+            }
+            else
+            {
+                buffer.AppendFormat("and ended at {0}.", FinishTime);
+            }
+            summary = buffer.ToString();
+        }
+        #endregion
+
+        public override string ToString()
+        {
+            return summary;
         }
     }
 

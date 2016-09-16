@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Xml;
 
 namespace SeeBee.PMLParser
@@ -18,7 +19,11 @@ namespace SeeBee.PMLParser
                         {
                             if (null != processListReader)
                             {
-                                yield return new PMLProcess(processListReader);
+                                var process = new PMLProcess(processListReader);
+#if DEBUG
+                                Console.WriteLine(process);
+#endif
+                                yield return process;
                             }
                         }
                     }

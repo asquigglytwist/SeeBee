@@ -33,18 +33,13 @@ namespace SeeBee.FxUtils
             return 0;
         }
 
-        public static bool StringToBoolean(string stringToConvert, bool throwOnFailure = false)
+        public static bool StringToBoolean(string stringToConvert)
         {
-            bool convertedValue = false;
-            if (!stringToConvert.Equals("0"))
+            if (stringToConvert.Equals("0"))
             {
-                convertedValue = false;
+                return false;
             }
-            if (throwOnFailure)
-            {
-                throw new FormatException(string.Format("Unable to convert {0} to bool.", stringToConvert));
-            }
-            return convertedValue;
+            return true;
         }
 
         public static long HexStringToLong(string hexString, bool throwOnFailure = false)
@@ -63,6 +58,11 @@ namespace SeeBee.FxUtils
                 value = 0;
             }
             return value;
+        }
+
+        public static string HTMLUnEscape(string escapedString)
+        {
+            return System.Net.WebUtility.HtmlDecode(escapedString);
         }
     }
 }
