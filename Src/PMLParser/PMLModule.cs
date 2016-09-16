@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Xml;
 using SeeBee.FxUtils;
 
@@ -30,12 +28,12 @@ namespace SeeBee.PMLParser
             return processModuleList;
         }
 
-        private PMLModule(long timeStamp, long baseAddress, long size, string path, string version, string company, string description)
+        private PMLModule(DateTime timeStamp, long baseAddress, long size, string path, string version, string company, string description)
         {
 #if DEBUG
-            Console.WriteLine("{0} was loaded at {1}.", path, DateTime.FromFileTime(timeStamp));
+            Console.WriteLine("{0} was loaded at {1}.", path, timeStamp);
 #endif
-            TimeStamp = DateTime.FromFileTime(timeStamp);
+            TimeStamp = timeStamp;
             BaseAddress = baseAddress;
             Size = size;
             Path = path;
@@ -45,7 +43,7 @@ namespace SeeBee.PMLParser
         }
 
         internal PMLModule(string path, XmlElement module) :
-            this(XMLUtils.ParseTagContentAsLong(module, "Timestamp"),
+            this(XMLUtils.ParseTagContentAsFileTime(module, "Timestamp"),
             StringUtils.HexStringToLong(XMLUtils.GetInnerText(module, "BaseAddress")),
             XMLUtils.ParseTagContentAsLong(module, "Size"),
             path,
