@@ -11,20 +11,22 @@ namespace SeeBee.FxUtils
         // XmlDocument version
         public static int ParseTagContentAsInt(XmlDocument xmlDoc, string tagName, int nodeIndex = 0, bool throwOnFailure = false)
         {
-            string innerText = GetInnerText(xmlDoc, tagName, nodeIndex);
-            return StringUtils.StringToInt(innerText, throwOnFailure);
+            return StringUtils.StringToInt(GetInnerText(xmlDoc, tagName, nodeIndex), throwOnFailure);
         }
 
         public static long ParseTagContentAsLong(XmlDocument xmlDoc, string tagName, int nodeIndex = 0, bool throwOnFailure = false)
         {
-            string innerText = GetInnerText(xmlDoc, tagName, nodeIndex);
-            return StringUtils.StringToLong(innerText, throwOnFailure);
+            return StringUtils.StringToLong(GetInnerText(xmlDoc, tagName, nodeIndex), throwOnFailure);
         }
 
         public static bool ParseTagContentAsBoolean(XmlDocument xmlDoc, string tagName, int nodeIndex = 0, bool throwOnFailure = false)
         {
-            string innerText = GetInnerText(xmlDoc, tagName, nodeIndex);
-            return StringUtils.StringToBoolean(innerText, throwOnFailure);
+            return StringUtils.StringToBoolean(GetInnerText(xmlDoc, tagName, nodeIndex), throwOnFailure);
+        }
+
+        public static DateTime ParseTagContentAsFileTime(XmlDocument xmlDoc, string tagName, int nodeIndex = 0, bool throwOnFailure = false)
+        {
+            return DateTime.FromFileTime(StringUtils.StringToLong(GetInnerText(xmlDoc, tagName, nodeIndex), throwOnFailure));
         }
 
         public static string GetInnerText(XmlDocument xmlDoc, string tagName, int nodeIndex = 0)
@@ -40,20 +42,22 @@ namespace SeeBee.FxUtils
         // XmlElement version
         public static int ParseTagContentAsInt(XmlElement xmlElement, string tagName, int nodeIndex = 0, bool throwOnFailure = false)
         {
-            string innerText = GetInnerText(xmlElement, tagName, nodeIndex);
-            return StringUtils.StringToInt(innerText, throwOnFailure);
+            return StringUtils.StringToInt(GetInnerText(xmlElement, tagName, nodeIndex), throwOnFailure);
         }
 
         public static long ParseTagContentAsLong(XmlElement xmlElement, string tagName, int nodeIndex = 0, bool throwOnFailure = false)
         {
-            string innerText = GetInnerText(xmlElement, tagName, nodeIndex);
-            return StringUtils.StringToLong(innerText, throwOnFailure);
+            return StringUtils.StringToLong(GetInnerText(xmlElement, tagName, nodeIndex), throwOnFailure);
         }
 
         public static bool ParseTagContentAsBoolean(XmlElement xmlElement, string tagName, int nodeIndex = 0, bool throwOnFailure = false)
         {
-            string innerText = GetInnerText(xmlElement, tagName, nodeIndex);
-            return StringUtils.StringToBoolean(innerText, throwOnFailure);
+            return StringUtils.StringToBoolean(GetInnerText(xmlElement, tagName, nodeIndex), throwOnFailure);
+        }
+
+        public static DateTime ParseTagContentAsFileTime(XmlElement xmlElement, string tagName, int nodeIndex = 0, bool throwOnFailure = false)
+        {
+            return DateTime.FromFileTime(StringUtils.StringToLong(GetInnerText(xmlElement, tagName, nodeIndex), throwOnFailure));
         }
 
         public static string GetInnerText(XmlElement xmlElement, string tagName, int nodeIndex = 0)

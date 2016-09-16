@@ -12,8 +12,8 @@ namespace SeeBee.PMLParser
         internal int ParentProcessId { get; set; }
         internal int ParentProcessIndex { get; set; }
         internal string AuthenticationId { get; set; }
-        internal long CreateTime { get; set; }
-        internal long FinishTime { get; set; }
+        internal DateTime CreateTime { get; set; }
+        internal DateTime FinishTime { get; set; }
         internal bool IsVirtualized { get; set; }
         internal bool Is64bit { get; set; }
         internal ProcessIntegrityLevel ProcessIntegrity { get; set; }
@@ -31,8 +31,8 @@ namespace SeeBee.PMLParser
                 parentProcessId = XMLUtils.ParseTagContentAsInt(processXMLDoc, "ParentProcessId"),
                 processIndex = XMLUtils.ParseTagContentAsInt(processXMLDoc, "ProcessIndex"),
                 parentProcessIndex = XMLUtils.ParseTagContentAsInt(processXMLDoc, "ParentProcessIndex");
-            long createTime = XMLUtils.ParseTagContentAsLong(processXMLDoc, "CreateTime"),
-                finishTime = XMLUtils.ParseTagContentAsLong(processXMLDoc, "FinishTime");
+            DateTime createTime = XMLUtils.ParseTagContentAsFileTime(processXMLDoc, "CreateTime"),
+                finishTime = XMLUtils.ParseTagContentAsFileTime(processXMLDoc, "FinishTime");
             bool isVirtualized = XMLUtils.ParseTagContentAsBoolean(processXMLDoc, "IsVirtualized"),
                 is64Bit = XMLUtils.ParseTagContentAsBoolean(processXMLDoc, "Is64bit");
             string tempString = XMLUtils.GetInnerText(processXMLDoc, "Integrity");
@@ -67,6 +67,7 @@ namespace SeeBee.PMLParser
             ParentProcessIndex = parentProcessIndex;
             AuthenticationId = XMLUtils.GetInnerText(processXMLDoc, "AuthenticationId");
             CreateTime = createTime;
+            FinishTime = finishTime;
             IsVirtualized = isVirtualized;
             Is64bit = is64Bit;
             ProcessIntegrity = integrityLevel;
