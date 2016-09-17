@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CLIArgsParser.cs" />
+    <Compile Include="CLIArgument.cs" />
     <Compile Include="FSUtils.cs" />
     <Compile Include="NumberUtils.cs" />
     <Compile Include="StringUtils.cs" />

@@ -23,7 +23,7 @@ namespace SeeBee.FxUtils
         #endregion
 
         #region Methods
-        public void Parse(string[] args, ref Dictionary<string, string> cliArgs)
+        public void Parse(string[] args, ref Dictionary<CLIArgument, string> cliArgs)
         {
         }
         #endregion
