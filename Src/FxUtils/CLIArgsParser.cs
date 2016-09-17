@@ -8,26 +8,22 @@ namespace SeeBee.FxUtils
     public class CLIArgsParser
     {
         #region Constructor
-        public CLIArgsParser(string argsDelimiter = "/", char optionDelimiter = ':', bool treatQuotedStringsAsOne = true)
+        public CLIArgsParser(string optionDelimiter = "/")
         {
-            if (string.IsNullOrWhiteSpace(argsDelimiter))
+            if (string.IsNullOrWhiteSpace(optionDelimiter))
             {
                 throw new ArgumentException("ArgsDelimiter can't be null or empty.");
             }
-            ArgsDelimiter = argsDelimiter;
-            OptionDelimiter = optionDelimiter;
-            TreatQuotedStringsAsOne = treatQuotedStringsAsOne;
+            ArgsDelimiter = optionDelimiter;
         }
         #endregion
 
         #region Properties
         public string ArgsDelimiter { get; protected set; }
-        public char OptionDelimiter { get; protected set; }
-        public bool TreatQuotedStringsAsOne { get; protected set; }
         #endregion
 
         #region Methods
-        public void Parse(string args, ref Dictionary<string, string> cliArgs)
+        public void Parse(string[] args, ref Dictionary<string, string> cliArgs)
         {
         }
         #endregion
