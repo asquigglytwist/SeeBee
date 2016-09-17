@@ -38,5 +38,40 @@ namespace SeeBee.FxUtils
         public string SampleUsage { get; private set; }
         public CLIArgument NestedArgument { get; private set; }
         #endregion
+
+        public override int GetHashCode()
+        {
+            return this.Name.GetHashCode();
+        }
+
+        public override bool Equals(object obj)
+        {
+            return this.Name.Equals(obj);
+        }
+
+        public override string ToString()
+        {
+            StringBuilder buffer = new StringBuilder(string.Format("{0}{1}{2}",
+                (this.IsRequired ? "" : "["), CLIArgsParser.DefaultOptionDelimiter, this.Name));
+            if (!string.IsNullOrWhiteSpace(this.ShortVersion))
+            {
+                buffer.AppendFormat(" [or {0}{1}]", CLIArgsParser.DefaultOptionDelimiter, this.ShortVersion);
+            }
+            for (int i = 0; i < this.ParameterNames.Length; i++)
+            {
+                buffer.AppendFormat(" {0}", this.ParameterNames[i]);
+            }
+            if (this.NestedArgument != null)
+            {
+                buffer.AppendFormat(" {0}{1}", this.NestedArgument.ToShortString());
+            }
+            buffer.Append((this.IsRequired ? "" : "]"));
+            return this.ToString();
+        }
+
+        public string ToShortString()
+        {
+            return string.Format("{0}{1}{2}", (this.IsRequired ? "" : "["), this.Name, (this.IsRequired ? "" : "]"));
+        }
     }
 }
