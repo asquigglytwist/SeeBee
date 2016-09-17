@@ -7,8 +7,10 @@ namespace SeeBee.FxUtils
 {
     public class CLIArgsParser
     {
+        public const string DefaultOptionDelimiter = "/";
+
         #region Constructor
-        public CLIArgsParser(string optionDelimiter = "/")
+        public CLIArgsParser(string optionDelimiter = DefaultOptionDelimiter)
         {
             if (string.IsNullOrWhiteSpace(optionDelimiter))
             {
