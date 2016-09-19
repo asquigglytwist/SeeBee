@@ -9,7 +9,7 @@ namespace SeeBee.FxUtils
     {
         #region Constructor
         public CLIArgument(string shortVersion, string name, bool isRequired, string[] parameterNames, string explanation,
-            bool isCaseSensitive = false, string sampleUsage = null, CLIArgument nestedArgument = null)
+            string sampleUsage = null, bool isCaseSensitive = false, CLIArgument nestedArgument = null)
         {
             if (string.IsNullOrWhiteSpace(name))
             {
@@ -21,8 +21,8 @@ namespace SeeBee.FxUtils
             ParameterNames = parameterNames;
             Explanation = explanation;
 
-            IsCaseSensitive = isCaseSensitive;
             SampleUsage = sampleUsage;
+            IsCaseSensitive = isCaseSensitive;
             NestedArgument = nestedArgument;
         }
         #endregion
@@ -34,8 +34,8 @@ namespace SeeBee.FxUtils
         public string[] ParameterNames { get; private set; }
         public string Explanation { get; private set; }
 
-        public bool IsCaseSensitive { get; private set; }
         public string SampleUsage { get; private set; }
+        public bool IsCaseSensitive { get; private set; }
         public CLIArgument NestedArgument { get; private set; }
         #endregion
 
