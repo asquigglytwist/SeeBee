@@ -79,10 +79,10 @@ namespace SeeBee.PMLParser
                 throw new FileNotFoundException("Not able to, either find or access the ProcMon Log file.", pmlFile);
             }
             string xmlFile;
-            if (Convert(pmlFile, out xmlFile) && !string.IsNullOrEmpty(xmlFile))
+            if (Convert(pmlFile, out xmlFile) && !string.IsNullOrWhiteSpace(xmlFile))
             {
                 ConvertedXMLProcessor processList = new ConvertedXMLProcessor();
-                var processes = from p in processList.LoadProcesses(xmlFile) where (!string.IsNullOrEmpty(p.ProcessName)) select p;
+                var processes = from p in processList.LoadProcesses(xmlFile) where (!string.IsNullOrWhiteSpace(p.ProcessName)) select p;
 #if DEBUG
                 Console.WriteLine("# of Processes that match the criteria {0}.", processes.Count());
 #endif
