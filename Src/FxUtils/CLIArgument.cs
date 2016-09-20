@@ -39,6 +39,7 @@ namespace SeeBee.FxUtils
         public CLIArgument NestedArgument { get; private set; }
         #endregion
 
+        #region System.Object
         public override int GetHashCode()
         {
             return this.Name.GetHashCode();
@@ -71,6 +72,7 @@ namespace SeeBee.FxUtils
             buffer.Append((this.IsRequired ? "" : "]"));
             return buffer.ToString();
         }
+        #endregion
 
         public string ToShortString()
         {
