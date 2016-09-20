@@ -57,9 +57,12 @@ namespace SeeBee.FxUtils
             {
                 buffer.AppendFormat(" [or {0}{1}]", CLIArgsParser.DefaultOptionDelimiter, this.ShortVersion);
             }
-            for (int i = 0; i < this.ParameterNames.Length; i++)
+            if (this.ParameterNames != null)
             {
-                buffer.AppendFormat(" {0}", this.ParameterNames[i]);
+                for (int i = 0; i < this.ParameterNames.Length; i++)
+                {
+                    buffer.AppendFormat(" {0}", this.ParameterNames[i]);
+                }
             }
             if (this.NestedArgument != null)
             {
