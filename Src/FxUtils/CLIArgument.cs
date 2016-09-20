@@ -66,7 +66,7 @@ namespace SeeBee.FxUtils
                 buffer.AppendFormat(" {0}{1}", this.NestedArgument.ToShortString());
             }
             buffer.Append((this.IsRequired ? "" : "]"));
-            return this.ToString();
+            return buffer.ToString();
         }
 
         public string ToShortString()
