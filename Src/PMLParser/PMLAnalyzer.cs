@@ -8,9 +8,13 @@ namespace SeeBee.PMLParser
 {
     public class PMLAnalyzer
     {
-        internal static List<string> globalOwnerList = new List<string>();
-        internal static List<PMLModule> globalModuleList = new List<PMLModule>();
+        #region Members
+        protected static List<string> globalOwnerList = new List<string>();
+        protected static List<PMLModule> globalModuleList = new List<PMLModule>();
+        internal static CLIArgument[] cliKnownArgs;
+        #endregion
 
+        #region Static Methods
         static PMLAnalyzer()
         {
             globalModuleList.Add(PMLModule.System);
@@ -20,7 +24,7 @@ namespace SeeBee.PMLParser
 
         private static void InitAllCLIArgs()
         {
-            CLIArgument[] cliArgs = new CLIArgument[]
+            cliKnownArgs = new CLIArgument[]
             {
                 new CLIArgument("pm", "procmon", true, new string[] { "filename" }, "Path to the ProcMon (Process Monitor) executable.", @"in C:\SysInternals\ProcMon\ProcMon.exe"),
                 new CLIArgument("in", "inputfile", true, new string[] { "filename" }, "The input Process Monitor Log (PML) file that is to be processed.", @"in C:\Logs\LogFile.PML"),
@@ -32,7 +36,7 @@ namespace SeeBee.PMLParser
                 new CLIArgument("fi", "filter", false, new string[] { "field", "operator", "value" }, "Filters results based on the value specified.  Accepts \"pass\" and \"fail\" as the only valid values.", "result pass")
             };
 #if DEBUG
-            foreach (var arg in cliArgs)
+            foreach (var arg in cliKnownArgs)
             {
                 Console.WriteLine(arg.ToString());
             }
@@ -50,6 +54,11 @@ namespace SeeBee.PMLParser
             return globalOwnerList.Count - 1;
         }
 
+        internal static string GetOwnerName(int index)
+        {
+            return globalOwnerList[index];
+        }
+
         internal static int LocateModuleInList(string modulePath)
         {
             return globalModuleList.FindIndex(module => module.Path.Equals(modulePath, StringComparison.CurrentCultureIgnoreCase));
@@ -61,6 +70,13 @@ namespace SeeBee.PMLParser
             return globalModuleList.Count - 1;
         }
 
+        internal static string GetModuleDescription(int index)
+        {
+            return globalModuleList[index].Description;
+        }
+        #endregion
+
+        #region Constructor
         public PMLAnalyzer(string procMonExeLocation)
         {
             if (!FSUtils.FileExists(procMonExeLocation))
@@ -69,6 +85,7 @@ namespace SeeBee.PMLParser
             }
             ProcMonEXELocation = procMonExeLocation;
         }
+        #endregion
 
         public string ProcMonEXELocation { get; private set; }
 

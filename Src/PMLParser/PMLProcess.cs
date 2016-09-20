@@ -88,13 +88,13 @@ namespace SeeBee.PMLParser
                 (IsVirtualized ? "Virtualized " : ""),
                 (Is64bit ? "64-Bit" : "32-Bit"),
                 ProcessName,
-                PMLAnalyzer.globalModuleList[ImageIndex].Description,
+                PMLAnalyzer.GetModuleDescription(ImageIndex),
                 ProcessId,
                 CreateTime,
                 ProcessIntegrity,
                 ModuleList.Count,
                 ParentProcessId,
-                PMLAnalyzer.globalOwnerList[OwnerIndex]
+                PMLAnalyzer.GetOwnerName(OwnerIndex)
                 ));
             if (!string.IsNullOrWhiteSpace(CommandLine))
             {
