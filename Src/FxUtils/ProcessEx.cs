@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 
 namespace SeeBee.FxUtils
 {
@@ -14,7 +15,14 @@ namespace SeeBee.FxUtils
 
         public bool Start()
         {
-            return Process.Start();
+            try
+            {
+                return Process.Start();
+            }
+            catch (InvalidOperationException)
+            {
+                return false;
+            }
         }
 
         public int WaitForExitCode(int waitForMilliSec = 30000)
