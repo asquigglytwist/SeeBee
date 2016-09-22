@@ -11,7 +11,14 @@ namespace SeeBee.PMLParser
         #region Members
         static List<string> globalOwnerList = new List<string>();
         static List<PMLModule> globalModuleList = new List<PMLModule>();
-        internal static CLIArgument[] cliKnownArgs;
+        static CLIArgument ProcMonExe = new CLIArgument("pm", "procmon", true, new string[] { "filename" }, "Path to the ProcMon (Process Monitor) executable.", @"in C:\SysInternals\ProcMon\ProcMon.exe"),
+            InFilePath = new CLIArgument("in", "inputfile", true, new string[] { "filename" }, "The input Process Monitor Log (PML) file that is to be processed.", @"in C:\Logs\LogFile.PML"),
+            OutFilePath = new CLIArgument("out", "outputfile", false, new string[] { "filename" }, "Location for the output XML file to be stored.", @"out C:\Logs\AfterConversion.XML"),
+            ProcessId = new CLIArgument("pid", "processid", true, new string[] { "pid" }, "PID of the process to be filtered.", "pid 1234"),
+            ImageName = new CLIArgument("im", "image", false, new string[] { "imagename" }, "Image name of the process to be filtered.", "im explorer.exe"),
+            IgnorePass = new CLIArgument("ip", "ignorepass", false, null, "Ignores all opertaions for which the result is SUCCESS.", "ip"),
+            Result = new CLIArgument(null, "result", false, new string[] { "result" }, "Filters results based on the value specified.  Accepts \"pass\" and \"fail\" as the only valid values.", "result pass"),
+            Filter = new CLIArgument("fi", "filter", false, new string[] { "field", "operator", "value" }, "Filters results based on the value specified.  Accepts \"pass\" and \"fail\" as the only valid values.", "result pass");
         #endregion
 
         #region Private Methods
@@ -19,21 +26,20 @@ namespace SeeBee.PMLParser
         {
             globalModuleList.Add(PMLModule.System);
             globalOwnerList.Add("NT AUTHORITY\\SYSTEM");
-            InitAllCLIArgs();
         }
 
-        private static void InitAllCLIArgs()
+        private static CLIArgument[] InitAllCLIArgs()
         {
-            cliKnownArgs = new CLIArgument[]
+            CLIArgument[] cliKnownArgs = new CLIArgument[]
             {
-                new CLIArgument("pm", "procmon", true, new string[] { "filename" }, "Path to the ProcMon (Process Monitor) executable.", @"in C:\SysInternals\ProcMon\ProcMon.exe"),
-                new CLIArgument("in", "inputfile", true, new string[] { "filename" }, "The input Process Monitor Log (PML) file that is to be processed.", @"in C:\Logs\LogFile.PML"),
-                new CLIArgument("out", "outputfile", false, new string[] { "filename" }, "Location for the output XML file to be stored.", @"out C:\Logs\AfterConversion.XML"),
-                new CLIArgument("pid", "processid", true, new string[] { "pid" }, "PID of the process to be filtered.", "pid 1234"),
-                new CLIArgument("im", "image", false, new string[] { "imagename" }, "Image name of the process to be filtered.", "im explorer.exe"),
-                new CLIArgument("ip", "ignorepass", false, null, "Ignores all opertaions for which the result is SUCCESS.", "ip"),
-                new CLIArgument(null, "result", false, new string[] { "result" }, "Filters results based on the value specified.  Accepts \"pass\" and \"fail\" as the only valid values.", "result pass"),
-                new CLIArgument("fi", "filter", false, new string[] { "field", "operator", "value" }, "Filters results based on the value specified.  Accepts \"pass\" and \"fail\" as the only valid values.", "result pass")
+                ProcMonExe,
+                InFilePath,
+                OutFilePath,
+                ProcessId,
+                ImageName,
+                IgnorePass,
+                Result,
+                Filter
             };
 #if DEBUG
             foreach (var arg in cliKnownArgs)
@@ -41,6 +47,7 @@ namespace SeeBee.PMLParser
                 Console.WriteLine(arg.ToString());
             }
 #endif
+            return cliKnownArgs;
         }
 
         private static bool Convert(string pmlFile, out string xmlFile)
@@ -90,27 +97,27 @@ namespace SeeBee.PMLParser
             return globalModuleList[index].Description;
         }
 
-        public static void Init(string[] args)
+        internal static void Init(string[] args)
         {
             CLIArgsParser argsParser = new CLIArgsParser();
             Dictionary<string, List<string>> parsedArguments = new Dictionary<string, List<string>>();
 #if DEBUG
             args = new string[] { "pm", @"C:\T\SeeBee\Procmon.exe", "in", @"C:\T\SeeBee\Logfile.PML", "pid", "*", "ip" };
 #endif
-            argsParser.Parse(args, cliKnownArgs, parsedArguments);
-            ProcMonEXELocation = parsedArguments[cliKnownArgs[0].Name].First();
+            argsParser.Parse(args, InitAllCLIArgs(), parsedArguments);
+            ProcMonEXELocation = parsedArguments[ProcMonExe.Name].First();
             if (!FSUtils.FileExists(ProcMonEXELocation))
             {
                 throw new FileNotFoundException("Not able to, either find or access the ProcMon executable (file).", ProcMonEXELocation);
             }
-            PMLFile = parsedArguments[cliKnownArgs[1].Name].First();
+            PMLFile = parsedArguments[InFilePath.Name].First();
             if (!FSUtils.FileExists(PMLFile))
             {
                 throw new FileNotFoundException("Not able to, either find or access the ProcMon Logs file.", PMLFile);
             }
         }
 
-        public static bool ProcessPMLFile()
+        internal static bool ProcessPMLFile()
         {
             if (!FSUtils.FileExists(PMLFile))
             {
@@ -131,7 +138,12 @@ namespace SeeBee.PMLParser
         }
         #endregion
 
-        #region Public Methods
+        #region Public APIs
+        public static bool InitAndAnalyze(string[] args)
+        {
+            Init(args);
+            return ProcessPMLFile();
+        }
         public static string ProcMonEXELocation { get; private set; }
         public static string PMLFile { get; private set; }
         #endregion
