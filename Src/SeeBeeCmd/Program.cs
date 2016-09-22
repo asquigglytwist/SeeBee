@@ -22,8 +22,7 @@ namespace SeeBee.SeeBeeCmd
                 }
             }
 #endif
-            PMLAnalyzer.Init(args);
-            PMLAnalyzer.ProcessPMLFile();
+            PMLAnalyzer.InitAndAnalyze(args);
 #if DEBUG
             Console.ReadKey(true);
 #endif
