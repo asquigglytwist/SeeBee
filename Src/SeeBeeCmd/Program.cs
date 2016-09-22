@@ -7,11 +7,7 @@ namespace SeeBee.SeeBeeCmd
     {
         static void Main(string[] args)
         {
-            PMLAnalyzer pmlAnalyzer;
-#if !DEBUG
-            pmlAnalyzer = new PMLAnalyzer();
-            pmlAnalyzer.Init(args);
-#else
+#if DEBUG
             for (int i = 0; i < args.Length; i++)
             {
                 Console.Write("Arg at {0};", i);
@@ -25,8 +21,10 @@ namespace SeeBee.SeeBeeCmd
                     Console.WriteLine(args[i]);
                 }
             }
-            pmlAnalyzer = new PMLAnalyzer(args);
-            pmlAnalyzer.ProcessPMLFile(@"C:\T\SeeBee\Logfile.PML");
+#endif
+            PMLAnalyzer.Init(args);
+            PMLAnalyzer.ProcessPMLFile();
+#if DEBUG
             Console.ReadKey(true);
 #endif
         }
