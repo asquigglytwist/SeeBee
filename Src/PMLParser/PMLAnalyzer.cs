@@ -6,15 +6,15 @@ using SeeBee.FxUtils;
 
 namespace SeeBee.PMLParser
 {
-    public class PMLAnalyzer
+    public static class PMLAnalyzer
     {
         #region Members
-        protected static List<string> globalOwnerList = new List<string>();
-        protected static List<PMLModule> globalModuleList = new List<PMLModule>();
+        static List<string> globalOwnerList = new List<string>();
+        static List<PMLModule> globalModuleList = new List<PMLModule>();
         internal static CLIArgument[] cliKnownArgs;
         #endregion
 
-        #region Static Methods
+        #region Private Methods
         static PMLAnalyzer()
         {
             globalModuleList.Add(PMLModule.System);
@@ -43,6 +43,21 @@ namespace SeeBee.PMLParser
 #endif
         }
 
+        private static bool Convert(string pmlFile, out string xmlFile)
+        {
+            PMLToXMLConverter converter;
+            converter = new PMLToXMLConverter(ProcMonEXELocation, pmlFile);
+            if (converter.Convert())
+            {
+                xmlFile = converter.XMLFile;
+                return true;
+            }
+            xmlFile = null;
+            return false;
+        }
+        #endregion
+        
+        #region Internal Methods
         internal static int LocateOwnerInList(string owner)
         {
             return globalOwnerList.FindIndex(o => o.Equals(owner, StringComparison.CurrentCultureIgnoreCase));
@@ -74,13 +89,11 @@ namespace SeeBee.PMLParser
         {
             return globalModuleList[index].Description;
         }
-        #endregion
 
-        #region Constructor
-        public PMLAnalyzer(string[] args)
+        public static void Init(string[] args)
         {
             CLIArgsParser argsParser = new CLIArgsParser();
-            Dictionary<string, List<string>> parsedArguments = new Dictionary<string,List<string>>();
+            Dictionary<string, List<string>> parsedArguments = new Dictionary<string, List<string>>();
 #if DEBUG
             args = new string[] { "pm", @"C:\T\SeeBee\Procmon.exe", "in", @"C:\T\SeeBee\Logfile.PML", "pid", "*", "ip" };
 #endif
@@ -90,19 +103,21 @@ namespace SeeBee.PMLParser
             {
                 throw new FileNotFoundException("Not able to, either find or access the ProcMon executable (file).", ProcMonEXELocation);
             }
-        }
-        #endregion
-
-        public string ProcMonEXELocation { get; private set; }
-
-        public bool ProcessPMLFile(string pmlFile)
-        {
-            if (!FSUtils.FileExists(pmlFile))
+            PMLFile = parsedArguments[cliKnownArgs[1].Name].First();
+            if (!FSUtils.FileExists(PMLFile))
             {
-                throw new FileNotFoundException("Not able to, either find or access the ProcMon Log file.", pmlFile);
+                throw new FileNotFoundException("Not able to, either find or access the ProcMon Logs file.", PMLFile);
+            }
+        }
+
+        public static bool ProcessPMLFile()
+        {
+            if (!FSUtils.FileExists(PMLFile))
+            {
+                throw new FileNotFoundException("Not able to, either find or access the ProcMon Log file.", PMLFile);
             }
             string xmlFile;
-            if (Convert(pmlFile, out xmlFile) && !string.IsNullOrWhiteSpace(xmlFile))
+            if (Convert(PMLFile, out xmlFile) && !string.IsNullOrWhiteSpace(xmlFile))
             {
                 ConvertedXMLProcessor processList = new ConvertedXMLProcessor();
                 var processes = from p in processList.LoadProcesses(xmlFile) where (!string.IsNullOrWhiteSpace(p.ProcessName)) select p;
@@ -114,18 +129,11 @@ namespace SeeBee.PMLParser
             }
             return false;
         }
+        #endregion
 
-        private bool Convert(string pmlFile, out string xmlFile)
-        {
-            PMLToXMLConverter converter;
-            converter = new PMLToXMLConverter(ProcMonEXELocation, pmlFile);
-            if (converter.Convert())
-            {
-                xmlFile = converter.XMLFile;
-                return true;
-            }
-            xmlFile = null;
-            return false;
-        }
+        #region Public Methods
+        public static string ProcMonEXELocation { get; private set; }
+        public static string PMLFile { get; private set; }
+        #endregion
     }
 }
