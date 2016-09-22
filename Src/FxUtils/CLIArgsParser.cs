@@ -25,19 +25,25 @@ namespace SeeBee.FxUtils
         #endregion
 
         #region Methods
-        public void Parse(string[] args, ref CLIArgument[] cliArgs)
+        public void Parse(string[] args, CLIArgument[] cliArgs, Dictionary<string, List<string>> parsedArguments)
         {
             for (int i = 0; i < args.Length; i++)
             {
-                CLIArgument cliArg = (CLIArgument)from arg in cliArgs
-                                                  where (arg.Name.Equals(args[i]) || arg.ShortVersion.Equals(args[i]))
-                                                  select arg;
+                List<string> paramsList = null;
+                var cliArg = (from arg in cliArgs
+                              where (arg.Name.Equals(args[i]) ||
+                              (arg.ShortVersion != null && arg.ShortVersion.Equals(args[i])))
+                              select arg).FirstOrDefault();
                 if (cliArg.ParameterNames != null)
                 {
+                    paramsList = new List<string>(cliArg.ParameterNames.Length);
                     for (int j = 0; j < cliArg.ParameterNames.Length; j++)
                     {
+                        paramsList.Add(args[i + j + 1]);
                     }
+                    i += cliArg.ParameterNames.Length;
                 }
+                parsedArguments[cliArg.Name] = paramsList;
             }
         }
         #endregion

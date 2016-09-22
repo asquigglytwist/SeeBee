@@ -77,13 +77,19 @@ namespace SeeBee.PMLParser
         #endregion
 
         #region Constructor
-        public PMLAnalyzer(string procMonExeLocation)
+        public PMLAnalyzer(string[] args)
         {
-            if (!FSUtils.FileExists(procMonExeLocation))
+            CLIArgsParser argsParser = new CLIArgsParser();
+            Dictionary<string, List<string>> parsedArguments = new Dictionary<string,List<string>>();
+#if DEBUG
+            args = new string[] { "pm", @"C:\T\SeeBee\Procmon.exe", "in", @"C:\T\SeeBee\Logfile.PML", "pid", "*", "ip" };
+#endif
+            argsParser.Parse(args, cliKnownArgs, parsedArguments);
+            ProcMonEXELocation = parsedArguments[cliKnownArgs[0].Name].First();
+            if (!FSUtils.FileExists(ProcMonEXELocation))
             {
                 throw new FileNotFoundException("Not able to, either find or access the ProcMon executable (file).", ProcMonEXELocation);
             }
-            ProcMonEXELocation = procMonExeLocation;
         }
         #endregion
 
