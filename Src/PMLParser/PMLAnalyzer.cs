@@ -97,24 +97,29 @@ namespace SeeBee.PMLParser
             return globalModuleList[index].Description;
         }
 
-        internal static void Init(string[] args)
+        internal static string Init(string[] args)
         {
+            string returnValue = null;
             CLIArgsParser argsParser = new CLIArgsParser();
             Dictionary<string, List<string>> parsedArguments = new Dictionary<string, List<string>>();
 #if DEBUG
             args = new string[] { "pm", @"C:\T\SeeBee\Procmon.exe", "in", @"C:\T\SeeBee\Logfile.PML", "pid", "*", "ip" };
 #endif
-            argsParser.Parse(args, InitAllCLIArgs(), parsedArguments);
-            ProcMonEXELocation = parsedArguments[ProcMonExe.Name].First();
-            if (!FSUtils.FileExists(ProcMonEXELocation))
+            returnValue = argsParser.Parse(args, InitAllCLIArgs(), parsedArguments);
+            if (string.IsNullOrWhiteSpace(returnValue))
             {
-                throw new FileNotFoundException("Not able to, either find or access the ProcMon executable (file).", ProcMonEXELocation);
+                ProcMonEXELocation = parsedArguments[ProcMonExe.Name].First();
+                if (!FSUtils.FileExists(ProcMonEXELocation))
+                {
+                    throw new FileNotFoundException("Not able to, either find or access the ProcMon executable (file).", ProcMonEXELocation);
+                }
+                PMLFile = parsedArguments[InFilePath.Name].First();
+                if (!FSUtils.FileExists(PMLFile))
+                {
+                    throw new FileNotFoundException("Not able to, either find or access the ProcMon Logs file.", PMLFile);
+                }
             }
-            PMLFile = parsedArguments[InFilePath.Name].First();
-            if (!FSUtils.FileExists(PMLFile))
-            {
-                throw new FileNotFoundException("Not able to, either find or access the ProcMon Logs file.", PMLFile);
-            }
+            return returnValue;
         }
 
         internal static bool ProcessPMLFile()
@@ -139,10 +144,15 @@ namespace SeeBee.PMLParser
         #endregion
 
         #region Public APIs
-        public static bool InitAndAnalyze(string[] args)
+        public static string InitAndAnalyze(out bool processingPMLResult,string[] args)
         {
-            Init(args);
-            return ProcessPMLFile();
+            string resultMsg = Init(args);
+            processingPMLResult = false;
+            if (string.IsNullOrWhiteSpace(resultMsg))
+            {
+                processingPMLResult = ProcessPMLFile();
+            }
+            return resultMsg;
         }
         public static string ProcMonEXELocation { get; private set; }
         public static string PMLFile { get; private set; }

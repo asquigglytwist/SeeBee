@@ -22,7 +22,8 @@ namespace SeeBee.SeeBeeCmd
                 }
             }
 #endif
-            PMLAnalyzer.InitAndAnalyze(args);
+            bool processingPMLResult;
+            string errorMsg = PMLAnalyzer.InitAndAnalyze(out processingPMLResult, args);
 #if DEBUG
             Console.ReadKey(true);
 #endif
