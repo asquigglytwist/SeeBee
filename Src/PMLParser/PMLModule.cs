@@ -5,7 +5,7 @@ using SeeBee.FxUtils;
 
 namespace SeeBee.PMLParser
 {
-    public class PMLModule
+    internal class PMLModule
     {
         #region Members
         internal protected const string UnknownValue = "Unknown";
@@ -25,10 +25,6 @@ namespace SeeBee.PMLParser
                 if (-1 == moduleIndex)
                 {
                     var tempModule = new PMLModule(path, module);
-#if DEBUG
-                    //Console.WriteLine(tempModule);
-                    //Console.WriteLine("\n-- -- -- -- --\t-- -- -- -- --\n-- -- -- -- --\t-- -- -- -- --\n");
-#endif
                     moduleIndex = PMLAnalyzer.AddModuleToList(tempModule);
                 }
                 if (-1 != moduleIndex)
@@ -103,6 +99,7 @@ namespace SeeBee.PMLParser
         internal string Description { get; private set; }
         #endregion
 
+        #region System.Object
         public override int GetHashCode()
         {
             return this.Path.GetHashCode();
@@ -122,5 +119,6 @@ namespace SeeBee.PMLParser
         {
             return summary;
         }
+        #endregion
     }
 }

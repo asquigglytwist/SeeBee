@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="PMLAnalyzer.cs" />
+    <Compile Include="PMLEvent.cs" />
     <Compile Include="PMLModule.cs" />
     <Compile Include="PMLToXMLConverter.cs" />
     <Compile Include="PMLProcess.cs" />
