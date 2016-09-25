@@ -33,14 +33,6 @@ namespace SeeBee.PMLParser
         {
             XmlDocument processXMLDoc = new XmlDocument();
             processXMLDoc.Load(processListReader);
-            int processId = XMLUtils.ParseTagContentAsInt(processXMLDoc, TagNames.Process_ProcessId),
-                parentProcessId = XMLUtils.ParseTagContentAsInt(processXMLDoc, TagNames.Process_ParentProcessId),
-                processIndex = XMLUtils.ParseTagContentAsInt(processXMLDoc, TagNames.Process_ProcessIndex),
-                parentProcessIndex = XMLUtils.ParseTagContentAsInt(processXMLDoc, TagNames.Process_ParentProcessIndex);
-            DateTime createTime = XMLUtils.ParseTagContentAsFileTime(processXMLDoc, TagNames.Process_CreateTime),
-                finishTime = XMLUtils.ParseTagContentAsFileTime(processXMLDoc, TagNames.Process_FinishTime);
-            bool isVirtualized = XMLUtils.ParseTagContentAsBoolean(processXMLDoc, TagNames.Process_IsVirtualized),
-                is64Bit = XMLUtils.ParseTagContentAsBoolean(processXMLDoc, TagNames.Process_Is64bit);
             string tempString = XMLUtils.GetInnerText(processXMLDoc, TagNames.Process_Owner);
             int ownerIndex = PMLAnalyzer.LocateOwnerInList(tempString);
             if (-1 == ownerIndex)
@@ -49,15 +41,15 @@ namespace SeeBee.PMLParser
             }
 
             // Actual object creation i.e., assigning values to members
-            ProcessId = processId;
-            ParentProcessId = parentProcessId;
-            ProcessIndex = processIndex;
-            ParentProcessIndex = parentProcessIndex;
+            ProcessId = XMLUtils.ParseTagContentAsInt(processXMLDoc, TagNames.Process_ProcessId);
+            ParentProcessId = XMLUtils.ParseTagContentAsInt(processXMLDoc, TagNames.Process_ParentProcessId);
+            ProcessIndex = XMLUtils.ParseTagContentAsInt(processXMLDoc, TagNames.Process_ProcessIndex);
+            ParentProcessIndex = XMLUtils.ParseTagContentAsInt(processXMLDoc, TagNames.Process_ParentProcessIndex);
             AuthenticationId = XMLUtils.GetInnerText(processXMLDoc, TagNames.Process_AuthenticationId);
-            CreateTime = createTime;
-            FinishTime = finishTime;
-            IsVirtualized = isVirtualized;
-            Is64bit = is64Bit;
+            CreateTime = XMLUtils.ParseTagContentAsFileTime(processXMLDoc, TagNames.Process_CreateTime);
+            FinishTime = XMLUtils.ParseTagContentAsFileTime(processXMLDoc, TagNames.Process_FinishTime);
+            IsVirtualized = XMLUtils.ParseTagContentAsBoolean(processXMLDoc, TagNames.Process_IsVirtualized);
+            Is64bit = XMLUtils.ParseTagContentAsBoolean(processXMLDoc, TagNames.Process_Is64bit);
             ProcessIntegrity = ProcessIntegrityLevelStrings.ParseString(XMLUtils.GetInnerText(processXMLDoc, TagNames.Process_Integrity));
             OwnerIndex = ownerIndex;
             ProcessName = XMLUtils.GetInnerText(processXMLDoc, TagNames.Process_ProcessName);
