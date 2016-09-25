@@ -33,15 +33,15 @@ namespace SeeBee.PMLParser
         {
             XmlDocument processXMLDoc = new XmlDocument();
             processXMLDoc.Load(processListReader);
-            int processId = XMLUtils.ParseTagContentAsInt(processXMLDoc, "ProcessId"),
-                parentProcessId = XMLUtils.ParseTagContentAsInt(processXMLDoc, "ParentProcessId"),
-                processIndex = XMLUtils.ParseTagContentAsInt(processXMLDoc, "ProcessIndex"),
-                parentProcessIndex = XMLUtils.ParseTagContentAsInt(processXMLDoc, "ParentProcessIndex");
-            DateTime createTime = XMLUtils.ParseTagContentAsFileTime(processXMLDoc, "CreateTime"),
-                finishTime = XMLUtils.ParseTagContentAsFileTime(processXMLDoc, "FinishTime");
-            bool isVirtualized = XMLUtils.ParseTagContentAsBoolean(processXMLDoc, "IsVirtualized"),
-                is64Bit = XMLUtils.ParseTagContentAsBoolean(processXMLDoc, "Is64bit");
-            string tempString = XMLUtils.GetInnerText(processXMLDoc, "Integrity");
+            int processId = XMLUtils.ParseTagContentAsInt(processXMLDoc, TagNames.Process_ProcessId),
+                parentProcessId = XMLUtils.ParseTagContentAsInt(processXMLDoc, TagNames.Process_ParentProcessId),
+                processIndex = XMLUtils.ParseTagContentAsInt(processXMLDoc, TagNames.Process_ProcessIndex),
+                parentProcessIndex = XMLUtils.ParseTagContentAsInt(processXMLDoc, TagNames.Process_ParentProcessIndex);
+            DateTime createTime = XMLUtils.ParseTagContentAsFileTime(processXMLDoc, TagNames.Process_CreateTime),
+                finishTime = XMLUtils.ParseTagContentAsFileTime(processXMLDoc, TagNames.Process_FinishTime);
+            bool isVirtualized = XMLUtils.ParseTagContentAsBoolean(processXMLDoc, TagNames.Process_IsVirtualized),
+                is64Bit = XMLUtils.ParseTagContentAsBoolean(processXMLDoc, TagNames.Process_Is64bit);
+            string tempString = XMLUtils.GetInnerText(processXMLDoc, TagNames.Process_Integrity);
             ProcessIntegrityLevel integrityLevel;
             if (tempString.Equals("System", StringComparison.CurrentCultureIgnoreCase))
             {
@@ -59,7 +59,7 @@ namespace SeeBee.PMLParser
             {
                 integrityLevel = ProcessIntegrityLevel.Low;
             }
-            tempString = XMLUtils.GetInnerText(processXMLDoc, "Owner");
+            tempString = XMLUtils.GetInnerText(processXMLDoc, TagNames.Process_Owner);
             int ownerIndex = PMLAnalyzer.LocateOwnerInList(tempString);
             if (-1 == ownerIndex)
             {
@@ -71,17 +71,17 @@ namespace SeeBee.PMLParser
             ParentProcessId = parentProcessId;
             ProcessIndex = processIndex;
             ParentProcessIndex = parentProcessIndex;
-            AuthenticationId = XMLUtils.GetInnerText(processXMLDoc, "AuthenticationId");
+            AuthenticationId = XMLUtils.GetInnerText(processXMLDoc, TagNames.Process_AuthenticationId);
             CreateTime = createTime;
             FinishTime = finishTime;
             IsVirtualized = isVirtualized;
             Is64bit = is64Bit;
             ProcessIntegrity = integrityLevel;
             OwnerIndex = ownerIndex;
-            ProcessName = XMLUtils.GetInnerText(processXMLDoc, "ProcessName");
-            CommandLine = StringUtils.HTMLUnEscape(XMLUtils.GetInnerText(processXMLDoc, "CommandLine")).Trim();
+            ProcessName = XMLUtils.GetInnerText(processXMLDoc, TagNames.Process_ProcessName);
+            CommandLine = StringUtils.HTMLUnEscape(XMLUtils.GetInnerText(processXMLDoc, TagNames.Process_CommandLine)).Trim();
             ModuleList = PMLModule.LoadModules(processXMLDoc);
-            ImageIndex = PMLAnalyzer.LocateModuleInList(XMLUtils.GetInnerText(processXMLDoc, "ImagePath"));
+            ImageIndex = PMLAnalyzer.LocateModuleInList(XMLUtils.GetInnerText(processXMLDoc, TagNames.Process_ImagePath));
 
             StringBuilder buffer = new StringBuilder(string.Format(
                 "{0}{1} Process - {2} [{3}] with ID = {4} was created at {5} with {6} integrity, which loaded {7} modules, as a child of {8} by {9}",
