@@ -130,6 +130,10 @@ namespace SeeBee.PMLParser
 #if DEBUG
                 Console.WriteLine("# of Processes that match the criteria {0}.", processes.Count());
 #endif
+                var events = from e in processList.LoadEvents(xmlFile) where (!string.IsNullOrWhiteSpace(e.TimeOfDay.ToString())) select e;
+#if DEBUG
+                Console.WriteLine("# of Events that match the criteria {0}.", events.Count());
+#endif
                 File.Delete(xmlFile);
                 return true;
             }
@@ -148,6 +152,7 @@ namespace SeeBee.PMLParser
             }
             return resultMsg;
         }
+        
         public static string ProcMonEXELocation { get; private set; }
         public static string PMLFile { get; private set; }
         #endregion

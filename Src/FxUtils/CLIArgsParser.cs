@@ -32,8 +32,8 @@ namespace SeeBee.FxUtils
             {
                 List<string> paramsList = null;
                 var cliArg = (from arg in cliArgs
-                              where (arg.Name.Equals(args[i]) ||
-                              (arg.ShortVersion != null && arg.ShortVersion.Equals(args[i])))
+                              where (arg.Name.Equals(args[i], StringComparison.CurrentCultureIgnoreCase) ||
+                              (arg.ShortVersion != null && arg.ShortVersion.Equals(args[i], StringComparison.CurrentCultureIgnoreCase)))
                               select arg).FirstOrDefault();
                 if (cliArg == null)
                 {
