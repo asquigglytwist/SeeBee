@@ -41,12 +41,6 @@ namespace SeeBee.PMLParser
                 Result,
                 Filter
             };
-#if DEBUG
-            foreach (var arg in cliKnownArgs)
-            {
-                Console.WriteLine(arg.ToString());
-            }
-#endif
             return cliKnownArgs;
         }
 

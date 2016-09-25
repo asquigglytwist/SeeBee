@@ -24,6 +24,10 @@ namespace SeeBee.SeeBeeCmd
 #endif
             bool processingPMLResult;
             string errorMsg = PMLAnalyzer.InitAndAnalyze(out processingPMLResult, args);
+            if (!string.IsNullOrWhiteSpace(errorMsg))
+            {
+                Console.WriteLine(errorMsg);
+            }
 #if DEBUG
             Console.ReadKey(true);
 #endif
