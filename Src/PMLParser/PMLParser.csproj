@@ -46,6 +46,7 @@
     <Compile Include="PMLProcess.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ConvertedXMLProcessor.cs" />
+    <Compile Include="TagNames.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FxUtils\FxUtils.csproj">

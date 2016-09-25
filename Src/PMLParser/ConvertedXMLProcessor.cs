@@ -13,7 +13,7 @@ namespace SeeBee.PMLParser
                 while (source.Read())
                 {
                     if (source.NodeType == XmlNodeType.Element &&
-                        source.Name == "process")
+                        source.Name.Equals(TagNames.Process_Process))
                     {
                         using (XmlReader processListReader = source.ReadSubtree())
                         {
