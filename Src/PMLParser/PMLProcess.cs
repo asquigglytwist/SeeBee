@@ -41,21 +41,21 @@ namespace SeeBee.PMLParser
             }
 
             // Actual object creation i.e., assigning values to members
-            ProcessId = XMLUtils.ParseTagContentAsInt(processXMLDoc, TagNames.Process_ProcessId);
-            ParentProcessId = XMLUtils.ParseTagContentAsInt(processXMLDoc, TagNames.Process_ParentProcessId);
-            ProcessIndex = XMLUtils.ParseTagContentAsInt(processXMLDoc, TagNames.Process_ProcessIndex);
-            ParentProcessIndex = XMLUtils.ParseTagContentAsInt(processXMLDoc, TagNames.Process_ParentProcessIndex);
-            AuthenticationId = XMLUtils.GetInnerText(processXMLDoc, TagNames.Process_AuthenticationId);
-            CreateTime = XMLUtils.ParseTagContentAsFileTime(processXMLDoc, TagNames.Process_CreateTime);
-            FinishTime = XMLUtils.ParseTagContentAsFileTime(processXMLDoc, TagNames.Process_FinishTime);
-            IsVirtualized = XMLUtils.ParseTagContentAsBoolean(processXMLDoc, TagNames.Process_IsVirtualized);
-            Is64bit = XMLUtils.ParseTagContentAsBoolean(processXMLDoc, TagNames.Process_Is64bit);
-            ProcessIntegrity = ProcessIntegrityLevelStrings.ParseString(XMLUtils.GetInnerText(processXMLDoc, TagNames.Process_Integrity));
-            OwnerIndex = ownerIndex;
-            ProcessName = XMLUtils.GetInnerText(processXMLDoc, TagNames.Process_ProcessName);
-            CommandLine = StringUtils.HTMLUnEscape(XMLUtils.GetInnerText(processXMLDoc, TagNames.Process_CommandLine)).Trim();
-            ModuleList = PMLModule.LoadModules(processXMLDoc);
-            ImageIndex = PMLAnalyzer.LocateModuleInList(XMLUtils.GetInnerText(processXMLDoc, TagNames.Process_ImagePath));
+            this.ProcessId = XMLUtils.ParseTagContentAsInt(processXMLDoc, TagNames.Process_ProcessId);
+            this.ParentProcessId = XMLUtils.ParseTagContentAsInt(processXMLDoc, TagNames.Process_ParentProcessId);
+            this.ProcessIndex = XMLUtils.ParseTagContentAsInt(processXMLDoc, TagNames.Process_ProcessIndex);
+            this.ParentProcessIndex = XMLUtils.ParseTagContentAsInt(processXMLDoc, TagNames.Process_ParentProcessIndex);
+            this.AuthenticationId = XMLUtils.GetInnerText(processXMLDoc, TagNames.Process_AuthenticationId);
+            this.CreateTime = XMLUtils.ParseTagContentAsFileTime(processXMLDoc, TagNames.Process_CreateTime);
+            this.FinishTime = XMLUtils.ParseTagContentAsFileTime(processXMLDoc, TagNames.Process_FinishTime);
+            this.IsVirtualized = XMLUtils.ParseTagContentAsBoolean(processXMLDoc, TagNames.Process_IsVirtualized);
+            this.Is64bit = XMLUtils.ParseTagContentAsBoolean(processXMLDoc, TagNames.Process_Is64bit);
+            this.ProcessIntegrity = ProcessIntegrityLevelStrings.ParseString(XMLUtils.GetInnerText(processXMLDoc, TagNames.Process_Integrity));
+            this.OwnerIndex = ownerIndex;
+            this.ProcessName = XMLUtils.GetInnerText(processXMLDoc, TagNames.Process_ProcessName);
+            this.CommandLine = StringUtils.HTMLUnEscape(XMLUtils.GetInnerText(processXMLDoc, TagNames.Process_CommandLine)).Trim();
+            this.ModuleList = PMLModule.LoadModules(processXMLDoc);
+            this.ImageIndex = PMLAnalyzer.LocateModuleInList(XMLUtils.GetInnerText(processXMLDoc, TagNames.Process_ImagePath));
 
             StringBuilder buffer = new StringBuilder(string.Format(
                 "{0}{1} Process - {2} [{3}] with ID = {4} was created at {5} with {6} integrity, which loaded {7} modules, as a child of {8} by {9}",
@@ -83,7 +83,7 @@ namespace SeeBee.PMLParser
             {
                 buffer.AppendFormat("and ended at {0}.", FinishTime);
             }
-            summary = buffer.ToString();
+            this.summary = buffer.ToString();
         }
         #endregion
 

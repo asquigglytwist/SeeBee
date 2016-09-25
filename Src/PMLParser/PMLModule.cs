@@ -39,41 +39,41 @@ namespace SeeBee.PMLParser
         #region Constructor(s)
         private PMLModule(DateTime timeStamp, long baseAddress, long size, string path, string version, string company, string description)
         {
-            TimeStamp = timeStamp;
-            BaseAddress = baseAddress;
-            Size = size;
+            this.TimeStamp = timeStamp;
+            this.BaseAddress = baseAddress;
+            this.Size = size;
             if (string.IsNullOrWhiteSpace(path))
             {
                 throw new ArgumentException("A module's path cannot be null or empty.");
             }
-            Path = path;
+            this.Path = path;
             if (string.IsNullOrWhiteSpace(version))
             {
-                Version = PMLModule.UnknownValue;
+                this.Version = PMLModule.UnknownValue;
             }
             else
             {
-                Version = version;
+                this.Version = version;
             }
             if (string.IsNullOrWhiteSpace(company))
             {
-                Company = PMLModule.UnknownValue;
+                this.Company = PMLModule.UnknownValue;
             }
             else
             {
-                Company = company;
+                this.Company = company;
             }
             if (string.IsNullOrWhiteSpace(description))
             {
-                Description = PMLModule.UnknownValue;
+                this.Description = PMLModule.UnknownValue;
             }
             else
             {
-                Description = description;
+                this.Description = description;
             }
-            summary = string.Format("Module - [{0}] [Version = {1};  Size {2}], located at \"{3}\", from [{4}], was loaded at [{5}] into address 0x{6}.",
-                Description, Version, NumberUtils.FormatNumberAsFileSize(Size), Path,
-                Company, TimeStamp, NumberUtils.LongToHexString(BaseAddress));
+            this.summary = string.Format("Module - [{0}] [Version = {1};  Size {2}], located at \"{3}\", from [{4}], was loaded at [{5}] into address 0x{6}.",
+                this.Description, this.Version, NumberUtils.FormatNumberAsFileSize(this.Size), this.Path,
+                this.Company, this.TimeStamp, NumberUtils.LongToHexString(this.BaseAddress));
         }
 
         internal PMLModule(string path, XmlElement module) :
@@ -117,7 +117,7 @@ namespace SeeBee.PMLParser
 
         public override string ToString()
         {
-            return summary;
+            return this.summary;
         }
         #endregion
     }
