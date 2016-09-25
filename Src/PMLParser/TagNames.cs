@@ -7,7 +7,7 @@ namespace SeeBee.PMLParser
 {
     internal static class TagNames
     {
-        // Tag Names used for PML's Processes
+        #region Tags for Processes
         internal const string Process_Process = "process";
         internal const string Process_ProcessId = "ProcessId";
         internal const string Process_ParentProcessId = "ParentProcessId";
@@ -23,8 +23,20 @@ namespace SeeBee.PMLParser
         internal const string Process_ProcessName = "ProcessName";
         internal const string Process_CommandLine = "CommandLine";
         internal const string Process_ImagePath = "ImagePath";
+        #endregion
 
-        // Tag Names used for PML's Events
+        #region Tags for Modules
+        internal const string Module_Timestamp = "Timestamp";
+        internal const string Module_XPathInXML = "/process/modulelist/module";
+        internal const string Module_Path = "Path";
+        internal const string Module_BaseAddress = "BaseAddress";
+        internal const string Module_Size = "Size";
+        internal const string Module_Version = "Version";
+        internal const string Module_Company = "Company";
+        internal const string Module_Description = "Description";
+        #endregion
+
+        #region Tags for Events
         internal const string Event_Event = "event";
         internal const string Event_ProcessIndex = "ProcessIndex";
         internal const string Event_TimeOfDay = "Time_of_Day";
@@ -38,5 +50,6 @@ namespace SeeBee.PMLParser
         internal const string Event_Path="Path";
         internal const string Event_Result="Result";
         internal const string Event_Detail = "Detail";
+        #endregion
     }
 }
