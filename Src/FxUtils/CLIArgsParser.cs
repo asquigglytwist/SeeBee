@@ -41,7 +41,7 @@ namespace SeeBee.FxUtils
                     {
                         errorMsg += Environment.NewLine;
                     }
-                    errorMsg += string.Format("Unable to parse / recognize Command Line Argument \"{0}\" at position {1}.", args[i], i);
+                    errorMsg += string.Format("Unable to recognize (or parse) Command Line Argument \"{0}\" at position {1}.", args[i], i);
                     continue;
                 }
                 if (cliArg.ParameterNames != null)
