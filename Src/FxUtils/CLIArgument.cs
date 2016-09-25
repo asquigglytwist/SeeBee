@@ -105,11 +105,11 @@ namespace SeeBee.FxUtils
             buffer.Append((this.IsRequired ? "" : "]"));
             if (Explanation != null)
             {
-                buffer.AppendFormat("{0}A brief explanation:{0}{1}{0}\t", Environment.NewLine, Explanation);
+                buffer.AppendFormat("{0}A brief explanation:{0}\t{1}{0}", Environment.NewLine, Explanation);
             }
             if (SampleUsage != null)
             {
-                buffer.AppendFormat("{0}An example of the command's usage:{0}{1}{0}\t", Environment.NewLine, SampleUsage);
+                buffer.AppendFormat("An example of the command's usage:{0}\t{1}{0}", Environment.NewLine, SampleUsage);
             }
             return buffer.ToString();
         }
