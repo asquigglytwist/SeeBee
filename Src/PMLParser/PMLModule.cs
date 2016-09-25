@@ -17,10 +17,10 @@ namespace SeeBee.PMLParser
         internal static HashSet<int> LoadModules(XmlDocument processXMLDoc)
         {
             HashSet<int> processModuleList = new HashSet<int>();
-            var modules = processXMLDoc.SelectNodes("/process/modulelist/module");
+            var modules = processXMLDoc.SelectNodes(TagNames.Module_XPathInXML);
             foreach (XmlElement module in modules)
             {
-                string path = module.GetElementsByTagName("Path")[0].InnerText;
+                string path = module.GetElementsByTagName(TagNames.Module_Path)[0].InnerText;
                 int moduleIndex = PMLAnalyzer.LocateModuleInList(path);
                 if (-1 == moduleIndex)
                 {
@@ -77,13 +77,13 @@ namespace SeeBee.PMLParser
         }
 
         internal PMLModule(string path, XmlElement module) :
-            this(XMLUtils.ParseTagContentAsFileTime(module, "Timestamp"),
-            StringUtils.HexStringToLong(XMLUtils.GetInnerText(module, "BaseAddress")),
-            XMLUtils.ParseTagContentAsLong(module, "Size"),
+            this(XMLUtils.ParseTagContentAsFileTime(module, TagNames.Module_Timestamp),
+            StringUtils.HexStringToLong(XMLUtils.GetInnerText(module, TagNames.Module_BaseAddress)),
+            XMLUtils.ParseTagContentAsLong(module, TagNames.Module_Size),
             path,
-            XMLUtils.GetInnerText(module, "Version"),
-            XMLUtils.GetInnerText(module, "Company"),
-            XMLUtils.GetInnerText(module, "Description"))
+            XMLUtils.GetInnerText(module, TagNames.Module_Version),
+            XMLUtils.GetInnerText(module, TagNames.Module_Company),
+            XMLUtils.GetInnerText(module, TagNames.Module_Description))
         {
         }
         #endregion
