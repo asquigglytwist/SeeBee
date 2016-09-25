@@ -41,25 +41,7 @@ namespace SeeBee.PMLParser
                 finishTime = XMLUtils.ParseTagContentAsFileTime(processXMLDoc, TagNames.Process_FinishTime);
             bool isVirtualized = XMLUtils.ParseTagContentAsBoolean(processXMLDoc, TagNames.Process_IsVirtualized),
                 is64Bit = XMLUtils.ParseTagContentAsBoolean(processXMLDoc, TagNames.Process_Is64bit);
-            string tempString = XMLUtils.GetInnerText(processXMLDoc, TagNames.Process_Integrity);
-            ProcessIntegrityLevel integrityLevel;
-            if (tempString.Equals("System", StringComparison.CurrentCultureIgnoreCase))
-            {
-                integrityLevel = ProcessIntegrityLevel.System;
-            }
-            else if (tempString.Equals("High", StringComparison.CurrentCultureIgnoreCase))
-            {
-                integrityLevel = ProcessIntegrityLevel.High;
-            }
-            else if (tempString.Equals("Medium", StringComparison.CurrentCultureIgnoreCase))
-            {
-                integrityLevel = ProcessIntegrityLevel.Medium;
-            }
-            else
-            {
-                integrityLevel = ProcessIntegrityLevel.Low;
-            }
-            tempString = XMLUtils.GetInnerText(processXMLDoc, TagNames.Process_Owner);
+            string tempString = XMLUtils.GetInnerText(processXMLDoc, TagNames.Process_Owner);
             int ownerIndex = PMLAnalyzer.LocateOwnerInList(tempString);
             if (-1 == ownerIndex)
             {
@@ -76,7 +58,7 @@ namespace SeeBee.PMLParser
             FinishTime = finishTime;
             IsVirtualized = isVirtualized;
             Is64bit = is64Bit;
-            ProcessIntegrity = integrityLevel;
+            ProcessIntegrity = ProcessIntegrityLevelStrings.ParseString(XMLUtils.GetInnerText(processXMLDoc, TagNames.Process_Integrity));
             OwnerIndex = ownerIndex;
             ProcessName = XMLUtils.GetInnerText(processXMLDoc, TagNames.Process_ProcessName);
             CommandLine = StringUtils.HTMLUnEscape(XMLUtils.GetInnerText(processXMLDoc, TagNames.Process_CommandLine)).Trim();
@@ -117,14 +99,5 @@ namespace SeeBee.PMLParser
         {
             return summary;
         }
-    }
-
-    internal enum ProcessIntegrityLevel
-    {
-        None,
-        Low,
-        Medium,
-        High,
-        System
     }
 }
