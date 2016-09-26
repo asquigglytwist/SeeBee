@@ -9,7 +9,8 @@ namespace SeeBee.PMLParser
     public static class PMLAnalyzer
     {
         #region Members
-        static List<string> globalOwnerList = new List<string>();
+        static IndexedStringCollection OwnerList = new IndexedStringCollection();
+        static IndexedStringCollection KnownFilePaths = new IndexedStringCollection();
         static List<PMLModule> globalModuleList = new List<PMLModule>();
         static CLIArgument ProcMonExe = new CLIArgument("pm", "procmon", true, new string[] { "filename" }, "Path to the ProcMon (Process Monitor) executable.", @"in C:\SysInternals\ProcMon\ProcMon.exe"),
             InFilePath = new CLIArgument("in", "inputfile", true, new string[] { "filename" }, "The input Process Monitor Log (PML) file that is to be processed.", @"in C:\Logs\LogFile.PML"),
@@ -22,12 +23,6 @@ namespace SeeBee.PMLParser
         #endregion
 
         #region Private Methods
-        static PMLAnalyzer()
-        {
-            globalModuleList.Add(PMLModule.System);
-            globalOwnerList.Add("NT AUTHORITY\\SYSTEM");
-        }
-
         private static CLIArgument[] InitAllCLIArgs()
         {
             CLIArgument[] cliKnownArgs = new CLIArgument[]
@@ -61,18 +56,32 @@ namespace SeeBee.PMLParser
         #region Internal Methods
         internal static int LocateOwnerInList(string owner)
         {
-            return globalOwnerList.FindIndex(o => o.Equals(owner, StringComparison.CurrentCultureIgnoreCase));
+            return OwnerList.LocateString(owner);
         }
 
         internal static int AddOwnerToList(string owner)
         {
-            globalOwnerList.Add(owner);
-            return globalOwnerList.Count - 1;
+            return OwnerList.Add(owner);
         }
 
         internal static string GetOwnerName(int index)
         {
-            return globalOwnerList[index];
+            return OwnerList.StringAt(index);
+        }
+
+        internal static int LocateFilePathInList(string filePath)
+        {
+            return KnownFilePaths.LocateString(filePath);
+        }
+
+        internal static int AddFilePathToList(string filePath)
+        {
+            return KnownFilePaths.Add(filePath);
+        }
+
+        internal static string GetFilePath(int index)
+        {
+            return KnownFilePaths.StringAt(index);
         }
 
         internal static int LocateModuleInList(string modulePath)
@@ -93,6 +102,9 @@ namespace SeeBee.PMLParser
 
         internal static string Init(string[] args)
         {
+            globalModuleList.Add(PMLModule.System);
+            OwnerList.Add("NT AUTHORITY\\SYSTEM");
+
             string returnValue = null;
             CLIArgsParser argsParser = new CLIArgsParser();
             Dictionary<string, List<string>> parsedArguments = new Dictionary<string, List<string>>();
