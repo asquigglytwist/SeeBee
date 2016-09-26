@@ -5,34 +5,53 @@ namespace SeeBee.FxUtils
 {
     public class IndexedStringCollection : IEnumerable<KeyValuePair<string, int>>
     {
-        #region Properties
-        public int LastAddedIndex { get; protected internal set; }
-        protected internal Dictionary<string, int> IndexedStringDictionary { get; protected internal set; }
+        #region Properties And Constants
+        public const int IndexOfUnknown = -1;
+        protected internal Dictionary<string, int> IndexedStringDictionary { get; set; }
         #endregion
 
         #region Constructor
         public IndexedStringCollection()
         {
-            LastAddedIndex = -1;
-            IndexedStringDictionary = new Dictionary<string, int>();
+            IndexedStringDictionary = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
         }
         #endregion
 
         #region Public Methods
         public int LocateString(string stringToFind)
         {
+            if (string.IsNullOrWhiteSpace(stringToFind))
+            {
+                return IndexOfUnknown;
+            }
             int indexOfString;
             if (!IndexedStringDictionary.TryGetValue(stringToFind, out indexOfString))
             {
-                indexOfString = -1;
+                indexOfString = IndexOfUnknown;
             }
             return indexOfString;
         }
 
+        public string StringAt(int index)
+        {
+            foreach (string s in IndexedStringDictionary.Keys)
+            {
+                if (IndexedStringDictionary[s] == index)
+                {
+                    return s;
+                }
+            }
+            return null;
+        }
+
         public int Add(string stringToAdd, bool throwOnFail = false)
         {
+            if (string.IsNullOrWhiteSpace(stringToAdd))
+            {
+                return IndexOfUnknown;
+            }
             int indexOfString = LocateString(stringToAdd);
-            if (indexOfString > -1)
+            if (indexOfString > IndexOfUnknown)
             {
                 if (throwOnFail)
                 {
@@ -40,8 +59,8 @@ namespace SeeBee.FxUtils
                 }
                 return indexOfString;
             }
-            IndexedStringDictionary[stringToAdd] = ++LastAddedIndex;
-            return LastAddedIndex;
+            IndexedStringDictionary[stringToAdd] = IndexedStringDictionary.Count;
+            return IndexedStringDictionary.Count - 1;
         }
         #endregion
 

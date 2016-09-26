@@ -9,6 +9,7 @@ namespace SeeBee.PMLParser
     {
         #region Members
         internal protected const string UnknownValue = "Unknown";
+        private int pathIndex;
         private string summary;
         internal protected static PMLModule System = new PMLModule(DateTime.MinValue, 0, 0, "System", UnknownValue, UnknownValue, UnknownValue);
         #endregion
@@ -46,7 +47,7 @@ namespace SeeBee.PMLParser
             {
                 throw new ArgumentException("A module's path cannot be null or empty.");
             }
-            this.Path = path;
+            this.pathIndex = PMLAnalyzer.AddFilePathToList(path);
             if (string.IsNullOrWhiteSpace(version))
             {
                 this.Version = PMLModule.UnknownValue;
@@ -93,7 +94,13 @@ namespace SeeBee.PMLParser
         internal DateTime TimeStamp { get; private set; }
         internal long BaseAddress { get; private set; }
         internal long Size { get; private set; }
-        internal string Path { get; private set; }
+        internal string Path
+        {
+            get
+            {
+                return PMLAnalyzer.GetFilePath(pathIndex);
+            }
+        }
         internal string Version { get; private set; }
         internal string Company { get; private set; }
         internal string Description { get; private set; }
