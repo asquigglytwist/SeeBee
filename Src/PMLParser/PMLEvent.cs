@@ -6,18 +6,26 @@ namespace SeeBee.PMLParser
 {
     public class PMLEvent
     {
+        int pathIndex;
+
         #region Properties
-        internal int ProcessIndex { get; private set;}
-        internal DateTime TimeOfDay { get; private set;}
-        internal string ProcessName { get; private set;}
-        internal int PID { get; private set;}
-        internal int TID { get; private set;}
-        internal ProcessIntegrityLevel Integrity { get; private set;}
-        internal string Sequence { get; private set;}
-        internal bool Virtualized { get; private set;}
-        internal string Operation { get; private set;}
-        internal string Path { get; private set;}
-        internal string Result { get; private set;}
+        internal int ProcessIndex { get; private set; }
+        internal DateTime TimeOfDay { get; private set; }
+        internal string ProcessName { get; private set; }
+        internal int PID { get; private set; }
+        internal int TID { get; private set; }
+        internal ProcessIntegrityLevel Integrity { get; private set; }
+        internal string Sequence { get; private set; }
+        internal bool Virtualized { get; private set; }
+        internal string Operation { get; private set; }
+        internal string Path
+        {
+            get
+            {
+                return PMLAnalyzer.GetFilePath(pathIndex);
+            }
+        }
+        internal string Result { get; private set; }
         internal string Detail { get; private set; }
         #endregion
 
@@ -35,7 +43,7 @@ namespace SeeBee.PMLParser
             this.Sequence = XMLUtils.GetInnerText(eventXMLDoc, TagNames.Event_Sequence);
             this.Virtualized = XMLUtils.ParseTagContentAsBoolean(eventXMLDoc, TagNames.Event_Virtualized);
             this.Operation = XMLUtils.GetInnerText(eventXMLDoc, TagNames.Event_Operation);
-            this.Path = XMLUtils.GetInnerText(eventXMLDoc, TagNames.Event_Path);
+            this.pathIndex = PMLAnalyzer.AddFilePathToList(XMLUtils.GetInnerText(eventXMLDoc, TagNames.Event_Path));
             this.Result = XMLUtils.GetInnerText(eventXMLDoc, TagNames.Event_Result);
             this.Detail = XMLUtils.GetInnerText(eventXMLDoc, TagNames.Event_Detail);
         }
