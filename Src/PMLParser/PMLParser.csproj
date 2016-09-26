@@ -43,6 +43,7 @@
     <Compile Include="PMLAnalyzer.cs" />
     <Compile Include="PMLEvent.cs" />
     <Compile Include="PMLModule.cs" />
+    <Compile Include="PMLStackFrame.cs" />
     <Compile Include="PMLToXMLConverter.cs" />
     <Compile Include="PMLProcess.cs" />
     <Compile Include="ProcessIntegrityLevel.cs" />
