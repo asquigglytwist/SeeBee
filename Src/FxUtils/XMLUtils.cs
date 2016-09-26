@@ -44,6 +44,24 @@ namespace SeeBee.FxUtils
             return null;
         }
 
+        public static string GetOuterXML(XmlDocument xmlDoc, string tagName, int nodeIndex = 0, bool throwOnFailure = false)
+        {
+            XmlNodeList nodeList = xmlDoc.GetElementsByTagName(tagName);
+            if (nodeList.Count > nodeIndex && nodeList[nodeIndex] != null)
+            {
+                return nodeList[nodeIndex].OuterXml;
+            }
+            else if (throwOnFailure)
+            {
+                throw new IndexOutOfRangeException(
+                    string.Format("Index {0} is out of range for NodeList of size {1} when getting OuterXML of tag {2}.",
+                    nodeIndex,
+                    nodeList.Count,
+                    tagName));
+            }
+            return null;
+        }
+
         // XmlElement version
         public static int ParseTagContentAsInt(XmlElement xmlElement, string tagName, int nodeIndex = 0, bool throwOnFailure = false)
         {
@@ -76,6 +94,24 @@ namespace SeeBee.FxUtils
             {
                 throw new IndexOutOfRangeException(
                     string.Format("Index {0} is out of range for NodeList of size {1} when getting InnerText of tag {2}.",
+                    nodeIndex,
+                    nodeList.Count,
+                    tagName));
+            }
+            return null;
+        }
+
+        public static string GetOuterXML(XmlElement xmlElement, string tagName, int nodeIndex = 0, bool throwOnFailure = false)
+        {
+            XmlNodeList nodeList = xmlElement.GetElementsByTagName(tagName);
+            if (nodeList.Count > nodeIndex && nodeList[nodeIndex] != null)
+            {
+                return nodeList[nodeIndex].OuterXml;
+            }
+            else if (throwOnFailure)
+            {
+                throw new IndexOutOfRangeException(
+                    string.Format("Index {0} is out of range for NodeList of size {1} when getting OuterXML of tag {2}.",
                     nodeIndex,
                     nodeList.Count,
                     tagName));
