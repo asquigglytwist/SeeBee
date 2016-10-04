@@ -6,7 +6,10 @@ namespace SeeBee.PMLParser
 {
     public class PMLEvent
     {
+        #region Members
         int pathIndex;
+        PMLStackFrame[] callStack;
+        #endregion
 
         #region Properties
         internal int ProcessIndex { get; private set; }
@@ -46,6 +49,15 @@ namespace SeeBee.PMLParser
             this.pathIndex = PMLAnalyzer.AddFilePathToList(XMLUtils.GetInnerText(eventXMLDoc, TagNames.Event_Path));
             this.Result = XMLUtils.GetInnerText(eventXMLDoc, TagNames.Event_Result);
             this.Detail = XMLUtils.GetInnerText(eventXMLDoc, TagNames.Event_Detail);
+            this.callStack = PMLStackFrame.LoadStackFrames(eventXMLDoc);
+#if DEBUG
+            Console.WriteLine("Stack:\n-------------------------------------------------------------");
+            foreach (var stackFrame in this.callStack)
+            {
+                Console.WriteLine(stackFrame);
+            }
+            Console.WriteLine("-------------------------------------------------------------\n");
+#endif
         }
         #endregion
 
