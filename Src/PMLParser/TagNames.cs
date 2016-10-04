@@ -51,5 +51,12 @@ namespace SeeBee.PMLParser
         internal const string Event_Result="Result";
         internal const string Event_Detail = "Detail";
         #endregion
+
+        #region Tags for StackFrames
+        internal const string StackFrame_Address = "address";
+        internal const string StackFrame_Path = "path";
+        internal const string StackFrame_Location = "location";
+        internal const string StackFrame_XPathInXML = "/event/stack/frame";
+        #endregion
     }
 }
