@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using SeeBee.FxUtils;
+using SeeBee.FxUtils.AuthentiCode;
 
 namespace SeeBee.PMLParser
 {
@@ -14,6 +15,10 @@ namespace SeeBee.PMLParser
         #region Constructor
         internal PMLToXMLConverter(string procMonExeLocation, string pmlFile, bool shouldRetryOnceOnFailure = false)
         {
+            if (!AuthentiCodeTools.IsTrusted(procMonExeLocation))
+            {
+                throw new ArgumentException(string.Format("ProcessMonitor (ProcMon) executable at location {0} is not a trusted binary.", procMonExeLocation));
+            }
             this.shouldRetryOnceOnFailure = shouldRetryOnceOnFailure;
             PMLFile = pmlFile;
             // [BIB]:  http://stackoverflow.com/questions/5608980/how-to-ensure-a-timestamp-is-always-unique
