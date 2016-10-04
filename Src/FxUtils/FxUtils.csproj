@@ -40,6 +40,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AuthentiCode\AuthentiCodeTools.cs" />
+    <Compile Include="AuthentiCode\Enums.cs" />
+    <Compile Include="AuthentiCode\UnmanagedPointer.cs" />
+    <Compile Include="AuthentiCode\WINTRUST_DATA.cs" />
+    <Compile Include="AuthentiCode\WINTRUST_FILE_INFO.cs" />
     <Compile Include="CLIArgsParser.cs" />
     <Compile Include="CLIArgument.cs" />
     <Compile Include="FSUtils.cs" />
@@ -50,6 +55,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="XMLUtils.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
