@@ -54,6 +54,7 @@ namespace SeeBee.PMLParser
         #endregion
         
         #region Internal Methods
+        #region Owner List
         internal static int LocateOwnerInList(string owner)
         {
             return OwnerList.LocateString(owner);
@@ -68,7 +69,9 @@ namespace SeeBee.PMLParser
         {
             return OwnerList.StringAt(index);
         }
+        #endregion
 
+        #region FilePath List
         internal static int LocateFilePathInList(string filePath)
         {
             return KnownFilePaths.LocateString(filePath);
@@ -83,7 +86,9 @@ namespace SeeBee.PMLParser
         {
             return KnownFilePaths.StringAt(index);
         }
+        #endregion
 
+        #region Module List
         internal static int LocateModuleInList(string modulePath)
         {
             return globalModuleList.FindIndex(module => module.Path.Equals(modulePath, StringComparison.CurrentCultureIgnoreCase));
@@ -99,6 +104,7 @@ namespace SeeBee.PMLParser
         {
             return globalModuleList[index].Description;
         }
+        #endregion
 
         internal static string Init(string[] args)
         {
