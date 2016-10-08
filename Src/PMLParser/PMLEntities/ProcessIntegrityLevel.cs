@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SeeBee.PMLParser
+namespace SeeBee.PMLParser.PMLEntities
 {
     #region ProcessIntegrityLevel
     internal enum ProcessIntegrityLevel

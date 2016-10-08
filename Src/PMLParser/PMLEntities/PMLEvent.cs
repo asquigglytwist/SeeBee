@@ -2,7 +2,7 @@
 using System.Xml;
 using SeeBee.FxUtils;
 
-namespace SeeBee.PMLParser
+namespace SeeBee.PMLParser.PMLEntities
 {
     public class PMLEvent
     {

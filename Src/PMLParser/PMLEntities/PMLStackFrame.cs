@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Xml;
 using SeeBee.FxUtils;
 
-namespace SeeBee.PMLParser
+namespace SeeBee.PMLParser.PMLEntities
 {
     internal class PMLStackFrame
     {
