@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace SeeBee.FxUtils
+namespace SeeBee.FxUtils.Utils
 {
     public static class FSUtils
     {
