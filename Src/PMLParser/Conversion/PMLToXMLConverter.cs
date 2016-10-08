@@ -3,6 +3,7 @@ using System.Text;
 using SeeBee.FxUtils;
 using SeeBee.FxUtils.AuthentiCode;
 
+namespace SeeBee.PMLParser.Conversion
 {
     internal class PMLToXMLConverter
     {
