@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Xml;
 using SeeBee.FxUtils.Utils;
+using SeeBee.PMLParser.ManagedLists;
 
 namespace SeeBee.PMLParser.PMLEntities
 {
@@ -22,11 +23,11 @@ namespace SeeBee.PMLParser.PMLEntities
             foreach (XmlElement module in modules)
             {
                 string path = module.GetElementsByTagName(TagNames.Module_Path)[0].InnerText;
-                int moduleIndex = PMLAnalyzer.LocateModuleInList(path);
+                int moduleIndex = ModuleList.LocateModuleInList(path);
                 if (-1 == moduleIndex)
                 {
                     var tempModule = new PMLModule(path, module);
-                    moduleIndex = PMLAnalyzer.AddModuleToList(tempModule);
+                    moduleIndex = ModuleList.AddModuleToList(tempModule);
                 }
                 if (-1 != moduleIndex)
                 {
@@ -47,7 +48,7 @@ namespace SeeBee.PMLParser.PMLEntities
             {
                 throw new ArgumentException("A module's path cannot be null or empty.");
             }
-            this.pathIndex = PMLAnalyzer.AddFilePathToList(path);
+            this.pathIndex = FilePathList.AddFilePathToList(path);
             if (string.IsNullOrWhiteSpace(version))
             {
                 this.Version = PMLModule.UnknownValue;
@@ -98,7 +99,7 @@ namespace SeeBee.PMLParser.PMLEntities
         {
             get
             {
-                return PMLAnalyzer.GetFilePath(pathIndex);
+                return FilePathList.GetFilePath(pathIndex);
             }
         }
         internal string Version { get; private set; }

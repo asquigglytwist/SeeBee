@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Xml;
 using SeeBee.FxUtils.Utils;
+using SeeBee.PMLParser.ManagedLists;
 
 namespace SeeBee.PMLParser.PMLEntities
 {
@@ -37,7 +38,7 @@ namespace SeeBee.PMLParser.PMLEntities
                 location = UnknownStringValue;
             }
             this.Address = address;
-            this.pathIndex = PMLAnalyzer.AddFilePathToList(path);
+            this.pathIndex = FilePathList.AddFilePathToList(path);
             this.Location = location;
         }
 
@@ -55,7 +56,7 @@ namespace SeeBee.PMLParser.PMLEntities
         {
             get
             {
-                return PMLAnalyzer.GetFilePath(pathIndex);
+                return FilePathList.GetFilePath(pathIndex);
             }
         }
         internal string Location { get; private set; }
