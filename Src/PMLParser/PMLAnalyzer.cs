@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using SeeBee.FxUtils;
+using SeeBee.PMLParser.PMLEntities;
 
 namespace SeeBee.PMLParser
 {

@@ -4,7 +4,7 @@ using System.Text;
 using System.Xml;
 using SeeBee.FxUtils;
 
-namespace SeeBee.PMLParser
+namespace SeeBee.PMLParser.PMLEntities
 {
     internal class PMLProcess
     {
