@@ -106,6 +106,34 @@ namespace SeeBee.FxUtils
             return Path.GetFileName(path);
         }
 
+        public static string CreateOuputFileFromInput(string input, string extension = null)
+        {
+            // [BIB]:  http://stackoverflow.com/questions/674479/how-do-i-get-the-directory-from-a-files-full-path
+            string fileName = GetFileName(input, true), location = new FileInfo(input).Directory.FullName;
+            fileName += DateTime.Now.ToFileTime();
+            if (string.IsNullOrWhiteSpace(extension))
+            {
+                extension = Path.GetExtension(input);
+            }
+            fileName += extension;
+            if (!IsWritableLocation(location))
+            {
+                if (IsWritableLocation(WritableLocationForTempFile))
+                {
+                    location = WritableLocationForTempFile;
+                }
+                else if (IsWritableLocation(WritableLocationForCurrentUser))
+                {
+                    location = WritableLocationForCurrentUser;
+                }
+                else if (IsWritableLocation(WritableLocationForAllUsers))
+                {
+                    location = WritableLocationForAllUsers;
+                }
+            }
+            return PathCombine(location, fileName);
+        }
+
         // [BIB]:  http://stackoverflow.com/questions/1410127/c-sharp-test-if-user-has-write-access-to-a-folder
         public static bool IsWritableLocation(string folderPath)
         {
