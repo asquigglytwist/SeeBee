@@ -46,8 +46,8 @@
     <Compile Include="AuthentiCode\UnmanagedPointer.cs" />
     <Compile Include="AuthentiCode\WINTRUST_DATA.cs" />
     <Compile Include="AuthentiCode\WINTRUST_FILE_INFO.cs" />
-    <Compile Include="CLIArgsParser.cs" />
-    <Compile Include="CLIArgument.cs" />
+    <Compile Include="CLIArgs\CLIArgsParser.cs" />
+    <Compile Include="CLIArgs\CLIArgument.cs" />
     <Compile Include="Utils\FSUtils.cs" />
     <Compile Include="IndexedStringCollection.cs" />
     <Compile Include="Utils\NumberUtils.cs" />
