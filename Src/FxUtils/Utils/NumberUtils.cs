@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace SeeBee.FxUtils
+namespace SeeBee.FxUtils.Utils
 {
     public static class NumberUtils
     {
