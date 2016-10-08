@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Xml;
 using SeeBee.FxUtils.Utils;
+using SeeBee.PMLParser.ManagedLists;
 
 namespace SeeBee.PMLParser.PMLEntities
 {
@@ -25,7 +26,7 @@ namespace SeeBee.PMLParser.PMLEntities
         {
             get
             {
-                return PMLAnalyzer.GetFilePath(pathIndex);
+                return FilePathList.GetFilePath(pathIndex);
             }
         }
         internal string Result { get; private set; }
@@ -46,7 +47,7 @@ namespace SeeBee.PMLParser.PMLEntities
             this.Sequence = XMLUtils.GetInnerText(eventXMLDoc, TagNames.Event_Sequence);
             this.Virtualized = XMLUtils.ParseTagContentAsBoolean(eventXMLDoc, TagNames.Event_Virtualized);
             this.Operation = XMLUtils.GetInnerText(eventXMLDoc, TagNames.Event_Operation);
-            this.pathIndex = PMLAnalyzer.AddFilePathToList(XMLUtils.GetInnerText(eventXMLDoc, TagNames.Event_Path));
+            this.pathIndex = FilePathList.AddFilePathToList(XMLUtils.GetInnerText(eventXMLDoc, TagNames.Event_Path));
             this.Result = XMLUtils.GetInnerText(eventXMLDoc, TagNames.Event_Result);
             this.Detail = XMLUtils.GetInnerText(eventXMLDoc, TagNames.Event_Detail);
             this.callStack = PMLStackFrame.LoadStackFrames(eventXMLDoc);

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Xml;
 using SeeBee.FxUtils.Utils;
+using SeeBee.PMLParser.ManagedLists;
 
 namespace SeeBee.PMLParser.PMLEntities
 {
@@ -25,7 +26,7 @@ namespace SeeBee.PMLParser.PMLEntities
         internal string ProcessName { get; set; }
         internal int ImageIndex { get; set; }
         internal string CommandLine { get; set; }
-        internal HashSet<int> ModuleList { get; set; }
+        internal HashSet<int> LoadedModuleList { get; set; }
         #endregion
 
         #region Constructor
@@ -34,11 +35,6 @@ namespace SeeBee.PMLParser.PMLEntities
             XmlDocument processXMLDoc = new XmlDocument();
             processXMLDoc.Load(processListReader);
             string tempString = XMLUtils.GetInnerText(processXMLDoc, TagNames.Process_Owner);
-            int ownerIndex = PMLAnalyzer.LocateOwnerInList(tempString);
-            if (-1 == ownerIndex)
-            {
-                ownerIndex = PMLAnalyzer.AddOwnerToList(tempString);
-            }
 
             // Actual object creation i.e., assigning values to members
             this.ProcessId = XMLUtils.ParseTagContentAsInt(processXMLDoc, TagNames.Process_ProcessId);
@@ -51,24 +47,24 @@ namespace SeeBee.PMLParser.PMLEntities
             this.IsVirtualized = XMLUtils.ParseTagContentAsBoolean(processXMLDoc, TagNames.Process_IsVirtualized);
             this.Is64bit = XMLUtils.ParseTagContentAsBoolean(processXMLDoc, TagNames.Process_Is64bit);
             this.ProcessIntegrity = ProcessIntegrityLevelExtensions.ToProcessIntegrityLevel(XMLUtils.GetInnerText(processXMLDoc, TagNames.Process_Integrity));
-            this.OwnerIndex = ownerIndex;
+            this.OwnerIndex = OwnerList.AddOwnerToList(tempString);
             this.ProcessName = XMLUtils.GetInnerText(processXMLDoc, TagNames.Process_ProcessName);
             this.CommandLine = StringUtils.HTMLUnEscape(XMLUtils.GetInnerText(processXMLDoc, TagNames.Process_CommandLine)).Trim();
-            this.ModuleList = PMLModule.LoadModules(processXMLDoc);
-            this.ImageIndex = PMLAnalyzer.LocateModuleInList(XMLUtils.GetInnerText(processXMLDoc, TagNames.Process_ImagePath));
+            this.LoadedModuleList = PMLModule.LoadModules(processXMLDoc);
+            this.ImageIndex = ModuleList.LocateModuleInList(XMLUtils.GetInnerText(processXMLDoc, TagNames.Process_ImagePath));
 
             StringBuilder buffer = new StringBuilder(string.Format(
                 "{0}{1} Process - {2} [{3}] with ID = {4} was created at {5} with {6} integrity, which loaded {7} modules, as a child of {8} by {9}",
                 (IsVirtualized ? "Virtualized " : ""),
                 (Is64bit ? "64-Bit" : "32-Bit"),
                 ProcessName,
-                PMLAnalyzer.GetModuleDescription(ImageIndex),
+                ModuleList.GetModuleDescription(ImageIndex),
                 ProcessId,
                 CreateTime,
                 ProcessIntegrity,
-                ModuleList.Count,
+                LoadedModuleList.Count,
                 ParentProcessId,
-                PMLAnalyzer.GetOwnerName(OwnerIndex)
+                OwnerList.GetOwnerName(OwnerIndex)
                 ));
             if (!string.IsNullOrWhiteSpace(CommandLine))
             {

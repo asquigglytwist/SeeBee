@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using SeeBee.FxUtils;
+using SeeBee.PMLParser.ManagedLists;
 using SeeBee.FxUtils.CLIArgs;
 using SeeBee.FxUtils.Utils;
 using SeeBee.PMLParser.Conversion;
@@ -13,9 +13,6 @@ namespace SeeBee.PMLParser
     public static class PMLAnalyzer
     {
         #region Members
-        static IndexedStringCollection OwnerList = new IndexedStringCollection();
-        static IndexedStringCollection KnownFilePaths = new IndexedStringCollection();
-        static List<PMLModule> globalModuleList = new List<PMLModule>();
         static CLIArgument ProcMonExe = new CLIArgument("pm", "procmon", true, new string[] { "filename" }, "Path to the ProcMon (Process Monitor) executable.", @"in C:\SysInternals\ProcMon\ProcMon.exe"),
             InFilePath = new CLIArgument("in", "inputfile", true, new string[] { "filename" }, "The input Process Monitor Log (PML) file that is to be processed.", @"in C:\Logs\LogFile.PML"),
             OutFilePath = new CLIArgument("out", "outputfile", false, new string[] { "filename" }, "Location for the output XML file to be stored.", @"out C:\Logs\AfterConversion.XML"),
@@ -58,62 +55,9 @@ namespace SeeBee.PMLParser
         #endregion
         
         #region Internal Methods
-        #region Owner List
-        internal static int LocateOwnerInList(string owner)
-        {
-            return OwnerList.LocateString(owner);
-        }
-
-        internal static int AddOwnerToList(string owner)
-        {
-            return OwnerList.Add(owner);
-        }
-
-        internal static string GetOwnerName(int index)
-        {
-            return OwnerList.StringAt(index);
-        }
-        #endregion
-
-        #region FilePath List
-        internal static int LocateFilePathInList(string filePath)
-        {
-            return KnownFilePaths.LocateString(filePath);
-        }
-
-        internal static int AddFilePathToList(string filePath)
-        {
-            return KnownFilePaths.Add(filePath);
-        }
-
-        internal static string GetFilePath(int index)
-        {
-            return KnownFilePaths.StringAt(index);
-        }
-        #endregion
-
-        #region Module List
-        internal static int LocateModuleInList(string modulePath)
-        {
-            return globalModuleList.FindIndex(module => module.Path.Equals(modulePath, StringComparison.CurrentCultureIgnoreCase));
-        }
-
-        internal static int AddModuleToList(PMLModule module)
-        {
-            globalModuleList.Add(module);
-            return globalModuleList.Count - 1;
-        }
-
-        internal static string GetModuleDescription(int index)
-        {
-            return globalModuleList[index].Description;
-        }
-        #endregion
-
         internal static string Init(string[] args)
         {
-            globalModuleList.Add(PMLModule.System);
-            OwnerList.Add("NT AUTHORITY\\SYSTEM");
+            ModuleList.AddModuleToList(PMLModule.System);
 
             string returnValue = null;
             CLIArgsParser argsParser = new CLIArgsParser();

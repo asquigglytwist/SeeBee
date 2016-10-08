@@ -40,6 +40,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ManagedLists\FilePathList.cs" />
+    <Compile Include="ManagedLists\ModuleList.cs" />
+    <Compile Include="ManagedLists\OwnerList.cs" />
     <Compile Include="PMLAnalyzer.cs" />
     <Compile Include="PMLEntities\PMLEvent.cs" />
     <Compile Include="PMLEntities\PMLModule.cs" />
