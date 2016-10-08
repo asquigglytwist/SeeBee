@@ -110,12 +110,12 @@ namespace SeeBee.FxUtils
         {
             // [BIB]:  http://stackoverflow.com/questions/674479/how-do-i-get-the-directory-from-a-files-full-path
             string fileName = GetFileName(input, true), location = new FileInfo(input).Directory.FullName;
-            fileName += DateTime.Now.ToFileTime();
+            // [BIB]:  http://stackoverflow.com/questions/5608980/how-to-ensure-a-timestamp-is-always-unique
+            fileName += DateTime.UtcNow.Ticks;
             if (string.IsNullOrWhiteSpace(extension))
             {
                 extension = Path.GetExtension(input);
             }
-            fileName += extension;
             if (!IsWritableLocation(location))
             {
                 if (IsWritableLocation(WritableLocationForTempFile))
@@ -131,7 +131,17 @@ namespace SeeBee.FxUtils
                     location = WritableLocationForAllUsers;
                 }
             }
-            return PathCombine(location, fileName);
+            string completeFileName = PathCombine(location, fileName + extension);
+            if (FileExists(completeFileName))
+            {
+                completeFileName = PathCombine(location, (fileName + NumberUtils.GetRandomInt() + extension));
+                if (FileExists(completeFileName))
+                {
+                    // If after this attempt there is a conflicting file, let there be VelociRaptors...
+                    completeFileName = PathCombine(location, (fileName + NumberUtils.GetRandomInt() + extension));
+                }
+            }
+            return completeFileName;
         }
 
         // [BIB]:  http://stackoverflow.com/questions/1410127/c-sharp-test-if-user-has-write-access-to-a-folder

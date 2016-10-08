@@ -1,10 +1,12 @@
-﻿using System.Runtime.InteropServices;
+﻿using System;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace SeeBee.FxUtils
 {
     public static class NumberUtils
     {
+        private static readonly Random prng = new Random();
 
         public static string LongToHexString(long longValue)
         {
@@ -20,6 +22,11 @@ namespace SeeBee.FxUtils
             StringBuilder buffer = new StringBuilder(20);
             StrFormatByteSize(fileSize, buffer, buffer.Capacity);
             return buffer.ToString();
+        }
+
+        public static int GetRandomInt()
+        {
+            return prng.Next();
         }
     }
 }
