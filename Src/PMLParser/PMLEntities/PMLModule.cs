@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Xml;
-using SeeBee.FxUtils;
+using SeeBee.FxUtils.Utils;
 
 namespace SeeBee.PMLParser.PMLEntities
 {

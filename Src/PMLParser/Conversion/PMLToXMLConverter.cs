@@ -2,6 +2,7 @@
 using System.Text;
 using SeeBee.FxUtils;
 using SeeBee.FxUtils.AuthentiCode;
+using SeeBee.FxUtils.Utils;
 
 namespace SeeBee.PMLParser.Conversion
 {
