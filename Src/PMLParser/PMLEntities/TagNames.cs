@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace SeeBee.PMLParser
+namespace SeeBee.PMLParser.PMLEntities
 {
     internal static class TagNames
     {
