@@ -46,7 +46,7 @@ namespace SeeBee.PMLParser
             string xmlFile;
             if (Convert(CommandProcessor.PMLFile, out xmlFile) && !string.IsNullOrWhiteSpace(xmlFile))
             {
-                ConvertedXMLProcessor.PopulateProcessesAndEvents(xmlFile, ref processes, ref events);
+                ConvertedXMLProcessor.PopulateProcessesAndEvents(xmlFile, out processes, out events);
 #if DEBUG
                 System.Console.WriteLine("# of Processes that match the criteria {0}.", processes.Length);
                 System.Console.WriteLine("# of Events that match the criteria {0}.", events.Length);
