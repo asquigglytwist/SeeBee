@@ -48,7 +48,7 @@
     <Compile Include="PMLEntities\PMLProcess.cs" />
     <Compile Include="PMLEntities\ProcessIntegrityLevel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ConvertedXMLProcessor.cs" />
+    <Compile Include="Conversion\ConvertedXMLProcessor.cs" />
     <Compile Include="PMLEntities\TagNames.cs" />
   </ItemGroup>
   <ItemGroup>
