@@ -19,6 +19,10 @@ namespace SeeBee.PMLParser
             {
                 throw new ArgumentException(string.Format("ProcessMonitor (ProcMon) executable at location {0} is not a trusted binary.", procMonExeLocation));
             }
+            if (!SignerInfo.IsSignedBy(procMonExeLocation, "CN=Microsoft Code Signing PCA, O=Microsoft Corporation, L=Redmond, S=Washington, C=US", true))
+            {
+                throw new ArgumentException(string.Format("ProcessMonitor (ProcMon) executable at location {0} does not meet expected digital signing requirements.", procMonExeLocation));
+            }
             this.shouldRetryOnceOnFailure = shouldRetryOnceOnFailure;
             PMLFile = pmlFile;
             XMLFile = FSUtils.CreateOuputFileFromInput(pmlFile, ".xml");

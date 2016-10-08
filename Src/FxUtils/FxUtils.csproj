@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="AuthentiCode\AuthentiCodeTools.cs" />
     <Compile Include="AuthentiCode\Enums.cs" />
+    <Compile Include="AuthentiCode\SignerInfo.cs" />
     <Compile Include="AuthentiCode\UnmanagedPointer.cs" />
     <Compile Include="AuthentiCode\WINTRUST_DATA.cs" />
     <Compile Include="AuthentiCode\WINTRUST_FILE_INFO.cs" />
