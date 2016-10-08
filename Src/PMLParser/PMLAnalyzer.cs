@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using SeeBee.FxUtils.Utils;
+﻿using SeeBee.FxUtils.Utils;
+using SeeBee.PMLParser.Analysis;
 using SeeBee.PMLParser.ConfigManager;
 using SeeBee.PMLParser.Conversion;
 using SeeBee.PMLParser.ManagedLists;
@@ -11,6 +9,11 @@ namespace SeeBee.PMLParser
 {
     public static class PMLAnalyzer
     {
+        #region Members
+        internal static PMLProcess[] processes;
+        internal static PMLEvent[] events; 
+        #endregion
+
         #region Private Methods
         private static bool Convert(string pmlFile, out string xmlFile)
         {
@@ -43,14 +46,10 @@ namespace SeeBee.PMLParser
             string xmlFile;
             if (Convert(CommandProcessor.PMLFile, out xmlFile) && !string.IsNullOrWhiteSpace(xmlFile))
             {
-                ConvertedXMLProcessor processList = new ConvertedXMLProcessor();
-                var processes = from p in processList.LoadProcesses(xmlFile) where (!string.IsNullOrWhiteSpace(p.ProcessName)) select p;
+                ConvertedXMLProcessor.PopulateProcessesAndEvents(xmlFile, ref processes, ref events);
 #if DEBUG
-                Console.WriteLine("# of Processes that match the criteria {0}.", processes.Count());
-#endif
-                var events = from e in processList.LoadEvents(xmlFile) where (!string.IsNullOrWhiteSpace(e.TimeOfDay.ToString())) select e;
-#if DEBUG
-                Console.WriteLine("# of Events that match the criteria {0}.", events.Count());
+                System.Console.WriteLine("# of Processes that match the criteria {0}.", processes.Length);
+                System.Console.WriteLine("# of Events that match the criteria {0}.", events.Length);
 #endif
                 FSUtils.FileDelete(xmlFile);
                 return true;

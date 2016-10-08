@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml;
 using SeeBee.PMLParser.PMLEntities;
 
-namespace SeeBee.PMLParser
+namespace SeeBee.PMLParser.Analysis
 {
-    internal class ConvertedXMLProcessor
+    internal static class ConvertedXMLProcessor
     {
-        internal IEnumerable<PMLProcess> LoadProcesses(string xmlFilePath)
+        private static IEnumerable<PMLProcess> LoadProcesses(string xmlFilePath)
         {
             using (XmlReader source = XmlReader.Create(xmlFilePath))
             {
@@ -33,7 +34,7 @@ namespace SeeBee.PMLParser
             }
         }
 
-        internal IEnumerable<PMLEvent> LoadEvents(string xmlFilePath)
+        private static IEnumerable<PMLEvent> LoadEvents(string xmlFilePath)
         {
             using (XmlReader source = XmlReader.Create(xmlFilePath))
             {
@@ -57,6 +58,14 @@ namespace SeeBee.PMLParser
                 }
                 source.Close();
             }
+        }
+
+        internal static void PopulateProcessesAndEvents(string xmlFilePath, ref PMLProcess[] processes, ref PMLEvent[] events)
+        {
+            var procs = from p in ConvertedXMLProcessor.LoadProcesses(xmlFilePath) where (!string.IsNullOrWhiteSpace(p.ProcessName)) select p;
+            var evts = from e in ConvertedXMLProcessor.LoadEvents(xmlFilePath) where (!string.IsNullOrWhiteSpace(e.TimeOfDay.ToString())) select e;
+            processes = procs.ToArray();
+            events = evts.ToArray();
         }
     }
 }
