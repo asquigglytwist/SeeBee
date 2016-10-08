@@ -60,7 +60,8 @@ namespace SeeBee.PMLParser.Analysis
             }
         }
 
-        internal static void PopulateProcessesAndEvents(string xmlFilePath, ref PMLProcess[] processes, ref PMLEvent[] events)
+        // [BIB]:  http://stackoverflow.com/questions/1516876/when-to-use-ref-vs-out
+        internal static void PopulateProcessesAndEvents(string xmlFilePath, out PMLProcess[] processes, out PMLEvent[] events)
         {
             var procs = from p in ConvertedXMLProcessor.LoadProcesses(xmlFilePath) where (!string.IsNullOrWhiteSpace(p.ProcessName)) select p;
             var evts = from e in ConvertedXMLProcessor.LoadEvents(xmlFilePath) where (!string.IsNullOrWhiteSpace(e.TimeOfDay.ToString())) select e;
