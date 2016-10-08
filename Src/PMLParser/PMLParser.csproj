@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConfigManager\CommandProcessor.cs" />
     <Compile Include="ManagedLists\FilePathList.cs" />
     <Compile Include="ManagedLists\ModuleList.cs" />
     <Compile Include="ManagedLists\OwnerList.cs" />

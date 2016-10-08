@@ -1,49 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using SeeBee.PMLParser.ManagedLists;
-using SeeBee.FxUtils.CLIArgs;
 using SeeBee.FxUtils.Utils;
+using SeeBee.PMLParser.ConfigManager;
 using SeeBee.PMLParser.Conversion;
+using SeeBee.PMLParser.ManagedLists;
 using SeeBee.PMLParser.PMLEntities;
 
 namespace SeeBee.PMLParser
 {
     public static class PMLAnalyzer
     {
-        #region Members
-        static CLIArgument ProcMonExe = new CLIArgument("pm", "procmon", true, new string[] { "filename" }, "Path to the ProcMon (Process Monitor) executable.", @"in C:\SysInternals\ProcMon\ProcMon.exe"),
-            InFilePath = new CLIArgument("in", "inputfile", true, new string[] { "filename" }, "The input Process Monitor Log (PML) file that is to be processed.", @"in C:\Logs\LogFile.PML"),
-            OutFilePath = new CLIArgument("out", "outputfile", false, new string[] { "filename" }, "Location for the output XML file to be stored.", @"out C:\Logs\AfterConversion.XML"),
-            ProcessId = new CLIArgument("pid", "processid", true, new string[] { "pid" }, "PID of the process to be filtered.", "pid 1234"),
-            ImageName = new CLIArgument("im", "image", false, new string[] { "imagename" }, "Image name of the process to be filtered.", "im explorer.exe"),
-            IgnorePass = new CLIArgument("ip", "ignorepass", false, null, "Ignores all opertaions for which the result is SUCCESS.", "ip"),
-            Result = new CLIArgument(null, "result", false, new string[] { "result" }, "Filters results based on the value specified.  Accepts \"pass\" and \"fail\" as the only valid values.", "result pass"),
-            Filter = new CLIArgument("fi", "filter", false, new string[] { "field", "operator", "value" }, "Filters results based on the value specified.  Accepts \"pass\" and \"fail\" as the only valid values.", "result pass");
-        #endregion
-
         #region Private Methods
-        private static CLIArgument[] InitAllCLIArgs()
-        {
-            CLIArgument[] cliKnownArgs = new CLIArgument[]
-            {
-                ProcMonExe,
-                InFilePath,
-                OutFilePath,
-                ProcessId,
-                ImageName,
-                IgnorePass,
-                Result,
-                Filter
-            };
-            return cliKnownArgs;
-        }
-
         private static bool Convert(string pmlFile, out string xmlFile)
         {
             PMLToXMLConverter converter;
-            converter = new PMLToXMLConverter(ProcMonEXELocation, pmlFile);
+            converter = new PMLToXMLConverter(CommandProcessor.ProcMonEXELocation, pmlFile);
             if (converter.Convert())
             {
                 xmlFile = converter.XMLFile;
@@ -58,38 +30,18 @@ namespace SeeBee.PMLParser
         internal static string Init(string[] args)
         {
             ModuleList.AddModuleToList(PMLModule.System);
-
             string returnValue = null;
-            CLIArgsParser argsParser = new CLIArgsParser();
-            Dictionary<string, List<string>> parsedArguments = new Dictionary<string, List<string>>();
 #if DEBUG
-            args = new string[] { "pm", @"C:\T\SeeBee\Procmon.exe", "in", @"C:\T\SeeBee\Logfile.PML", "pid", "*", "ip" };
+            args = new string[] { "pm", @"C:\T\SeeBee\Procmon.exe", "in", @"C:\T\SeeBee\Logfile.PML" };
 #endif
-            returnValue = argsParser.Parse(args, InitAllCLIArgs(), parsedArguments);
-            if (string.IsNullOrWhiteSpace(returnValue))
-            {
-                ProcMonEXELocation = parsedArguments[ProcMonExe.Name].First();
-                if (!FSUtils.FileExists(ProcMonEXELocation))
-                {
-                    throw new FileNotFoundException("Not able to, either find or access the ProcMon executable (file).", ProcMonEXELocation);
-                }
-                PMLFile = parsedArguments[InFilePath.Name].First();
-                if (!FSUtils.FileExists(PMLFile))
-                {
-                    throw new FileNotFoundException("Not able to, either find or access the ProcMon Logs file.", PMLFile);
-                }
-            }
+            returnValue = CommandProcessor.ParseCommandLine(args);
             return returnValue;
         }
 
         internal static bool ProcessPMLFile()
         {
-            if (!FSUtils.FileExists(PMLFile))
-            {
-                throw new FileNotFoundException("Not able to, either find or access the ProcMon Log file.", PMLFile);
-            }
             string xmlFile;
-            if (Convert(PMLFile, out xmlFile) && !string.IsNullOrWhiteSpace(xmlFile))
+            if (Convert(CommandProcessor.PMLFile, out xmlFile) && !string.IsNullOrWhiteSpace(xmlFile))
             {
                 ConvertedXMLProcessor processList = new ConvertedXMLProcessor();
                 var processes = from p in processList.LoadProcesses(xmlFile) where (!string.IsNullOrWhiteSpace(p.ProcessName)) select p;
@@ -100,7 +52,7 @@ namespace SeeBee.PMLParser
 #if DEBUG
                 Console.WriteLine("# of Events that match the criteria {0}.", events.Count());
 #endif
-                File.Delete(xmlFile);
+                FSUtils.FileDelete(xmlFile);
                 return true;
             }
             return false;
@@ -118,9 +70,6 @@ namespace SeeBee.PMLParser
             }
             return resultMsg;
         }
-        
-        public static string ProcMonEXELocation { get; private set; }
-        public static string PMLFile { get; private set; }
         #endregion
     }
 }
