@@ -41,12 +41,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="PMLAnalyzer.cs" />
-    <Compile Include="PMLEvent.cs" />
-    <Compile Include="PMLModule.cs" />
-    <Compile Include="PMLStackFrame.cs" />
+    <Compile Include="PMLEntities\PMLEvent.cs" />
+    <Compile Include="PMLEntities\PMLModule.cs" />
+    <Compile Include="PMLEntities\PMLStackFrame.cs" />
     <Compile Include="PMLToXMLConverter.cs" />
-    <Compile Include="PMLProcess.cs" />
-    <Compile Include="ProcessIntegrityLevel.cs" />
+    <Compile Include="PMLEntities\PMLProcess.cs" />
+    <Compile Include="PMLEntities\ProcessIntegrityLevel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ConvertedXMLProcessor.cs" />
     <Compile Include="TagNames.cs" />
