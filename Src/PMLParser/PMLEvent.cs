@@ -42,7 +42,7 @@ namespace SeeBee.PMLParser
             this.ProcessName = XMLUtils.GetInnerText(eventXMLDoc, TagNames.Event_Process_Name);
             this.PID = XMLUtils.ParseTagContentAsInt(eventXMLDoc, TagNames.Event_PID);
             this.TID = XMLUtils.ParseTagContentAsInt(eventXMLDoc, TagNames.Event_TID);
-            this.Integrity = ProcessIntegrityLevelStrings.ParseString(XMLUtils.GetInnerText(eventXMLDoc, TagNames.Event_Integrity));
+            this.Integrity = XMLUtils.GetInnerText(eventXMLDoc, TagNames.Event_Integrity).ToProcessIntegrityLevel();
             this.Sequence = XMLUtils.GetInnerText(eventXMLDoc, TagNames.Event_Sequence);
             this.Virtualized = XMLUtils.ParseTagContentAsBoolean(eventXMLDoc, TagNames.Event_Virtualized);
             this.Operation = XMLUtils.GetInnerText(eventXMLDoc, TagNames.Event_Operation);

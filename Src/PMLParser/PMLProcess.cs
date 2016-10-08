@@ -50,7 +50,7 @@ namespace SeeBee.PMLParser
             this.FinishTime = XMLUtils.ParseTagContentAsFileTime(processXMLDoc, TagNames.Process_FinishTime);
             this.IsVirtualized = XMLUtils.ParseTagContentAsBoolean(processXMLDoc, TagNames.Process_IsVirtualized);
             this.Is64bit = XMLUtils.ParseTagContentAsBoolean(processXMLDoc, TagNames.Process_Is64bit);
-            this.ProcessIntegrity = ProcessIntegrityLevelStrings.ParseString(XMLUtils.GetInnerText(processXMLDoc, TagNames.Process_Integrity));
+            this.ProcessIntegrity = ProcessIntegrityLevelExtensions.ToProcessIntegrityLevel(XMLUtils.GetInnerText(processXMLDoc, TagNames.Process_Integrity));
             this.OwnerIndex = ownerIndex;
             this.ProcessName = XMLUtils.GetInnerText(processXMLDoc, TagNames.Process_ProcessName);
             this.CommandLine = StringUtils.HTMLUnEscape(XMLUtils.GetInnerText(processXMLDoc, TagNames.Process_CommandLine)).Trim();
