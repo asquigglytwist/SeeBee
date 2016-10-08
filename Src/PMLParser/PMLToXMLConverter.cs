@@ -21,9 +21,7 @@ namespace SeeBee.PMLParser
             }
             this.shouldRetryOnceOnFailure = shouldRetryOnceOnFailure;
             PMLFile = pmlFile;
-            // [BIB]:  http://stackoverflow.com/questions/5608980/how-to-ensure-a-timestamp-is-always-unique
-            XMLFile = string.Format("{0}_{1}.xml", FSUtils.GetFileName(pmlFile, true), DateTime.UtcNow.Ticks);
-            XMLFile = FSUtils.PathCombine(FSUtils.WritableLocationForTempFile, XMLFile);
+            XMLFile = FSUtils.CreateOuputFileFromInput(pmlFile, ".xml");
 
             StringBuilder sbArgs = new StringBuilder("/quiet /minimized /saveas2 ");
             sbArgs.Append(XMLFile);
