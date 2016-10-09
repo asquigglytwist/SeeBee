@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using SeeBee.FxUtils.CLIArgs;
 using SeeBee.FxUtils.Utils;
-using System.IO;
 
 namespace SeeBee.PMLParser.ConfigManager
 {
@@ -37,23 +36,20 @@ namespace SeeBee.PMLParser.ConfigManager
             argsParser.Parse(args, InitAllCLIArgs(), parsedArguments);
             if (string.IsNullOrWhiteSpace(cliParserOutput))
             {
-                ProcMonEXELocation = parsedArguments[ProcMonExe.Name].First();
-                if (!FSUtils.FileExists(ProcMonEXELocation))
-                {
-                    throw new FileNotFoundException("Not able to, either find or access the ProcMon executable (file).", ProcMonEXELocation);
-                }
-                PMLFile = parsedArguments[InFilePath.Name].First();
-                if (!FSUtils.FileExists(PMLFile))
-                {
-                    throw new FileNotFoundException("Not able to, either find or access the ProcMon Logs file.", PMLFile);
-                }
+                ProcMonExePath = parsedArguments[ProcMonExe.Name].First();
+                FSUtils.FileExists(ProcMonExePath, "Not able to, either find or access the ProcMon executable (file).");
+                PMLFilePath = parsedArguments[InFilePath.Name].First();
+                FSUtils.FileExists(PMLFilePath, "Not able to, either find or access the ProcMon Logs file.");
+                AppConfigFilePath = parsedArguments[Config.Name].First();
+                FSUtils.FileExists(AppConfigFilePath, "Application Configuration File was not found.");
             }
             return cliParserOutput;
         }
 
         #region Properties
-        internal static string ProcMonEXELocation { get; private set; }
-        internal static string PMLFile { get; private set; }
+        internal static string ProcMonExePath { get; private set; }
+        internal static string PMLFilePath { get; private set; }
+        internal static string AppConfigFilePath { get; private set; }
         #endregion
     }
 }
