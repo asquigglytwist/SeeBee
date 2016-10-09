@@ -10,8 +10,7 @@ namespace SeeBee.PMLParser
     public static class PMLAnalyzer
     {
         #region Members
-        internal static PMLProcess[] processes;
-        internal static PMLEvent[] events; 
+        static PMLFile processedPMLFile;
         #endregion
 
         #region Private Methods
@@ -46,11 +45,7 @@ namespace SeeBee.PMLParser
             string xmlFile;
             if (Convert(CommandProcessor.PMLFilePath, out xmlFile) && !string.IsNullOrWhiteSpace(xmlFile))
             {
-                ConvertedXMLProcessor.PopulateProcessesAndEvents(xmlFile, out processes, out events);
-#if DEBUG
-                System.Console.WriteLine("# of Processes that match the criteria {0}.", processes.Length);
-                System.Console.WriteLine("# of Events that match the criteria {0}.", events.Length);
-#endif
+                processedPMLFile = ConvertedXMLProcessor.PopulateProcessesAndEvents(xmlFile);
                 FSUtils.FileDelete(xmlFile);
                 return true;
             }
