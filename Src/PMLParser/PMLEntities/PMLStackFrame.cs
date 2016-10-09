@@ -5,6 +5,9 @@ using SeeBee.PMLParser.ManagedLists;
 
 namespace SeeBee.PMLParser.PMLEntities
 {
+    /// <summary>
+    /// Represents a PML Stack Frame
+    /// </summary>
     internal class PMLStackFrame
     {
         int pathIndex;
@@ -13,7 +16,7 @@ namespace SeeBee.PMLParser.PMLEntities
         #region Static Methods
         internal static PMLStackFrame[] LoadStackFrames(XmlDocument eventXMLDoc)
         {
-            var stackFrames = eventXMLDoc.SelectNodes(TagNames.StackFrame_XPathInXML);
+            var stackFrames = eventXMLDoc.SelectNodes(ProcMonXMLTagNames.StackFrame_XPathInXML);
             PMLStackFrame[] eventStackFrames = new PMLStackFrame[stackFrames.Count];
             int i = 0;
             foreach (XmlElement frame in stackFrames)
@@ -43,9 +46,9 @@ namespace SeeBee.PMLParser.PMLEntities
         }
 
         internal PMLStackFrame(XmlElement frame) :
-            this(StringUtils.HexStringToLong(XMLUtils.GetInnerText(frame, TagNames.StackFrame_Address)),
-            XMLUtils.GetInnerText(frame, TagNames.StackFrame_Path),
-            XMLUtils.GetInnerText(frame, TagNames.StackFrame_Location))
+            this(StringUtils.HexStringToLong(XMLUtils.GetInnerText(frame, ProcMonXMLTagNames.StackFrame_Address)),
+            XMLUtils.GetInnerText(frame, ProcMonXMLTagNames.StackFrame_Path),
+            XMLUtils.GetInnerText(frame, ProcMonXMLTagNames.StackFrame_Location))
         {
         }
         #endregion

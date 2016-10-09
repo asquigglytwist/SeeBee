@@ -7,6 +7,9 @@ using SeeBee.PMLParser.ManagedLists;
 
 namespace SeeBee.PMLParser.PMLEntities
 {
+    /// <summary>
+    /// Represents a PML Process
+    /// </summary>
     internal class PMLProcess
     {
         private string summary;
@@ -34,24 +37,24 @@ namespace SeeBee.PMLParser.PMLEntities
         {
             XmlDocument processXMLDoc = new XmlDocument();
             processXMLDoc.Load(processListReader);
-            string tempString = XMLUtils.GetInnerText(processXMLDoc, TagNames.Process_Owner);
+            string tempString = XMLUtils.GetInnerText(processXMLDoc, ProcMonXMLTagNames.Process_Owner);
 
             // Actual object creation i.e., assigning values to members
-            this.ProcessId = XMLUtils.ParseTagContentAsInt(processXMLDoc, TagNames.Process_ProcessId);
-            this.ParentProcessId = XMLUtils.ParseTagContentAsInt(processXMLDoc, TagNames.Process_ParentProcessId);
-            this.ProcessIndex = XMLUtils.ParseTagContentAsInt(processXMLDoc, TagNames.Process_ProcessIndex);
-            this.ParentProcessIndex = XMLUtils.ParseTagContentAsInt(processXMLDoc, TagNames.Process_ParentProcessIndex);
-            this.AuthenticationId = XMLUtils.GetInnerText(processXMLDoc, TagNames.Process_AuthenticationId);
-            this.CreateTime = XMLUtils.ParseTagContentAsFileTime(processXMLDoc, TagNames.Process_CreateTime);
-            this.FinishTime = XMLUtils.ParseTagContentAsFileTime(processXMLDoc, TagNames.Process_FinishTime);
-            this.IsVirtualized = XMLUtils.ParseTagContentAsBoolean(processXMLDoc, TagNames.Process_IsVirtualized);
-            this.Is64bit = XMLUtils.ParseTagContentAsBoolean(processXMLDoc, TagNames.Process_Is64bit);
-            this.ProcessIntegrity = ProcessIntegrityLevelExtensions.ToProcessIntegrityLevel(XMLUtils.GetInnerText(processXMLDoc, TagNames.Process_Integrity));
+            this.ProcessId = XMLUtils.ParseTagContentAsInt(processXMLDoc, ProcMonXMLTagNames.Process_ProcessId);
+            this.ParentProcessId = XMLUtils.ParseTagContentAsInt(processXMLDoc, ProcMonXMLTagNames.Process_ParentProcessId);
+            this.ProcessIndex = XMLUtils.ParseTagContentAsInt(processXMLDoc, ProcMonXMLTagNames.Process_ProcessIndex);
+            this.ParentProcessIndex = XMLUtils.ParseTagContentAsInt(processXMLDoc, ProcMonXMLTagNames.Process_ParentProcessIndex);
+            this.AuthenticationId = XMLUtils.GetInnerText(processXMLDoc, ProcMonXMLTagNames.Process_AuthenticationId);
+            this.CreateTime = XMLUtils.ParseTagContentAsFileTime(processXMLDoc, ProcMonXMLTagNames.Process_CreateTime);
+            this.FinishTime = XMLUtils.ParseTagContentAsFileTime(processXMLDoc, ProcMonXMLTagNames.Process_FinishTime);
+            this.IsVirtualized = XMLUtils.ParseTagContentAsBoolean(processXMLDoc, ProcMonXMLTagNames.Process_IsVirtualized);
+            this.Is64bit = XMLUtils.ParseTagContentAsBoolean(processXMLDoc, ProcMonXMLTagNames.Process_Is64bit);
+            this.ProcessIntegrity = ProcessIntegrityLevelExtensions.ToProcessIntegrityLevel(XMLUtils.GetInnerText(processXMLDoc, ProcMonXMLTagNames.Process_Integrity));
             this.OwnerIndex = OwnerList.AddOwnerToList(tempString);
-            this.ProcessNameIndex = ProcessNameList.AddProcessNameToList(XMLUtils.GetInnerText(processXMLDoc, TagNames.Process_ProcessName));
-            this.CommandLine = StringUtils.HTMLUnEscape(XMLUtils.GetInnerText(processXMLDoc, TagNames.Process_CommandLine)).Trim();
+            this.ProcessNameIndex = ProcessNameList.AddProcessNameToList(XMLUtils.GetInnerText(processXMLDoc, ProcMonXMLTagNames.Process_ProcessName));
+            this.CommandLine = StringUtils.HTMLUnEscape(XMLUtils.GetInnerText(processXMLDoc, ProcMonXMLTagNames.Process_CommandLine)).Trim();
             this.LoadedModuleList = PMLModule.LoadModules(processXMLDoc);
-            this.ImageIndex = ModuleList.LocateModuleInList(XMLUtils.GetInnerText(processXMLDoc, TagNames.Process_ImagePath));
+            this.ImageIndex = ModuleList.LocateModuleInList(XMLUtils.GetInnerText(processXMLDoc, ProcMonXMLTagNames.Process_ImagePath));
 
             StringBuilder buffer = new StringBuilder(string.Format(
                 "{0}{1} Process - {2} [{3}] with ID = {4} was created at {5} with {6} integrity, which loaded {7} modules, as a child of {8} by {9}",

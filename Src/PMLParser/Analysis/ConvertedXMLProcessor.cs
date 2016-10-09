@@ -16,7 +16,7 @@ namespace SeeBee.PMLParser.Analysis
                 while (source.Read())
                 {
                     if (source.NodeType == XmlNodeType.Element &&
-                        source.Name.Equals(TagNames.Process_Process, StringComparison.CurrentCultureIgnoreCase))
+                        source.Name.Equals(ProcMonXMLTagNames.Process_Process, StringComparison.CurrentCultureIgnoreCase))
                     {
                         using (XmlReader processListReader = source.ReadSubtree())
                         {
@@ -42,7 +42,7 @@ namespace SeeBee.PMLParser.Analysis
                 while (source.Read())
                 {
                     if (source.NodeType == XmlNodeType.Element &&
-                        source.Name.Equals(TagNames.Event_Event, StringComparison.CurrentCultureIgnoreCase))
+                        source.Name.Equals(ProcMonXMLTagNames.Event_Event, StringComparison.CurrentCultureIgnoreCase))
                     {
                         using (XmlReader eventListReader = source.ReadSubtree())
                         {

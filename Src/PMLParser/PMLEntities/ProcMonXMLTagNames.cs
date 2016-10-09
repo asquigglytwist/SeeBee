@@ -1,6 +1,9 @@
 ﻿namespace SeeBee.PMLParser.PMLEntities
 {
-    internal static class TagNames
+    /// <summary>
+    /// Grouping all XML tag names used in processing the converted ProcMon XML
+    /// </summary>
+    internal static class ProcMonXMLTagNames
     {
         #region Tags for Processes
         internal const string Process_Process = "process";
