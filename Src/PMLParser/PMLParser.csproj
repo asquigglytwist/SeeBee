@@ -47,6 +47,7 @@
     <Compile Include="ManagedLists\ProcessNameList.cs" />
     <Compile Include="PMLAnalyzer.cs" />
     <Compile Include="PMLEntities\PMLEvent.cs" />
+    <Compile Include="PMLEntities\PMLFile.cs" />
     <Compile Include="PMLEntities\PMLModule.cs" />
     <Compile Include="PMLEntities\PMLStackFrame.cs" />
     <Compile Include="Conversion\PMLToXMLConverter.cs" />
