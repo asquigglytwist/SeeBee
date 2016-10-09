@@ -18,7 +18,7 @@ namespace SeeBee.PMLParser
         private static bool Convert(string pmlFile, out string xmlFile)
         {
             PMLToXMLConverter converter;
-            converter = new PMLToXMLConverter(CommandProcessor.ProcMonEXELocation, pmlFile);
+            converter = new PMLToXMLConverter(CommandProcessor.ProcMonExePath, pmlFile);
             if (converter.Convert())
             {
                 xmlFile = converter.XMLFile;
@@ -44,7 +44,7 @@ namespace SeeBee.PMLParser
         internal static bool ProcessPMLFile()
         {
             string xmlFile;
-            if (Convert(CommandProcessor.PMLFile, out xmlFile) && !string.IsNullOrWhiteSpace(xmlFile))
+            if (Convert(CommandProcessor.PMLFilePath, out xmlFile) && !string.IsNullOrWhiteSpace(xmlFile))
             {
                 ConvertedXMLProcessor.PopulateProcessesAndEvents(xmlFile, out processes, out events);
 #if DEBUG

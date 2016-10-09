@@ -26,7 +26,7 @@ namespace SeeBee.PMLParser.Conversion
             }
             this.shouldRetryOnceOnFailure = shouldRetryOnceOnFailure;
             PMLFile = pmlFile;
-            XMLFile = FSUtils.CreateOuputFileFromInput(pmlFile, ".xml");
+            XMLFile = FSUtils.CreateOuputFileNameFromInput(pmlFile, ".xml");
 
             StringBuilder sbArgs = new StringBuilder("/quiet /minimized /saveas2 ");
             sbArgs.Append(XMLFile);
