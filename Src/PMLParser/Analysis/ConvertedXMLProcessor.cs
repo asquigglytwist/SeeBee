@@ -68,14 +68,7 @@ namespace SeeBee.PMLParser.Analysis
         {
             var procs = from p in ConvertedXMLProcessor.LoadProcesses(xmlFilePath) where (!string.IsNullOrWhiteSpace(p.ProcessNameIndex.ToString())) select p;
             var evts = from e in ConvertedXMLProcessor.LoadEvents(xmlFilePath) where (!string.IsNullOrWhiteSpace(e.TimeOfDay.ToString())) select e;
-            PMLProcess[] processes = procs.ToArray();
-            PMLEvent[] events = evts.ToArray();
-            var pmlFile = new PMLFile(processes, events);
-#if DEBUG
-            System.Console.WriteLine("# of Processes that match the criteria {0}.", processes.Length);
-            System.Console.WriteLine("# of Events that match the criteria {0}.", events.Length);
-#endif
-            return pmlFile;
+            return new PMLFile(procs.ToArray(), evts.ToArray());
         }
         #endregion
     }

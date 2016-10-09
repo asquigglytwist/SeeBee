@@ -1,22 +1,27 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace SeeBee.PMLParser.PMLEntities
 {
     /// <summary>
     /// Represents an input PML file
     /// </summary>
-    class PMLFile
+    internal class PMLFile
     {
-        internal PMLProcess[] processes;
-        internal PMLEvent[] events;
+        #region Members
+        private PMLProcess[] processes;
+        private PMLEvent[] events; 
+        #endregion
 
-        internal PMLFile(PMLProcess[] procs, PMLEvent[] evts)
+        #region Constructor
+        public PMLFile(PMLProcess[] procs, PMLEvent[] evts)
         {
             this.processes = procs;
             this.events = evts;
-        }
+#if DEBUG
+            Console.WriteLine("# of Processes that match the criteria {0}.", this.processes.Length);
+            Console.WriteLine("# of Events that match the criteria {0}.", this.events.Length);
+#endif
+        } 
+        #endregion
     }
 }
