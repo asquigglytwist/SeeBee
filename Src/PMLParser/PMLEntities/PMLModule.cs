@@ -6,6 +6,9 @@ using SeeBee.PMLParser.ManagedLists;
 
 namespace SeeBee.PMLParser.PMLEntities
 {
+    /// <summary>
+    /// Represents a PML Module
+    /// </summary>
     internal class PMLModule
     {
         #region Members
@@ -19,10 +22,10 @@ namespace SeeBee.PMLParser.PMLEntities
         internal static HashSet<int> LoadModules(XmlDocument processXMLDoc)
         {
             HashSet<int> processModuleList = new HashSet<int>();
-            var modules = processXMLDoc.SelectNodes(TagNames.Module_XPathInXML);
+            var modules = processXMLDoc.SelectNodes(ProcMonXMLTagNames.Module_XPathInXML);
             foreach (XmlElement module in modules)
             {
-                string path = module.GetElementsByTagName(TagNames.Module_Path)[0].InnerText;
+                string path = module.GetElementsByTagName(ProcMonXMLTagNames.Module_Path)[0].InnerText;
                 int moduleIndex = ModuleList.LocateModuleInList(path);
                 if (-1 == moduleIndex)
                 {
@@ -79,13 +82,13 @@ namespace SeeBee.PMLParser.PMLEntities
         }
 
         internal PMLModule(string path, XmlElement module) :
-            this(XMLUtils.ParseTagContentAsFileTime(module, TagNames.Module_Timestamp),
-            StringUtils.HexStringToLong(XMLUtils.GetInnerText(module, TagNames.Module_BaseAddress)),
-            XMLUtils.ParseTagContentAsLong(module, TagNames.Module_Size),
+            this(XMLUtils.ParseTagContentAsFileTime(module, ProcMonXMLTagNames.Module_Timestamp),
+            StringUtils.HexStringToLong(XMLUtils.GetInnerText(module, ProcMonXMLTagNames.Module_BaseAddress)),
+            XMLUtils.ParseTagContentAsLong(module, ProcMonXMLTagNames.Module_Size),
             path,
-            XMLUtils.GetInnerText(module, TagNames.Module_Version),
-            XMLUtils.GetInnerText(module, TagNames.Module_Company),
-            XMLUtils.GetInnerText(module, TagNames.Module_Description))
+            XMLUtils.GetInnerText(module, ProcMonXMLTagNames.Module_Version),
+            XMLUtils.GetInnerText(module, ProcMonXMLTagNames.Module_Company),
+            XMLUtils.GetInnerText(module, ProcMonXMLTagNames.Module_Description))
         {
         }
         #endregion

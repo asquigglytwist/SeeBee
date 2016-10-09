@@ -3,6 +3,9 @@
 namespace SeeBee.PMLParser.PMLEntities
 {
     #region ProcessIntegrityLevel
+    /// <summary>
+    /// Enumeration of Process Integrity Levels
+    /// </summary>
     internal enum ProcessIntegrityLevel
     {
         None,

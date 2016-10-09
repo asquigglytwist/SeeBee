@@ -5,6 +5,9 @@ using SeeBee.PMLParser.ManagedLists;
 
 namespace SeeBee.PMLParser.PMLEntities
 {
+    /// <summary>
+    /// Represents a PML Event
+    /// </summary>
     public class PMLEvent
     {
         #region Members
@@ -38,18 +41,18 @@ namespace SeeBee.PMLParser.PMLEntities
         {
             XmlDocument eventXMLDoc = new XmlDocument();
             eventXMLDoc.Load(eventListReader);
-            this.ProcessIndex = XMLUtils.ParseTagContentAsInt(eventXMLDoc, TagNames.Event_ProcessIndex);
-            this.TimeOfDay = XMLUtils.ParseTagContentAsFileTime(eventXMLDoc, TagNames.Event_TimeOfDay);
-            this.ProcessNameIndex = ProcessNameList.AddProcessNameToList(XMLUtils.GetInnerText(eventXMLDoc, TagNames.Event_Process_Name));
-            this.PID = XMLUtils.ParseTagContentAsInt(eventXMLDoc, TagNames.Event_PID);
-            this.TID = XMLUtils.ParseTagContentAsInt(eventXMLDoc, TagNames.Event_TID);
-            this.Integrity = XMLUtils.GetInnerText(eventXMLDoc, TagNames.Event_Integrity).ToProcessIntegrityLevel();
-            this.Sequence = XMLUtils.GetInnerText(eventXMLDoc, TagNames.Event_Sequence);
-            this.Virtualized = XMLUtils.ParseTagContentAsBoolean(eventXMLDoc, TagNames.Event_Virtualized);
-            this.Operation = XMLUtils.GetInnerText(eventXMLDoc, TagNames.Event_Operation);
-            this.pathIndex = FilePathList.AddFilePathToList(XMLUtils.GetInnerText(eventXMLDoc, TagNames.Event_Path));
-            this.Result = XMLUtils.GetInnerText(eventXMLDoc, TagNames.Event_Result);
-            this.Detail = XMLUtils.GetInnerText(eventXMLDoc, TagNames.Event_Detail);
+            this.ProcessIndex = XMLUtils.ParseTagContentAsInt(eventXMLDoc, ProcMonXMLTagNames.Event_ProcessIndex);
+            this.TimeOfDay = XMLUtils.ParseTagContentAsFileTime(eventXMLDoc, ProcMonXMLTagNames.Event_TimeOfDay);
+            this.ProcessNameIndex = ProcessNameList.AddProcessNameToList(XMLUtils.GetInnerText(eventXMLDoc, ProcMonXMLTagNames.Event_Process_Name));
+            this.PID = XMLUtils.ParseTagContentAsInt(eventXMLDoc, ProcMonXMLTagNames.Event_PID);
+            this.TID = XMLUtils.ParseTagContentAsInt(eventXMLDoc, ProcMonXMLTagNames.Event_TID);
+            this.Integrity = XMLUtils.GetInnerText(eventXMLDoc, ProcMonXMLTagNames.Event_Integrity).ToProcessIntegrityLevel();
+            this.Sequence = XMLUtils.GetInnerText(eventXMLDoc, ProcMonXMLTagNames.Event_Sequence);
+            this.Virtualized = XMLUtils.ParseTagContentAsBoolean(eventXMLDoc, ProcMonXMLTagNames.Event_Virtualized);
+            this.Operation = XMLUtils.GetInnerText(eventXMLDoc, ProcMonXMLTagNames.Event_Operation);
+            this.pathIndex = FilePathList.AddFilePathToList(XMLUtils.GetInnerText(eventXMLDoc, ProcMonXMLTagNames.Event_Path));
+            this.Result = XMLUtils.GetInnerText(eventXMLDoc, ProcMonXMLTagNames.Event_Result);
+            this.Detail = XMLUtils.GetInnerText(eventXMLDoc, ProcMonXMLTagNames.Event_Detail);
             this.callStack = PMLStackFrame.LoadStackFrames(eventXMLDoc);
 #if DEBUG
             Console.WriteLine("Stack:\n-------------------------------------------------------------");
