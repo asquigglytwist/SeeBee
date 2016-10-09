@@ -41,6 +41,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConfigManager\CommandProcessor.cs" />
+    <Compile Include="ConfigManager\AppConfig.cs" />
+    <Compile Include="ConfigManager\AppConfigPropertyNames.cs" />
     <Compile Include="ManagedLists\FilePathList.cs" />
     <Compile Include="ManagedLists\ModuleList.cs" />
     <Compile Include="ManagedLists\OwnerList.cs" />
