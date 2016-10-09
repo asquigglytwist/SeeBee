@@ -3,8 +3,12 @@ using System.IO;
 
 namespace SeeBee.FxUtils.Utils
 {
+    /// <summary>
+    /// FileSystem Utils - A collection of static methods to assist with FileSystem operations.
+    /// </summary>
     public static class FSUtils
     {
+        #region Static Constructor
         static FSUtils()
         {
             PathSeparator = Path.PathSeparator;
@@ -65,7 +69,8 @@ namespace SeeBee.FxUtils.Utils
             }
             #endregion
             #region WritableLocationForTempFile
-            s = Path.GetDirectoryName(Path.GetTempFileName());
+            string tempFileName = Path.GetTempFileName();
+            s = Path.GetDirectoryName(tempFileName);
             if (IsWritableLocation(s))
             {
                 WritableLocationForTempFile = s;
@@ -78,25 +83,54 @@ namespace SeeBee.FxUtils.Utils
                     WritableLocationForTempFile = s;
                 }
             }
+            File.Delete(tempFileName);
             #endregion
-        }
+        } 
+        #endregion
 
         #region Functions
-        public static bool FileExists(string path)
+        /// <summary>
+        /// Checks if a file exists and optionally, throws a FileNotFoundException.
+        /// </summary>
+        /// <param name="path">Complete path to the file, which is being checked.</param>
+        /// <param name="errorMessageOnThrow">Optional parameter; If set and file is not found, causes a FileNotFoundException to be thrown with the provided error message.</param>
+        /// <returns>True, if the file exists; False otherwise.</returns>
+        public static bool FileExists(string path, string errorMessageOnThrow = null)
         {
-            return File.Exists(path);
+            bool doesFileExist = File.Exists(path);
+            if ((!doesFileExist) && (!string.IsNullOrWhiteSpace(errorMessageOnThrow)))
+            {
+                throw new FileNotFoundException(errorMessageOnThrow, path);
+            }
+            return doesFileExist;
         }
 
+        /// <summary>
+        /// Deletes the file.
+        /// </summary>
+        /// <param name="path">Complete path to the file, which is to be deleted.</param>
         public static void FileDelete(string path)
         {
             File.Delete(path);
         }
 
+        /// <summary>
+        /// Creates a complete path out of the provided path and filename.
+        /// </summary>
+        /// <param name="path">Path where the file, either resides or is supposed to.</param>
+        /// <param name="fileNameWithExtension">Complete filename along with its extension.</param>
+        /// <returns>The combined path, created from the inputs, as a string.</returns>
         public static string PathCombine(string path, string fileNameWithExtension)
         {
             return Path.Combine(path, fileNameWithExtension);
         }
 
+        /// <summary>
+        /// Extracts the file name from provided path.
+        /// </summary>
+        /// <param name="path">Complete path to the file.</param>
+        /// <param name="ignoreExtension">Optional argument, if True, will extract the file name without its extension.</param>
+        /// <returns>The extracted file name, as a string.</returns>
         public static string GetFileName(string path, bool ignoreExtension = false)
         {
             if (ignoreExtension)
@@ -106,7 +140,13 @@ namespace SeeBee.FxUtils.Utils
             return Path.GetFileName(path);
         }
 
-        public static string CreateOuputFileFromInput(string input, string extension = null)
+        /// <summary>
+        /// Attempts to create an output file name from the provided input, in a way that doesn't conflict with existing files.
+        /// </summary>
+        /// <param name="input">Input file for which an output file name is being constructed.</param>
+        /// <param name="extension">An optional parameter, a string prefixed with period, which will be used in the output file's name.</param>
+        /// <returns></returns>
+        public static string CreateOuputFileNameFromInput(string input, string extension = null)
         {
             // [BIB]:  http://stackoverflow.com/questions/674479/how-do-i-get-the-directory-from-a-files-full-path
             string fileName = GetFileName(input, true), location = new FileInfo(input).Directory.FullName;
@@ -145,6 +185,11 @@ namespace SeeBee.FxUtils.Utils
         }
 
         // [BIB]:  http://stackoverflow.com/questions/1410127/c-sharp-test-if-user-has-write-access-to-a-folder
+        /// <summary>
+        /// Checks if a provided folder path is writable by the caller.
+        /// </summary>
+        /// <param name="folderPath">Complete path to the folder, for which writability i.e., write permissions, are being checked.</param>
+        /// <returns>True if writable; False otherwise.</returns>
         public static bool IsWritableLocation(string folderPath)
         {
             try
@@ -162,12 +207,18 @@ namespace SeeBee.FxUtils.Utils
         #endregion
 
         #region Properties
+        /// <summary>
+        /// The default Path Separator character used in the environment.  Same as Path.PathSeparator.
+        /// </summary>
         public static char PathSeparator
         {
             get;
             private set;
         }
 
+        /// <summary>
+        /// Gets the Current WorkingDirectory.  Same as Environment.CurrentDirectory.
+        /// </summary>
         public static string CurrentWorkingDirectory
         {
             get
@@ -176,18 +227,27 @@ namespace SeeBee.FxUtils.Utils
             }
         }
 
+        /// <summary>
+        /// Gets the writable location for all users.  Will be one of CommonApplicationData or CommonDocuments or CommonDesktopDirectory, in that order.  Is null if none of the locations is writable.
+        /// </summary>
         public static string WritableLocationForAllUsers
         {
             get;
             private set;
         }
 
+        /// <summary>
+        /// Gets the writable location for all users.  Will be one of %AppData%, %TEMP%, My Documents or Desktop directories, in that order.  Is null if none of the locations is writable.
+        /// </summary>
         public static string WritableLocationForCurrentUser
         {
             get;
             private set;
         }
 
+        /// <summary>
+        /// Gets the writable location for temp files.  Will be either Path.GetTempFileName() or Environment.SpecialFolder.InternetCache.  Is null if none of the locations is writable.
+        /// </summary>
         public static string WritableLocationForTempFile
         {
             get;
