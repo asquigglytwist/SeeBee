@@ -10,7 +10,7 @@ namespace SeeBee.PMLParser.ManagedLists
         static OwnerList()
         {
             OwnerList.AddOwnerToList("NT AUTHORITY\\SYSTEM");
-        } 
+        }
         #endregion
 
         #region Methods
