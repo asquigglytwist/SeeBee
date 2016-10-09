@@ -23,7 +23,7 @@ namespace SeeBee.PMLParser.PMLEntities
         internal bool Is64bit { get; set; }
         internal ProcessIntegrityLevel ProcessIntegrity { get; set; }
         internal int OwnerIndex { get; set; }
-        internal string ProcessName { get; set; }
+        internal int ProcessNameIndex { get; set; }
         internal int ImageIndex { get; set; }
         internal string CommandLine { get; set; }
         internal HashSet<int> LoadedModuleList { get; set; }
@@ -48,7 +48,7 @@ namespace SeeBee.PMLParser.PMLEntities
             this.Is64bit = XMLUtils.ParseTagContentAsBoolean(processXMLDoc, TagNames.Process_Is64bit);
             this.ProcessIntegrity = ProcessIntegrityLevelExtensions.ToProcessIntegrityLevel(XMLUtils.GetInnerText(processXMLDoc, TagNames.Process_Integrity));
             this.OwnerIndex = OwnerList.AddOwnerToList(tempString);
-            this.ProcessName = XMLUtils.GetInnerText(processXMLDoc, TagNames.Process_ProcessName);
+            this.ProcessNameIndex = ProcessNameList.AddProcessNameToList(XMLUtils.GetInnerText(processXMLDoc, TagNames.Process_ProcessName));
             this.CommandLine = StringUtils.HTMLUnEscape(XMLUtils.GetInnerText(processXMLDoc, TagNames.Process_CommandLine)).Trim();
             this.LoadedModuleList = PMLModule.LoadModules(processXMLDoc);
             this.ImageIndex = ModuleList.LocateModuleInList(XMLUtils.GetInnerText(processXMLDoc, TagNames.Process_ImagePath));
@@ -57,7 +57,7 @@ namespace SeeBee.PMLParser.PMLEntities
                 "{0}{1} Process - {2} [{3}] with ID = {4} was created at {5} with {6} integrity, which loaded {7} modules, as a child of {8} by {9}",
                 (IsVirtualized ? "Virtualized " : ""),
                 (Is64bit ? "64-Bit" : "32-Bit"),
-                ProcessName,
+                ProcessNameList.GetProcessName(ProcessNameIndex),
                 ModuleList.GetModuleDescription(ImageIndex),
                 ProcessId,
                 CreateTime,

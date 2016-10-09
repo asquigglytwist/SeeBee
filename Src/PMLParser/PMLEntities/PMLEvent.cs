@@ -15,7 +15,7 @@ namespace SeeBee.PMLParser.PMLEntities
         #region Properties
         internal int ProcessIndex { get; private set; }
         internal DateTime TimeOfDay { get; private set; }
-        internal string ProcessName { get; private set; }
+        internal int ProcessNameIndex { get; private set; }
         internal int PID { get; private set; }
         internal int TID { get; private set; }
         internal ProcessIntegrityLevel Integrity { get; private set; }
@@ -40,7 +40,7 @@ namespace SeeBee.PMLParser.PMLEntities
             eventXMLDoc.Load(eventListReader);
             this.ProcessIndex = XMLUtils.ParseTagContentAsInt(eventXMLDoc, TagNames.Event_ProcessIndex);
             this.TimeOfDay = XMLUtils.ParseTagContentAsFileTime(eventXMLDoc, TagNames.Event_TimeOfDay);
-            this.ProcessName = XMLUtils.GetInnerText(eventXMLDoc, TagNames.Event_Process_Name);
+            this.ProcessNameIndex = ProcessNameList.AddProcessNameToList(XMLUtils.GetInnerText(eventXMLDoc, TagNames.Event_Process_Name));
             this.PID = XMLUtils.ParseTagContentAsInt(eventXMLDoc, TagNames.Event_PID);
             this.TID = XMLUtils.ParseTagContentAsInt(eventXMLDoc, TagNames.Event_TID);
             this.Integrity = XMLUtils.GetInnerText(eventXMLDoc, TagNames.Event_Integrity).ToProcessIntegrityLevel();
@@ -86,7 +86,7 @@ namespace SeeBee.PMLParser.PMLEntities
         {
             return string.Format("Thread {0} of Process {1} [PID: {2}] performed {3} at {4} on {5} and result was {6}.{7}Details:{8}{7}",
                 this.TID,
-                this.ProcessName,
+                ProcessNameList.GetProcessName(this.ProcessNameIndex),
                 this.PID,
                 this.Operation,
                 this.TimeOfDay,

@@ -8,6 +8,7 @@ namespace SeeBee.PMLParser.Analysis
 {
     internal static class ConvertedXMLProcessor
     {
+        #region Private Methods
         private static IEnumerable<PMLProcess> LoadProcesses(string xmlFilePath)
         {
             using (XmlReader source = XmlReader.Create(xmlFilePath))
@@ -58,15 +59,18 @@ namespace SeeBee.PMLParser.Analysis
                 }
                 source.Close();
             }
-        }
+        } 
+        #endregion
 
+        #region Public Methods
         // [BIB]:  http://stackoverflow.com/questions/1516876/when-to-use-ref-vs-out
         internal static void PopulateProcessesAndEvents(string xmlFilePath, out PMLProcess[] processes, out PMLEvent[] events)
         {
-            var procs = from p in ConvertedXMLProcessor.LoadProcesses(xmlFilePath) where (!string.IsNullOrWhiteSpace(p.ProcessName)) select p;
+            var procs = from p in ConvertedXMLProcessor.LoadProcesses(xmlFilePath) where (!string.IsNullOrWhiteSpace(p.ProcessNameIndex.ToString())) select p;
             var evts = from e in ConvertedXMLProcessor.LoadEvents(xmlFilePath) where (!string.IsNullOrWhiteSpace(e.TimeOfDay.ToString())) select e;
             processes = procs.ToArray();
             events = evts.ToArray();
-        }
+        } 
+        #endregion
     }
 }
