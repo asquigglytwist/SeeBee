@@ -21,6 +21,7 @@ namespace SeeBee.PMLParser.PMLEntities
         #region Static Methods
         internal static HashSet<int> LoadModules(XmlDocument processXMLDoc)
         {
+            ModuleList.AddModuleToList(PMLModule.System);
             HashSet<int> processModuleList = new HashSet<int>();
             var modules = processXMLDoc.SelectNodes(ProcMonXMLTagNames.Module_XPathInXML);
             foreach (XmlElement module in modules)
