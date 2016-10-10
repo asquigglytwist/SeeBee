@@ -68,7 +68,7 @@ namespace SeeBee.PMLParser.Analysis
         {
             var procs = from p in ConvertedXMLProcessor.LoadProcesses(xmlFilePath) where (!string.IsNullOrWhiteSpace(p.ProcessNameIndex.ToString())) select p;
             var evts = from e in ConvertedXMLProcessor.LoadEvents(xmlFilePath) where (!string.IsNullOrWhiteSpace(e.TimeOfDay.ToString())) select e;
-            return new PMLFile(procs.ToArray(), evts.ToArray());
+            return new PMLFile(xmlFilePath, procs.ToArray(), evts.ToArray());
         }
         #endregion
     }
