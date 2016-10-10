@@ -24,9 +24,9 @@ namespace SeeBee.FxUtils.CLIArgs
         #endregion
 
         #region Methods
-        public string Parse(string[] args, CLIArgument[] cliArgs, Dictionary<string, List<string>> parsedArguments)
+        public List<string> Parse(string[] args, CLIArgument[] cliArgs, Dictionary<string, List<string>> parsedArguments)
         {
-            string errorMsg = string.Empty;
+            List<string> errorMsgs = new List<string>(args.Length);
             for (int i = 0; i < args.Length; i++)
             {
                 List<string> paramsList = null;
@@ -36,11 +36,7 @@ namespace SeeBee.FxUtils.CLIArgs
                               select arg).FirstOrDefault();
                 if (cliArg == null)
                 {
-                    if (!string.IsNullOrWhiteSpace(errorMsg))
-                    {
-                        errorMsg += Environment.NewLine;
-                    }
-                    errorMsg += string.Format("Unable to recognize (or parse) Command Line Argument \"{0}\" at position {1}.", args[i], i);
+                    errorMsgs.Add(string.Format("Unable to recognize (or parse) Command Line Argument \"{0}\" at position {1}.", args[i], i));
                     continue;
                 }
                 if (cliArg.ParameterNames != null)
@@ -54,18 +50,14 @@ namespace SeeBee.FxUtils.CLIArgs
                         }
                         catch(IndexOutOfRangeException)
                         {
-                            if (!string.IsNullOrWhiteSpace(errorMsg))
-                            {
-                                errorMsg += Environment.NewLine;
-                            }
-                            errorMsg += string.Format("Unable to parse Command Line Argument \"{0}\" at position {1}; Not enough arguments.  {2}For more details on the usage of the parameter,{2}{3}", args[i], i, Environment.NewLine, cliArg.ToLongString());
+                            errorMsgs.Add(string.Format("Unable to parse Command Line Argument \"{0}\" at position {1}; Not enough arguments.  {2}For more details on the usage of the parameter,{2}{3}", args[i], i, Environment.NewLine, cliArg.ToLongString()));
                         }
                     }
                     i += cliArg.ParameterNames.Length;
                 }
                 parsedArguments[cliArg.Name] = paramsList;
             }
-            return errorMsg;
+            return errorMsgs;
         }
         #endregion
     }

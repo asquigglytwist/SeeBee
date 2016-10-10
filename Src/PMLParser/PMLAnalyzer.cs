@@ -1,8 +1,8 @@
-﻿using SeeBee.FxUtils.Utils;
+﻿using System.Collections.Generic;
+using SeeBee.FxUtils.Utils;
 using SeeBee.PMLParser.Analysis;
 using SeeBee.PMLParser.ConfigManager;
 using SeeBee.PMLParser.Conversion;
-using SeeBee.PMLParser.ManagedLists;
 using SeeBee.PMLParser.PMLEntities;
 
 namespace SeeBee.PMLParser
@@ -29,13 +29,9 @@ namespace SeeBee.PMLParser
         #endregion
         
         #region Internal Methods
-        internal static string Init(string[] args)
+        internal static List<string> Init(string[] args)
         {
-            ModuleList.AddModuleToList(PMLModule.System);
-            string returnValue = null;
-#if DEBUG
-            args = new string[] { "pm", @"C:\T\SeeBee\Procmon.exe", "in", @"C:\T\SeeBee\Logfile.PML" };
-#endif
+            List<string> returnValue = null;
             returnValue = CommandProcessor.ParseCommandLine(args);
             return returnValue;
         }
@@ -43,7 +39,7 @@ namespace SeeBee.PMLParser
         internal static bool ProcessPMLFile()
         {
             string xmlFile;
-            if (Convert(CommandProcessor.PMLFilePath, out xmlFile) && !string.IsNullOrWhiteSpace(xmlFile))
+            if (Convert(CommandProcessor.InputFilePath, out xmlFile) && !string.IsNullOrWhiteSpace(xmlFile))
             {
                 processedPMLFile = ConvertedXMLProcessor.PopulateProcessesAndEvents(xmlFile);
                 FSUtils.FileDelete(xmlFile);
@@ -54,15 +50,15 @@ namespace SeeBee.PMLParser
         #endregion
 
         #region Public APIs
-        public static string InitAndAnalyze(out bool processingPMLResult,string[] args)
+        public static List<string> InitAndAnalyze(out bool processingPMLResult, string[] args)
         {
-            string resultMsg = Init(args);
+            List<string> resultMsgs = Init(args);
             processingPMLResult = false;
-            if (string.IsNullOrWhiteSpace(resultMsg))
+            if (resultMsgs.Count == 0)
             {
                 processingPMLResult = ProcessPMLFile();
             }
-            return resultMsg;
+            return resultMsgs;
         }
         #endregion
     }
