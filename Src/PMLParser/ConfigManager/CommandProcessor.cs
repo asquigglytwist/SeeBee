@@ -13,7 +13,7 @@ namespace SeeBee.PMLParser.ConfigManager
         private static CLIArgument ProcMonExe = new CLIArgument("pm", "procmon", true, new string[] { "filename" }, "Path to the ProcMon (Process Monitor) executable.", @"in C:\SysInternals\ProcMon\ProcMon.exe"),
             InFilePath = new CLIArgument("in", "inputfile", true, new string[] { "filename" }, "The input Process Monitor Log (PML) file that is to be processed.", @"in C:\Logs\LogFile.PML"),
             OutFilePath = new CLIArgument("out", "outputfile", false, new string[] { "filename" }, "Location for the output XML file to be stored.", @"out C:\Logs\AfterConversion.XML"),
-            Config = new CLIArgument("c", "config", true, null, "Input configuration file that dictates SeeBee's behavior.");
+            Config = new CLIArgument("c", "config", true, new string[] { "filename" }, "Input configuration file that dictates SeeBee's behavior.");
         private static CLIArgsParser argsParser = new CLIArgsParser();
         private static Dictionary<string, List<string>> parsedArguments = new Dictionary<string, List<string>>();
         #endregion
@@ -35,12 +35,22 @@ namespace SeeBee.PMLParser.ConfigManager
             List<string> cliParserOutput = argsParser.Parse(args, InitAllCLIArgs(), parsedArguments);
             if (cliParserOutput.Count == 0)
             {
-                ProcMonExePath = parsedArguments[ProcMonExe.Name].First();
+                List<string> tempList;
+                if (parsedArguments.TryGetValue(ProcMonExe.Name, out tempList))
+                {
+                    ProcMonExePath = tempList.First();
+                }
                 FSUtils.FileExists(ProcMonExePath, "Not able to, either find or access the ProcMon executable (file).");
-                InputFilePath = parsedArguments[InFilePath.Name].First();
+                if (parsedArguments.TryGetValue(InFilePath.Name, out tempList))
+                {
+                    InputFilePath = tempList.First();
+                }
                 FSUtils.FileExists(InputFilePath, "Not able to, either find or access the ProcMon Logs file.");
-                //AppConfigFilePath = parsedArguments[Config.Name].First();
-                //FSUtils.FileExists(AppConfigFilePath, "Application Configuration File was not found.");
+                if (parsedArguments.TryGetValue(Config.Name, out tempList))
+                {
+                    AppConfigFilePath = tempList.First();
+                }
+                FSUtils.FileExists(AppConfigFilePath, "Application Configuration File was not found.");
             }
             return cliParserOutput;
         }
