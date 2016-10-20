@@ -87,7 +87,11 @@ namespace SeeBee.PMLParser.PMLEntities
 
         public override string ToString()
         {
-            return string.Format("Thread {0} of Process {1} [PID: {2}] performed {3} at {4} on {5} and result was {6}.{7}Details:{8}{7}",
+            return
+#if DEBUG
+                "[PMLEvent]:\n" +
+#endif
+                string.Format("Thread {0} of Process {1} [PID: {2}] performed {3} at {4} on {5} and result was {6}.{7}Details:{8}{7}",
                 this.TID,
                 ProcessNameList.GetProcessName(this.ProcessNameIndex),
                 this.PID,

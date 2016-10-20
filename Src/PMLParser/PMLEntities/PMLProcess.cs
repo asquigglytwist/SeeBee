@@ -82,7 +82,11 @@ namespace SeeBee.PMLParser.PMLEntities
             {
                 buffer.AppendFormat("and ended at {0}.", FinishTime);
             }
-            this.summary = buffer.ToString();
+            this.summary =
+#if DEBUG
+                "[PMLProcess]:\n" +
+#endif
+                buffer.ToString();
         }
         #endregion
 

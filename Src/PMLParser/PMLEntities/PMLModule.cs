@@ -77,7 +77,11 @@ namespace SeeBee.PMLParser.PMLEntities
             {
                 this.Description = description;
             }
-            this.summary = string.Format("Module - [{0}] [Version = {1};  Size {2}], located at \"{3}\", from [{4}], was loaded at [{5}] into address 0x{6}.",
+            this.summary =
+#if DEBUG
+                "[PMLModule]:\n" +
+#endif
+                string.Format("Module - [{0}] [Version = {1};  Size {2}], located at \"{3}\", from [{4}], was loaded at [{5}] into address 0x{6}.",
                 this.Description, this.Version, NumberUtils.FormatNumberAsFileSize(this.Size), this.Path,
                 this.Company, this.TimeStamp, NumberUtils.LongToHexString(this.BaseAddress));
         }
