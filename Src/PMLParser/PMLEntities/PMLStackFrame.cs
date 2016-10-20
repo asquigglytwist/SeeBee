@@ -85,7 +85,11 @@ namespace SeeBee.PMLParser.PMLEntities
 
         public override string ToString()
         {
-            return string.Format("{0} at {1}.", this.Path, this.Address);
+            return
+#if DEBUG
+                "[PMLStackFrame]:\t" +
+#endif
+                string.Format("{0} at {1}.", this.Path, this.Address);
         }
         #endregion
     }
