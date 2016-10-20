@@ -9,19 +9,10 @@ namespace SeeBee.SeeBeeCmd
         static void Main(string[] args)
         {
 #if DEBUG
-            args = new string[] { "pm", @"C:\T\SeeBee\Procmon.exe", "in", @"C:\T\SeeBee\Logfile.PML" };
+            args = new string[] { "pm", @"C:\T\SeeBee\Procmon.exe", "in", @"C:\T\SeeBee\Logfile.PML", "c", @"C:\T\SeeBee\SeeBee.sbc" };
             for (int i = 0; i < args.Length; i++)
             {
-                Console.Write("Arg at {0};", i);
-                int j = args[i].IndexOf(':');
-                if (j > -1)
-                {
-                    Console.WriteLine("\nOption:   {0};\nArgument:   {1}", args[i].Substring(0, j), args[i].Substring(j + 1));
-                }
-                else
-                {
-                    Console.WriteLine(args[i]);
-                }
+                Console.WriteLine("Arg at {0};\t{1}", i, args[i]);
             }
 #endif
             bool processingPMLResult;

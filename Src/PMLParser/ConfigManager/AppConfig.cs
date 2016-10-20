@@ -9,6 +9,7 @@ namespace SeeBee.PMLParser.ConfigManager
     internal class AppConfig
     {
         List<int> ignoredProcessNames;
+
         internal AppConfig(string configFile)
         {
             XmlDocument doc = new XmlDocument();
