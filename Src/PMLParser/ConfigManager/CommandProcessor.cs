@@ -5,6 +5,8 @@ using System.Text;
 using SeeBee.FxUtils.CLIArgs;
 using SeeBee.FxUtils.Utils;
 
+using CommandProcessorOutput = System.Tuple<System.Collections.Generic.List<string>, string, string>;
+
 namespace SeeBee.PMLParser.ConfigManager
 {
     internal static class CommandProcessor
@@ -30,34 +32,33 @@ namespace SeeBee.PMLParser.ConfigManager
             return cliKnownArgs;
         }
 
-        internal static List<string> ParseCommandLine(string[] args)
+        internal static CommandProcessorOutput ParseCommandLine(string[] args)
         {
             List<string> cliParserOutput = argsParser.Parse(args, InitAllCLIArgs(), parsedArguments);
+            string procMonExePath = null, inputFilePath = null;
             if (cliParserOutput.Count == 0)
             {
                 List<string> tempList;
                 if (parsedArguments.TryGetValue(ProcMonExe.Name, out tempList))
                 {
-                    ProcMonExePath = tempList.First();
+                    procMonExePath = tempList.First();
                 }
-                FSUtils.FileExists(ProcMonExePath, "Not able to, either find or access the ProcMon executable (file).");
+                FSUtils.FileExists(procMonExePath, "Not able to, either find or access the ProcMon executable (file).");
                 if (parsedArguments.TryGetValue(InFilePath.Name, out tempList))
                 {
-                    InputFilePath = tempList.First();
+                    inputFilePath = tempList.First();
                 }
-                FSUtils.FileExists(InputFilePath, "Not able to, either find or access the ProcMon Logs file.");
+                FSUtils.FileExists(inputFilePath, "Not able to, either find or access the ProcMon Logs file.");
                 if (parsedArguments.TryGetValue(Config.Name, out tempList))
                 {
                     AppConfigFilePath = tempList.First();
                 }
                 FSUtils.FileExists(AppConfigFilePath, "Application Configuration File was not found.");
             }
-            return cliParserOutput;
+            return Tuple.Create(cliParserOutput, procMonExePath, inputFilePath);
         }
 
         #region Properties
-        internal static string ProcMonExePath { get; private set; }
-        internal static string InputFilePath { get; private set; }
         internal static string AppConfigFilePath { get; private set; }
         #endregion
     }
