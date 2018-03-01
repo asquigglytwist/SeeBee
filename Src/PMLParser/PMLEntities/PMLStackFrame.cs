@@ -89,7 +89,7 @@ namespace SeeBee.PMLParser.PMLEntities
 #if DEBUG
                 "[PMLStackFrame]:\t" +
 #endif
-                string.Format("{0} at {1}.", this.Path, this.Address);
+                string.Format("{0} at 0x{1:X16}.", this.Path, this.Address);
         }
         #endregion
     }
