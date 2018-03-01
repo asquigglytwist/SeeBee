@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("SeeBee.PMLParser")]
 [assembly: AssemblyDescription("Library for parsing PML files")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Lavnok")]
+[assembly: AssemblyCompany("ASquigglyTwist")]
 [assembly: AssemblyProduct("SeeBee.PMLParser")]
-[assembly: AssemblyCopyright("Copyright © Lavnok 2016")]
+[assembly: AssemblyCopyright("Copyright © ASquigglyTwist 2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
