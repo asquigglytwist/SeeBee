@@ -1,6 +1,8 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2036
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeeBee", "Src\SeeBee\SeeBee.csproj", "{441EF157-0EDF-42AD-BACB-AA90E880DCFF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PMLParser", "Src\PMLParser\PMLParser.csproj", "{E448FCE4-F2B0-4D5C-9552-604CA10AB894}"
@@ -62,5 +64,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {EBB39C24-446B-43BB-8775-713EFC7FA051}
 	EndGlobalSection
 EndGlobal
