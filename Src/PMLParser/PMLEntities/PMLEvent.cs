@@ -8,7 +8,7 @@ namespace SeeBee.PMLParser.PMLEntities
     /// <summary>
     /// Represents a PML Event
     /// </summary>
-    public class PMLEvent
+    public class PMLEvent : IPMLEntity
     {
         #region Members
         int pathIndex;

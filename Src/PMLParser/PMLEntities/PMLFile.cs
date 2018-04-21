@@ -30,4 +30,7 @@ namespace SeeBee.PMLParser.PMLEntities
         internal string OutputXMLFilePath { get; private set; }
         #endregion
     }
+
+    public interface IPMLEntity
+    {}
 }

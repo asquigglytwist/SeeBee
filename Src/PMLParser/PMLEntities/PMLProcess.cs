@@ -10,7 +10,7 @@ namespace SeeBee.PMLParser.PMLEntities
     /// <summary>
     /// Represents a PML Process
     /// </summary>
-    internal class PMLProcess
+    internal class PMLProcess : IPMLEntity
     {
         private string summary;
 
