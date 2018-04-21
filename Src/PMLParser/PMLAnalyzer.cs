@@ -5,14 +5,12 @@ using SeeBee.PMLParser.ConfigManager;
 using SeeBee.PMLParser.Conversion;
 using SeeBee.PMLParser.PMLEntities;
 
-using CommandProcessorOutput = System.Tuple<System.Collections.Generic.List<string>, string, string, string>;
-
 namespace SeeBee.PMLParser
 {
     public static class PMLAnalyzer
     {
         #region Members
-        static string procMonExePath, inputFilePath;
+        static string procMonExePath, inputFilePath, appConfigFilePath;
         static PMLFile parsedPMLFile;
         #endregion
 
@@ -34,9 +32,10 @@ namespace SeeBee.PMLParser
         #region Internal Methods
         internal static List<string> Init(string[] args)
         {
-            CommandProcessorOutput returnValue = CommandProcessor.ParseCommandLine(args);
+            var returnValue = CommandProcessor.ParseCommandLine(args);
             procMonExePath = returnValue.Item2;
             inputFilePath = returnValue.Item3;
+            appConfigFilePath = returnValue.Item4;
             return returnValue.Item1;
         }
 
@@ -49,7 +48,7 @@ namespace SeeBee.PMLParser
                 didCoversionHappen = Convert(inputFilePath, out var outputXmlFile) && !string.IsNullOrWhiteSpace(outputXmlFile);
                 fileToParse = outputXmlFile;
             }
-            parsedPMLFile = ConvertedXMLProcessor.PopulateProcessesAndEvents(fileToParse);
+            parsedPMLFile = ConvertedXMLProcessor.PopulateProcessesAndEvents(fileToParse, appConfigFilePath);
             if (didCoversionHappen)
             {
                 FSUtils.FileDelete(fileToParse);
