@@ -5,7 +5,7 @@ using System.Text;
 using SeeBee.FxUtils.CLIArgs;
 using SeeBee.FxUtils.Utils;
 
-using CommandProcessorOutput = System.Tuple<System.Collections.Generic.List<string>, string, string>;
+using CommandProcessorOutput = System.Tuple<System.Collections.Generic.List<string>, string, string, string>;
 
 namespace SeeBee.PMLParser.ConfigManager
 {
@@ -55,7 +55,7 @@ namespace SeeBee.PMLParser.ConfigManager
                 }
                 FSUtils.FileExists(AppConfigFilePath, "Application Configuration File was not found.");
             }
-            return Tuple.Create(cliParserOutput, procMonExePath, inputFilePath);
+            return Tuple.Create(cliParserOutput, procMonExePath, inputFilePath, AppConfigFilePath);
         }
 
         #region Properties

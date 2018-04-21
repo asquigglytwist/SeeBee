@@ -5,7 +5,7 @@ using SeeBee.PMLParser.ConfigManager;
 using SeeBee.PMLParser.Conversion;
 using SeeBee.PMLParser.PMLEntities;
 
-using CommandProcessorOutput = System.Tuple<System.Collections.Generic.List<string>, string, string>;
+using CommandProcessorOutput = System.Tuple<System.Collections.Generic.List<string>, string, string, string>;
 
 namespace SeeBee.PMLParser
 {
@@ -13,7 +13,7 @@ namespace SeeBee.PMLParser
     {
         #region Members
         static string procMonExePath, inputFilePath;
-        static PMLFile processedPMLFile;
+        static PMLFile parsedPMLFile;
         #endregion
 
         #region Private Methods
@@ -42,14 +42,19 @@ namespace SeeBee.PMLParser
 
         internal static bool ProcessPMLFile()
         {
-            string xmlFile;
-            if (Convert(inputFilePath, out xmlFile) && !string.IsNullOrWhiteSpace(xmlFile))
+            var fileToParse = inputFilePath;
+            var didCoversionHappen = false;
+            if (inputFilePath.EndsWith(".pml", System.StringComparison.CurrentCultureIgnoreCase))
             {
-                processedPMLFile = ConvertedXMLProcessor.PopulateProcessesAndEvents(xmlFile);
-                FSUtils.FileDelete(xmlFile);
-                return true;
+                didCoversionHappen = Convert(inputFilePath, out var outputXmlFile) && !string.IsNullOrWhiteSpace(outputXmlFile);
+                fileToParse = outputXmlFile;
             }
-            return false;
+            parsedPMLFile = ConvertedXMLProcessor.PopulateProcessesAndEvents(fileToParse);
+            if (didCoversionHappen)
+            {
+                FSUtils.FileDelete(fileToParse);
+            }
+            return (parsedPMLFile == null);
         }
         #endregion
 

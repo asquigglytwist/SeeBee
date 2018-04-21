@@ -8,17 +8,18 @@ namespace SeeBee.PMLParser.ConfigManager
 {
     internal class AppConfig
     {
-        List<int> ignoredProcessNames;
+        public List<int> IgnoredProcessNames
+        { get; private set; }
 
         internal AppConfig(string configFile)
         {
             XmlDocument doc = new XmlDocument();
             doc.Load(configFile);
             string[] csvProcessNames = XMLUtils.GetInnerText(doc, AppConfigPropertyNames.IgnoredProcessNames).Split(new char[] {','}, StringSplitOptions.RemoveEmptyEntries);
-            ignoredProcessNames = new List<int>(csvProcessNames.Length);
+            IgnoredProcessNames = new List<int>(csvProcessNames.Length);
             foreach (string s in csvProcessNames)
             {
-                ignoredProcessNames.Add(ProcessNameList.AddProcessNameToList(s));
+                IgnoredProcessNames.Add(ProcessNameList.AddProcessNameToList(s));
             }
         }
     }
