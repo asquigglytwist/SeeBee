@@ -10,13 +10,15 @@ namespace SeeBee.PMLParser.ConfigManager
 {
     abstract public class IFilter
     {
-        public const string FiltersRootTagName = "Filters";
-        public const string FilterCreateTagName = "Create";
-        public const string FilterExecuteTagName = "Execute";
+        public const string FilterTagName = "Filter";
         public const string FilterNameAttribute = "name";
         public const string FilterPropertyNameAttribute = "propertyName";
         public const string FilterAppliesOnAttribute = "appliesOn";
         public const string FilterOperatorAttribute = "operator";
+
+        public const string ConditionTagName = "Condition";
+        public const string ConditionActionAttribute = "action";
+        public const string ConditionOperatorAttribute = "operator";
 
         public IFilter(string name, string propertyName, FilterOperators filterOperator)
         {
@@ -35,7 +37,7 @@ namespace SeeBee.PMLParser.ConfigManager
         internal static List<ExecutableFilter> ProcessAppConfig(XDocument xDoc)
         {
             var namedFilters = new Dictionary<string, IFilter>();
-            var allFilterNodes = xDoc.Descendants(FilterCreateTagName).DescendantNodes();
+            var allFilterNodes = xDoc.Descendants(FilterTagName);
             foreach (var filterConfig in allFilterNodes)
             {
                 var name = filterConfig.Attribute(FilterNameAttribute).Value;
@@ -55,9 +57,29 @@ namespace SeeBee.PMLParser.ConfigManager
                         throw new Exception("Unable to Process XElement to create a(n) (I)Filter.");
                 }
             }
-            var allExecutableFilterNodes = xDoc.Descendants();
             var executableFilters = new List<ExecutableFilter>();
-            return namedFilters;
+            var allConditionNodes = xDoc.Descendants(ConditionTagName);
+            foreach(var includeFilter in allConditionNodes)
+            {
+                var filters = includeFilter.Value.CSVSplit();
+                var inclusion = includeFilter.Attribute(ConditionActionAttribute).Value.StringToEnum<Inclusions>();
+                var mixinOperator = includeFilter.Attribute(ConditionOperatorAttribute).Value.StringToEnum<MixinOperators>();
+                var filterList = new List<IFilter>();
+                for(int i = 0; i < filters.Length; i++)
+                {
+                    var name = filters[i].Trim();
+                    if (namedFilters.TryGetValue(name, out var filteredByName))
+                    {
+                        filterList.Add(filteredByName);
+                    }
+                    else
+                    {
+                        throw new Exception(string.Format("Unidentified filter name {0}.{1}Complete string for reference:{1}\"{2}\"", name, Environment.NewLine, includeFilter.Value));
+                    }
+                }
+                executableFilters.Add(new ExecutableFilter(filterList, inclusion, mixinOperator));
+            }
+            return executableFilters;
         }
     }
 
@@ -93,10 +115,10 @@ namespace SeeBee.PMLParser.ConfigManager
         public MixinOperators MixinOperator { get; private set; }
         public List<IFilter> FiltersList { get; private set; }
 
-        public ExecutableFilter(List<IFilter> filtersList, string inclusion, string mixinOperator)
+        public ExecutableFilter(List<IFilter> filtersList, Inclusions inclusion, MixinOperators mixinOperator)
         {
-            Inclusion = inclusion.StringToEnum<Inclusions>();
-            MixinOperator = mixinOperator.StringToEnum<MixinOperators>();
+            Inclusion = inclusion;
+            MixinOperator = mixinOperator;
             FiltersList = filtersList ?? throw new ArgumentNullException(nameof(filtersList));
         }
     }
