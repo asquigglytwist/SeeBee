@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
+using SeeBee.PMLParser.ConfigManager;
 using SeeBee.PMLParser.PMLEntities;
 
 namespace SeeBee.PMLParser.Analysis
@@ -64,8 +65,9 @@ namespace SeeBee.PMLParser.Analysis
 
         #region Public Methods
         // [BIB]:  http://stackoverflow.com/questions/1516876/when-to-use-ref-vs-out
-        internal static PMLFile PopulateProcessesAndEvents(string xmlFilePath)
+        internal static PMLFile PopulateProcessesAndEvents(string xmlFilePath, string appConfigFilePath)
         {
+            var appConfig = new AppConfig(appConfigFilePath);
             var procs = from p in LoadProcesses(xmlFilePath) where (!string.IsNullOrWhiteSpace(p.ProcessNameIndex.ToString())) select p;
             var evts = from e in LoadEvents(xmlFilePath) where (!string.IsNullOrWhiteSpace(e.TimeOfDay.ToString())) select e;
             return new PMLFile(xmlFilePath, procs.ToArray(), evts.ToArray());
