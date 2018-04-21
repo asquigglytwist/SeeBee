@@ -9,10 +9,10 @@ namespace SeeBee.FxUtils.AuthentiCode
     {
         public WINTRUST_DATA(WINTRUST_FILE_INFO fileInfo)
         {
-            this.cbStruct = (uint)Marshal.SizeOf(typeof(WINTRUST_DATA));
+            cbStruct = (uint)Marshal.SizeOf(typeof(WINTRUST_DATA));
             pInfoStruct = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(WINTRUST_FILE_INFO)));
             Marshal.StructureToPtr(fileInfo, pInfoStruct, false);
-            this.dwUnionChoice = UnionChoice.File;
+            dwUnionChoice = UnionChoice.File;
             pPolicyCallbackData = IntPtr.Zero;
             pSIPCallbackData = IntPtr.Zero;
             dwUIChoice = UiChoice.NoUI;

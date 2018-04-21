@@ -45,45 +45,45 @@ namespace SeeBee.PMLParser.PMLEntities
         #region Constructor(s)
         private PMLModule(DateTime timeStamp, long baseAddress, long size, string path, string version, string company, string description)
         {
-            this.TimeStamp = timeStamp;
-            this.BaseAddress = baseAddress;
-            this.Size = size;
+            TimeStamp = timeStamp;
+            BaseAddress = baseAddress;
+            Size = size;
             if (string.IsNullOrWhiteSpace(path))
             {
                 throw new ArgumentException("A module's path cannot be null or empty.");
             }
-            this.pathIndex = FilePathList.AddFilePathToList(path);
+            pathIndex = FilePathList.AddFilePathToList(path);
             if (string.IsNullOrWhiteSpace(version))
             {
-                this.Version = PMLModule.UnknownValue;
+                Version = PMLModule.UnknownValue;
             }
             else
             {
-                this.Version = version;
+                Version = version;
             }
             if (string.IsNullOrWhiteSpace(company))
             {
-                this.Company = PMLModule.UnknownValue;
+                Company = PMLModule.UnknownValue;
             }
             else
             {
-                this.Company = company;
+                Company = company;
             }
             if (string.IsNullOrWhiteSpace(description))
             {
-                this.Description = PMLModule.UnknownValue;
+                Description = PMLModule.UnknownValue;
             }
             else
             {
-                this.Description = description;
+                Description = description;
             }
-            this.summary =
+            summary =
 #if DEBUG
                 "[PMLModule]:\n" +
 #endif
                 string.Format("Module - [{0}] [Version = {1};  Size {2}], located at \"{3}\", from [{4}], was loaded at [{5}] into address 0x{6}.",
-                this.Description, this.Version, NumberUtils.FormatNumberAsFileSize(this.Size), this.Path,
-                this.Company, this.TimeStamp, NumberUtils.LongToHexString(this.BaseAddress));
+                Description, Version, NumberUtils.FormatNumberAsFileSize(Size), Path,
+                Company, TimeStamp, NumberUtils.LongToHexString(BaseAddress));
         }
 
         internal PMLModule(string path, XmlElement module) :
@@ -118,13 +118,13 @@ namespace SeeBee.PMLParser.PMLEntities
         #region System.Object
         public override int GetHashCode()
         {
-            return this.Path.GetHashCode();
+            return Path.GetHashCode();
         }
 
         public override bool Equals(object obj)
         {
             var otherObj = obj as PMLModule;
-            if ((this.Size == otherObj.Size) && this.Path.Equals(otherObj.Path, StringComparison.CurrentCultureIgnoreCase))
+            if ((Size == otherObj.Size) && Path.Equals(otherObj.Path, StringComparison.CurrentCultureIgnoreCase))
             {
                 return true;
             }
@@ -133,7 +133,7 @@ namespace SeeBee.PMLParser.PMLEntities
 
         public override string ToString()
         {
-            return this.summary;
+            return summary;
         }
         #endregion
     }

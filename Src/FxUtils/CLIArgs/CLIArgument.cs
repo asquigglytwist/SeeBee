@@ -22,7 +22,7 @@ namespace SeeBee.FxUtils.CLIArgs
             SampleUsage = sampleUsage;
             IsCaseSensitive = isCaseSensitive;
             NestedArgument = nestedArgument;
-            if (this.Equals(NestedArgument))
+            if (Equals(NestedArgument))
             {
                 throw new ArgumentException(string.Format("Argument cannot match NestedArgument for command {0}.", Name));
             }
@@ -44,63 +44,63 @@ namespace SeeBee.FxUtils.CLIArgs
         #region System.Object
         public override int GetHashCode()
         {
-            return this.Name.GetHashCode();
+            return Name.GetHashCode();
         }
 
         public override bool Equals(object obj)
         {
-            return this.Name.Equals(obj);
+            return Name.Equals(obj);
         }
 
         public override string ToString()
         {
             StringBuilder buffer = new StringBuilder(string.Format("{0}{1}{2}",
-                (this.IsRequired ? "" : "["), CLIArgsParser.DefaultOptionDelimiter, this.Name));
-            if (!string.IsNullOrWhiteSpace(this.ShortVersion))
+                (IsRequired ? "" : "["), CLIArgsParser.DefaultOptionDelimiter, Name));
+            if (!string.IsNullOrWhiteSpace(ShortVersion))
             {
-                buffer.AppendFormat(" [or {0}{1}]", CLIArgsParser.DefaultOptionDelimiter, this.ShortVersion);
+                buffer.AppendFormat(" [or {0}{1}]", CLIArgsParser.DefaultOptionDelimiter, ShortVersion);
             }
-            if (this.ParameterNames != null)
+            if (ParameterNames != null)
             {
-                for (int i = 0; i < this.ParameterNames.Length; i++)
+                for (int i = 0; i < ParameterNames.Length; i++)
                 {
-                    buffer.AppendFormat(" {0}", this.ParameterNames[i]);
+                    buffer.AppendFormat(" {0}", ParameterNames[i]);
                 }
             }
-            if (this.NestedArgument != null)
+            if (NestedArgument != null)
             {
-                buffer.AppendFormat(" {0}{1}", this.NestedArgument.ToShortString());
+                buffer.AppendFormat(" {0}{1}", NestedArgument.ToShortString());
             }
-            buffer.Append((this.IsRequired ? "" : "]"));
+            buffer.Append((IsRequired ? "" : "]"));
             return buffer.ToString();
         }
         #endregion
 
         public string ToShortString()
         {
-            return string.Format("{0}{1}{2}", (this.IsRequired ? "" : "["), this.Name, (this.IsRequired ? "" : "]"));
+            return string.Format("{0}{1}{2}", (IsRequired ? "" : "["), Name, (IsRequired ? "" : "]"));
         }
 
         public string ToLongString()
         {
             StringBuilder buffer = new StringBuilder(string.Format("{0}{1}{2}",
-                (this.IsRequired ? "" : "["), CLIArgsParser.DefaultOptionDelimiter, this.Name));
-            if (!string.IsNullOrWhiteSpace(this.ShortVersion))
+                (IsRequired ? "" : "["), CLIArgsParser.DefaultOptionDelimiter, Name));
+            if (!string.IsNullOrWhiteSpace(ShortVersion))
             {
-                buffer.AppendFormat(" [or {0}{1}]", CLIArgsParser.DefaultOptionDelimiter, this.ShortVersion);
+                buffer.AppendFormat(" [or {0}{1}]", CLIArgsParser.DefaultOptionDelimiter, ShortVersion);
             }
-            if (this.ParameterNames != null)
+            if (ParameterNames != null)
             {
-                for (int i = 0; i < this.ParameterNames.Length; i++)
+                for (int i = 0; i < ParameterNames.Length; i++)
                 {
-                    buffer.AppendFormat(" {0}", this.ParameterNames[i]);
+                    buffer.AppendFormat(" {0}", ParameterNames[i]);
                 }
             }
-            if (this.NestedArgument != null)
+            if (NestedArgument != null)
             {
-                buffer.AppendFormat(" {0}{1}", this.NestedArgument.ToString());
+                buffer.AppendFormat(" {0}{1}", NestedArgument.ToString());
             }
-            buffer.Append((this.IsRequired ? "" : "]"));
+            buffer.Append((IsRequired ? "" : "]"));
             if (Explanation != null)
             {
                 buffer.AppendFormat("{0}A brief explanation:{0}\t{1}{0}", Environment.NewLine, Explanation);

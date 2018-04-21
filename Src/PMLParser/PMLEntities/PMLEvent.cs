@@ -41,22 +41,22 @@ namespace SeeBee.PMLParser.PMLEntities
         {
             XmlDocument eventXMLDoc = new XmlDocument();
             eventXMLDoc.Load(eventListReader);
-            this.ProcessIndex = XMLUtils.ParseTagContentAsInt(eventXMLDoc, ProcMonXMLTagNames.Event_ProcessIndex);
-            this.TimeOfDay = XMLUtils.ParseTagContentAsFileTime(eventXMLDoc, ProcMonXMLTagNames.Event_TimeOfDay);
-            this.ProcessNameIndex = ProcessNameList.AddProcessNameToList(XMLUtils.GetInnerText(eventXMLDoc, ProcMonXMLTagNames.Event_Process_Name));
-            this.PID = XMLUtils.ParseTagContentAsInt(eventXMLDoc, ProcMonXMLTagNames.Event_PID);
-            this.TID = XMLUtils.ParseTagContentAsInt(eventXMLDoc, ProcMonXMLTagNames.Event_TID);
-            this.Integrity = XMLUtils.GetInnerText(eventXMLDoc, ProcMonXMLTagNames.Event_Integrity).ToProcessIntegrityLevel();
-            this.Sequence = XMLUtils.GetInnerText(eventXMLDoc, ProcMonXMLTagNames.Event_Sequence);
-            this.Virtualized = XMLUtils.ParseTagContentAsBoolean(eventXMLDoc, ProcMonXMLTagNames.Event_Virtualized);
-            this.Operation = XMLUtils.GetInnerText(eventXMLDoc, ProcMonXMLTagNames.Event_Operation);
-            this.pathIndex = FilePathList.AddFilePathToList(XMLUtils.GetInnerText(eventXMLDoc, ProcMonXMLTagNames.Event_Path));
-            this.Result = XMLUtils.GetInnerText(eventXMLDoc, ProcMonXMLTagNames.Event_Result);
-            this.Detail = XMLUtils.GetInnerText(eventXMLDoc, ProcMonXMLTagNames.Event_Detail);
-            this.callStack = PMLStackFrame.LoadStackFrames(eventXMLDoc);
+            ProcessIndex = XMLUtils.ParseTagContentAsInt(eventXMLDoc, ProcMonXMLTagNames.Event_ProcessIndex);
+            TimeOfDay = XMLUtils.ParseTagContentAsFileTime(eventXMLDoc, ProcMonXMLTagNames.Event_TimeOfDay);
+            ProcessNameIndex = ProcessNameList.AddProcessNameToList(XMLUtils.GetInnerText(eventXMLDoc, ProcMonXMLTagNames.Event_Process_Name));
+            PID = XMLUtils.ParseTagContentAsInt(eventXMLDoc, ProcMonXMLTagNames.Event_PID);
+            TID = XMLUtils.ParseTagContentAsInt(eventXMLDoc, ProcMonXMLTagNames.Event_TID);
+            Integrity = XMLUtils.GetInnerText(eventXMLDoc, ProcMonXMLTagNames.Event_Integrity).ToProcessIntegrityLevel();
+            Sequence = XMLUtils.GetInnerText(eventXMLDoc, ProcMonXMLTagNames.Event_Sequence);
+            Virtualized = XMLUtils.ParseTagContentAsBoolean(eventXMLDoc, ProcMonXMLTagNames.Event_Virtualized);
+            Operation = XMLUtils.GetInnerText(eventXMLDoc, ProcMonXMLTagNames.Event_Operation);
+            pathIndex = FilePathList.AddFilePathToList(XMLUtils.GetInnerText(eventXMLDoc, ProcMonXMLTagNames.Event_Path));
+            Result = XMLUtils.GetInnerText(eventXMLDoc, ProcMonXMLTagNames.Event_Result);
+            Detail = XMLUtils.GetInnerText(eventXMLDoc, ProcMonXMLTagNames.Event_Detail);
+            callStack = PMLStackFrame.LoadStackFrames(eventXMLDoc);
 #if DEBUG
             Console.WriteLine("Stack:\n-------------------------------------------------------------");
-            foreach (var stackFrame in this.callStack)
+            foreach (var stackFrame in callStack)
             {
                 Console.WriteLine(stackFrame);
             }
@@ -68,21 +68,21 @@ namespace SeeBee.PMLParser.PMLEntities
         #region System.Object
         public override int GetHashCode()
         {
-            return this.TimeOfDay.GetHashCode();
+            return TimeOfDay.GetHashCode();
         }
 
         public override bool Equals(object obj)
         {
-            return this.Equals(obj);
+            return Equals(obj);
         }
 
         public bool Equals(PMLEvent otherEvent)
         {
-            return (this.TimeOfDay.Equals(otherEvent.TimeOfDay)
-                && (this.ProcessIndex == otherEvent.ProcessIndex)
-                && (this.TID == otherEvent.TID)
-                && (this.Operation.Equals(otherEvent.Operation, StringComparison.CurrentCultureIgnoreCase))
-                && (this.Detail.Equals(otherEvent.Detail, StringComparison.CurrentCultureIgnoreCase)));
+            return (TimeOfDay.Equals(otherEvent.TimeOfDay)
+                && (ProcessIndex == otherEvent.ProcessIndex)
+                && (TID == otherEvent.TID)
+                && (Operation.Equals(otherEvent.Operation, StringComparison.CurrentCultureIgnoreCase))
+                && (Detail.Equals(otherEvent.Detail, StringComparison.CurrentCultureIgnoreCase)));
         }
 
         public override string ToString()
@@ -92,15 +92,15 @@ namespace SeeBee.PMLParser.PMLEntities
                 "[PMLEvent]:\n" +
 #endif
                 string.Format("Thread {0} of Process {1} [PID: {2}] performed {3} at {4} on {5} and result was {6}.{7}Details:{8}{7}",
-                this.TID,
-                ProcessNameList.GetProcessName(this.ProcessNameIndex),
-                this.PID,
-                this.Operation,
-                this.TimeOfDay,
-                this.Path,
-                this.Result,
+                TID,
+                ProcessNameList.GetProcessName(ProcessNameIndex),
+                PID,
+                Operation,
+                TimeOfDay,
+                Path,
+                Result,
                 Environment.NewLine,
-                this.Detail);
+                Detail);
         }
         #endregion
     }

@@ -16,11 +16,11 @@ namespace SeeBee.PMLParser.PMLEntities
         public PMLFile(string xmlFilePath, PMLProcess[] procs, PMLEvent[] evts)
         {
             OutputXMLFilePath = xmlFilePath;
-            this.processes = procs;
-            this.events = evts;
+            processes = procs;
+            events = evts;
 #if DEBUG
-            Console.WriteLine("# of Processes that match the criteria {0}.", this.processes.Length);
-            Console.WriteLine("# of Events that match the criteria {0}.", this.events.Length);
+            Console.WriteLine("# of Processes that match the criteria {0}.", processes.Length);
+            Console.WriteLine("# of Events that match the criteria {0}.", events.Length);
 #endif
         } 
         #endregion

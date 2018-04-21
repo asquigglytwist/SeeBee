@@ -38,8 +38,8 @@ namespace SeeBee.FxUtils.AuthentiCode
         {
             if (pgKnownSubject != IntPtr.Zero)
             {
-                Marshal.DestroyStructure(this.pgKnownSubject, typeof(Guid));
-                Marshal.FreeHGlobal(this.pgKnownSubject);
+                Marshal.DestroyStructure(pgKnownSubject, typeof(Guid));
+                Marshal.FreeHGlobal(pgKnownSubject);
             }
         }
         #endregion

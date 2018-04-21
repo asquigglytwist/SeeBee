@@ -40,9 +40,9 @@ namespace SeeBee.PMLParser.PMLEntities
                 //throw new ArgumentException("A StackFrame cannot have null or empty location.");
                 location = UnknownStringValue;
             }
-            this.Address = address;
-            this.pathIndex = FilePathList.AddFilePathToList(path);
-            this.Location = location;
+            Address = address;
+            pathIndex = FilePathList.AddFilePathToList(path);
+            Location = location;
         }
 
         internal PMLStackFrame(XmlElement frame) :
@@ -68,19 +68,19 @@ namespace SeeBee.PMLParser.PMLEntities
         #region System.Object
         public override int GetHashCode()
         {
-            return (this.Address+this.Location).GetHashCode();
+            return (Address + Location).GetHashCode();
         }
 
         public override bool Equals(object obj)
         {
-            return this.Equals(obj);
+            return Equals(obj);
         }
 
         public bool Equals(PMLStackFrame otherStackFrame)
         {
-            return (this.Address==otherStackFrame.Address)
-                && (this.pathIndex==otherStackFrame.pathIndex)
-                && (this.Location.Equals(otherStackFrame.Location, StringComparison.CurrentCultureIgnoreCase));
+            return (Address == otherStackFrame.Address)
+                && (pathIndex == otherStackFrame.pathIndex)
+                && (Location.Equals(otherStackFrame.Location, StringComparison.CurrentCultureIgnoreCase));
         }
 
         public override string ToString()
@@ -89,7 +89,7 @@ namespace SeeBee.PMLParser.PMLEntities
 #if DEBUG
                 "[PMLStackFrame]:\t" +
 #endif
-                string.Format("{0} at 0x{1:X16}.", this.Path, this.Address);
+                string.Format("{0} at 0x{1:X16}.", Path, Address);
         }
         #endregion
     }
