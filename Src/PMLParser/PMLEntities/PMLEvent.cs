@@ -12,9 +12,9 @@ namespace SeeBee.PMLParser.PMLEntities
     {
         #region Members
         int pathIndex;
-        PMLStackFrame[] callStack;
         #endregion
 
+        internal PMLStackFrame[] CallStack { get; private set; }
         #region Properties
         internal int ProcessIndex { get; private set; }
         internal DateTime TimeOfDay { get; private set; }
@@ -53,10 +53,10 @@ namespace SeeBee.PMLParser.PMLEntities
             pathIndex = FilePathList.AddFilePathToList(XMLUtils.GetInnerText(eventXMLDoc, ProcMonXMLTagNames.Event_Path));
             Result = XMLUtils.GetInnerText(eventXMLDoc, ProcMonXMLTagNames.Event_Result);
             Detail = XMLUtils.GetInnerText(eventXMLDoc, ProcMonXMLTagNames.Event_Detail);
-            callStack = PMLStackFrame.LoadStackFrames(eventXMLDoc);
+            CallStack = PMLStackFrame.LoadStackFrames(eventXMLDoc);
 #if DEBUG
             Console.WriteLine("Stack:\n-------------------------------------------------------------");
-            foreach (var stackFrame in callStack)
+            foreach (var stackFrame in CallStack)
             {
                 Console.WriteLine(stackFrame);
             }
