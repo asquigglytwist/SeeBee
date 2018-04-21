@@ -66,8 +66,8 @@ namespace SeeBee.PMLParser.Analysis
         // [BIB]:  http://stackoverflow.com/questions/1516876/when-to-use-ref-vs-out
         internal static PMLFile PopulateProcessesAndEvents(string xmlFilePath)
         {
-            var procs = from p in ConvertedXMLProcessor.LoadProcesses(xmlFilePath) where (!string.IsNullOrWhiteSpace(p.ProcessNameIndex.ToString())) select p;
-            var evts = from e in ConvertedXMLProcessor.LoadEvents(xmlFilePath) where (!string.IsNullOrWhiteSpace(e.TimeOfDay.ToString())) select e;
+            var procs = from p in LoadProcesses(xmlFilePath) where (!string.IsNullOrWhiteSpace(p.ProcessNameIndex.ToString())) select p;
+            var evts = from e in LoadEvents(xmlFilePath) where (!string.IsNullOrWhiteSpace(e.TimeOfDay.ToString())) select e;
             return new PMLFile(xmlFilePath, procs.ToArray(), evts.ToArray());
         }
         #endregion

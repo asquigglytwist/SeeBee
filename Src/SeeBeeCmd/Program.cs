@@ -15,8 +15,7 @@ namespace SeeBee.SeeBeeCmd
                 Console.WriteLine("Arg at {0};\t{1}", i, args[i]);
             }
 #endif
-            bool processingPMLResult;
-            List<string> errorMsgs = PMLAnalyzer.InitAndAnalyze(out processingPMLResult, args);
+            List<string> errorMsgs = PMLAnalyzer.InitAndAnalyze(out bool processingPMLResult, args);
             if (errorMsgs.Count != 0)
             {
                 // [BIB]:  http://stackoverflow.com/questions/759133/how-to-display-list-items-on-console-window-in-c-sharp
