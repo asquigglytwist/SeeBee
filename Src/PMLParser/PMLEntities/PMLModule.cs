@@ -88,7 +88,7 @@ namespace SeeBee.PMLParser.PMLEntities
 
         internal PMLModule(string path, XmlElement module) :
             this(XMLUtils.ParseTagContentAsFileTime(module, ProcMonXMLTagNames.Module_Timestamp),
-            StringUtils.HexStringToLong(XMLUtils.GetInnerText(module, ProcMonXMLTagNames.Module_BaseAddress)),
+            (XMLUtils.GetInnerText(module, ProcMonXMLTagNames.Module_BaseAddress)).HexStringToLong(),
             XMLUtils.ParseTagContentAsLong(module, ProcMonXMLTagNames.Module_Size),
             path,
             XMLUtils.GetInnerText(module, ProcMonXMLTagNames.Module_Version),

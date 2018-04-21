@@ -52,7 +52,7 @@ namespace SeeBee.PMLParser.PMLEntities
             ProcessIntegrity = ProcessIntegrityLevelExtensions.ToProcessIntegrityLevel(XMLUtils.GetInnerText(processXMLDoc, ProcMonXMLTagNames.Process_Integrity));
             OwnerIndex = OwnerList.AddOwnerToList(tempString);
             ProcessNameIndex = ProcessNameList.AddProcessNameToList(XMLUtils.GetInnerText(processXMLDoc, ProcMonXMLTagNames.Process_ProcessName));
-            CommandLine = StringUtils.HTMLUnEscape(XMLUtils.GetInnerText(processXMLDoc, ProcMonXMLTagNames.Process_CommandLine)).Trim();
+            CommandLine = (XMLUtils.GetInnerText(processXMLDoc, ProcMonXMLTagNames.Process_CommandLine)).HTMLUnEscape().Trim();
             LoadedModuleList = PMLModule.LoadModules(processXMLDoc);
             ImageIndex = ModuleList.LocateModuleInList(XMLUtils.GetInnerText(processXMLDoc, ProcMonXMLTagNames.Process_ImagePath));
 

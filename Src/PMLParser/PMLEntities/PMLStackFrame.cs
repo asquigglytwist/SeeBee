@@ -46,7 +46,7 @@ namespace SeeBee.PMLParser.PMLEntities
         }
 
         internal PMLStackFrame(XmlElement frame) :
-            this(StringUtils.HexStringToLong(XMLUtils.GetInnerText(frame, ProcMonXMLTagNames.StackFrame_Address)),
+            this(XMLUtils.GetInnerText(frame, ProcMonXMLTagNames.StackFrame_Address).HexStringToLong(),
             XMLUtils.GetInnerText(frame, ProcMonXMLTagNames.StackFrame_Path),
             XMLUtils.GetInnerText(frame, ProcMonXMLTagNames.StackFrame_Location))
         {
