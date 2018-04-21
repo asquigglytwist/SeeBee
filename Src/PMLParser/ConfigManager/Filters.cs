@@ -230,6 +230,7 @@ namespace SeeBee.PMLParser.ConfigManager
     public enum MixinOperators
     {
         None,
+        Only,
         And,
         Or
     }
