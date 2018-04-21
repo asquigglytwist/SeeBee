@@ -24,6 +24,11 @@ namespace SeeBee.PMLParser.ManagedLists
         {
             return knownModules[index].Description;
         }
+
+        internal static string GetModulePath(int index)
+        {
+            return knownModules[index].Path;
+        }
         #endregion
     }
 }
