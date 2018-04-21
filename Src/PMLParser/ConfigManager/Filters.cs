@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Xml.Linq;
 using SeeBee.FxUtils.Utils;
+using SeeBee.PMLParser.ManagedLists;
 using SeeBee.PMLParser.PMLEntities;
 
 namespace SeeBee.PMLParser.ConfigManager
@@ -15,22 +16,23 @@ namespace SeeBee.PMLParser.ConfigManager
         public const string FilterPropertyNameAttribute = "propertyName";
         public const string FilterAppliesOnAttribute = "appliesOn";
         public const string FilterOperatorAttribute = "operator";
-
         public const string ConditionTagName = "Condition";
         public const string ConditionActionAttribute = "action";
         public const string ConditionOperatorAttribute = "operator";
 
-        public IFilter(string name, string propertyName, FilterOperators filterOperator)
+        public IFilter(string name, string propertyName, FilterOperators filterOperator, string[] filterValue)
         {
             Name = name;
             PropertyName = propertyName;
             FilterOperator = filterOperator;
+            FilterValue = filterValue;
         }
 
         public string Name { get; protected set; }
         public string PropertyName { get; protected set; }
         public FilterOperators FilterOperator { get; protected set; }
         public FilterTarget FilterAppliesOn { get; protected set; }
+        public string[] FilterValue { get; protected set; }
 
         protected abstract bool Matches(IPMLEntity pmlEntity);
 
@@ -44,13 +46,14 @@ namespace SeeBee.PMLParser.ConfigManager
                 var propName = filterConfig.Attribute(FilterPropertyNameAttribute).Value;
                 var filterTarget = filterConfig.Attribute(FilterAppliesOnAttribute).Value.StringToEnum<FilterTarget>();
                 var filterOperator = filterConfig.Attribute(FilterOperatorAttribute).Value.StringToEnum<FilterOperators>();
+                var filterValue = filterConfig.Value.CSVSplit();
                 switch (filterTarget)
                 {
                     case FilterTarget.Processes:
-                        namedFilters[name] = new ProcessFilter(name, propName, filterOperator);
+                        namedFilters[name] = new ProcessFilter(name, propName, filterOperator, filterValue);
                         break;
                     case FilterTarget.Events:
-                        namedFilters[name] = new EventFilter(name, propName, filterOperator);
+                        namedFilters[name] = new EventFilter(name, propName, filterOperator, filterValue);
                         break;
                     case FilterTarget.None:
                     default:
@@ -85,20 +88,100 @@ namespace SeeBee.PMLParser.ConfigManager
 
     class ProcessFilter : IFilter
     {
-        public ProcessFilter(string name, string propertyName, FilterOperators filterOperator) : base(name, propertyName, filterOperator)
+        public ProcessFilter(string name, string propertyName, FilterOperators filterOperator, string[] filterValue)
+            : base(name, propertyName, filterOperator, filterValue)
         {
             FilterAppliesOn = FilterTarget.Processes;
         }
 
         protected override bool Matches(IPMLEntity pmlEntity)
         {
-            throw new NotImplementedException();
+            var proc = pmlEntity as PMLProcess;
+            var actualValue = string.Empty;
+            switch (PropertyName)
+            {
+                case "ProcessName":
+                    actualValue = ProcessNameList.GetProcessName(proc.ProcessNameIndex);
+                    break;
+                case "ImagePath":
+                    actualValue = ModuleList.GetModulePath(proc.ImageIndex);
+                    break;
+                case "FinishTime":
+                    actualValue = proc.FinishTime.ToString();
+                    break;
+                case "Modules":
+                    if(FilterOperator != FilterOperators.Contains)
+                    {
+                        throw new Exception(string.Format("Filter Operator {0} is invalid when PropertyName is \"Modules\"", FilterOperator.ToString()));
+                    }
+                    var sbModules = new StringBuilder();
+                    foreach(var i in proc.LoadedModuleList)
+                    {
+                        sbModules.Append(ModuleList.GetModulePath(i)).Append(Environment.NewLine);
+                    }
+                    actualValue = sbModules.ToString();
+                    break;
+                case "":
+                    throw new Exception("PropertyName cannot be empty.");
+                default:
+                    throw new Exception(string.Format("Unidentified PropertyName {0}.", PropertyName));
+            }
+            foreach (var expectedValue in FilterValue)
+            {
+                switch (FilterOperator)
+                {
+                    case FilterOperators.Equals:
+                        if(!actualValue.Equals(expectedValue, StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            return false;
+                        }
+                        break;
+                    case FilterOperators.NotEquals:
+                        if (actualValue.Equals(expectedValue, StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            return false;
+                        }
+                        break;
+                    case FilterOperators.StartsWith:
+                        if (!actualValue.StartsWith(expectedValue, StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            return false;
+                        }
+                        break;
+                    case FilterOperators.EndsWith:
+                        if (!actualValue.EndsWith(expectedValue, StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            return false;
+                        }
+                        break;
+                    case FilterOperators.Contains:
+                        if (!actualValue.Contains(expectedValue))
+                        {
+                            return false;
+                        }
+                        break;
+                    case FilterOperators.GreaterThan:
+                        break;
+                    case FilterOperators.GreaterThanOrEqualsTo:
+                        break;
+                    case FilterOperators.LesserThan:
+                        break;
+                    case FilterOperators.LesserThanOrEqualsTo:
+                        break;
+                    case FilterOperators.None:
+                        throw new Exception("FilterOperator cannot be empty.");
+                    default:
+                        throw new Exception(string.Format("Unidentified FilterOperator {0}.", FilterOperator.ToString()));
+                }
+            }
+            return true;
         }
     }
 
     class EventFilter : IFilter
     {
-        public EventFilter(string name, string propertyName, FilterOperators filterOperator) : base(name, propertyName, filterOperator)
+        public EventFilter(string name, string propertyName, FilterOperators filterOperator, string[] filterValue)
+            : base(name, propertyName, filterOperator, filterValue)
         {
             FilterAppliesOn = FilterTarget.Events;
         }
