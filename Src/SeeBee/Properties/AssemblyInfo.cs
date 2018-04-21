@@ -12,7 +12,7 @@ using System.Windows;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Lavnok")]
 [assembly: AssemblyProduct("SeeBee.UI")]
-[assembly: AssemblyCopyright("Copyright © Lavnok 2016")]
+[assembly: AssemblyCopyright("Copyright © ASquigglyTwist 2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
