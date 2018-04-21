@@ -25,14 +25,14 @@ namespace SeeBee.PMLParser.ConfigManager
             Name = name;
             PropertyName = propertyName;
             FilterOperator = filterOperator;
-            FilterValue = filterValue;
+            FilterExpectedValue = filterValue;
         }
 
         public string Name { get; protected set; }
         public string PropertyName { get; protected set; }
         public FilterOperators FilterOperator { get; protected set; }
         public FilterTarget FilterAppliesOn { get; protected set; }
-        public string[] FilterValue { get; protected set; }
+        public string[] FilterExpectedValue { get; protected set; }
 
         protected abstract bool Matches(IPMLEntity pmlEntity);
 
@@ -83,6 +83,59 @@ namespace SeeBee.PMLParser.ConfigManager
                 executableFilters.Add(new ExecutableFilter(filterList, inclusion, mixinOperator));
             }
             return executableFilters;
+        }
+
+        internal static bool CompareStringValuesAsPerFilterOperator(string actualValue, IFilter filter)
+        {
+            foreach (var expectedValue in filter.FilterExpectedValue)
+            {
+                switch (filter.FilterOperator)
+                {
+                    case FilterOperators.Equals:
+                        if (!actualValue.Equals(expectedValue, StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            return false;
+                        }
+                        break;
+                    case FilterOperators.NotEquals:
+                        if (actualValue.Equals(expectedValue, StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            return false;
+                        }
+                        break;
+                    case FilterOperators.StartsWith:
+                        if (!actualValue.StartsWith(expectedValue, StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            return false;
+                        }
+                        break;
+                    case FilterOperators.EndsWith:
+                        if (!actualValue.EndsWith(expectedValue, StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            return false;
+                        }
+                        break;
+                    case FilterOperators.Contains:
+                        if (!actualValue.Contains(expectedValue))
+                        {
+                            return false;
+                        }
+                        break;
+                    case FilterOperators.GreaterThan:
+                        break;
+                    case FilterOperators.GreaterThanOrEqualsTo:
+                        break;
+                    case FilterOperators.LesserThan:
+                        break;
+                    case FilterOperators.LesserThanOrEqualsTo:
+                        break;
+                    case FilterOperators.None:
+                        throw new Exception("FilterOperator cannot be empty.");
+                    default:
+                        throw new Exception(string.Format("Unidentified FilterOperator {0}.", FilterOperator.ToString()));
+                }
+            }
+            return true;
         }
     }
 
