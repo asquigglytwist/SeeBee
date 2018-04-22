@@ -38,11 +38,11 @@ namespace SeeBee.PMLParser.ConfigManager
                         andResult = andResult && filter.Matches(pMLEntity);
                         if (!andResult)
                         {
-                            comparisonResult = false;
+                            //comparisonResult = false;
                             break;
                         }
                     }
-                    comparisonResult = true;
+                    comparisonResult = andResult;
                     break;
                 case MixinOperators.Or:
                     var orResult = false;
@@ -51,20 +51,16 @@ namespace SeeBee.PMLParser.ConfigManager
                         orResult = orResult || filter.Matches(pMLEntity);
                         if (orResult)
                         {
-                            comparisonResult = true;
+                            //comparisonResult = true;
                             break;
                         }
                     }
-                    comparisonResult = false;
+                    comparisonResult = orResult;
                     break;
                 case MixinOperators.None:
                     throw new Exception("(Mixin) Operator cannot be empty.");
                 default:
                     throw new Exception(string.Format("Unidentified MixinOperator {0}.", MixinOperator.ToString()));
-            }
-            if (Inclusion == Inclusions.Exclude)
-            {
-                comparisonResult = !comparisonResult;
             }
             return comparisonResult;
         }
