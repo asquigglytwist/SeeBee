@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SeeBee>
+	<Filters>
+		<Create>
+			<Filter name="DefaultUserProcesses" appliesOn="Processes" property="ProcessName" operator="Equals">
+				notepad.exe, explorer.exe, iexplore.exe, firefox.exe, chrome.exe
+			</Filter>
+			<Filter name="DefaultSystemProcesses" appliesOn="Processes" property="ImagePath" operator="StartsWith">
+				gpupdate.exe, conhost.exe, svchost.exe, winlogon.exe, csrss.exe, lsass.exe, WUDFHost.exe, spoolsv.exe, unsecapp.exe
+			</Filter>
+			<Filter name="RunningProcesses" appliesOn="Processes" property="FinishTime" operator="Equals">
+				0
+			</Filter>
+			<Filter name="CompletedProcesses" appliesOn="Processes" property="FinishTime" operator="NotEquals">
+				0
+			</Filter>
+			<Filter name="HasLoadedWindowsDlls" appliesOn="Processes" property="Modules" operator="Contains">
+				user32.dll, advapi32.dll
+			</Filter>
+			<Filter name="SomeGenericProcesses" appliesOn="Events" property="Operation" operator="Equals">
+				"Load Image", QueryBasicInformationFile
+			</Filter>
+			<Filter name="SomeGenericProcesses" appliesOn="Events" property="Operation" operator="Equals">
+				"Load Image", QueryBasicInformationFile
+			</Filter>
+		</Create>
+		<Conditions>
+			<Condition action="Exclude" operator="And">
+				DefaultUserProcesses, DefaultSystemProcesses
+			</Condition>
+			<Condition action="Include" operator="Or">
+				RunningProcesses, HasLoadedWindowsDlls
+			</Condition>
+			<Condition action="Include" operator="Only">
+				HasLoadedWindowsDlls
+			</Condition>
+		</Conditions>
+	</Filters>
+</SeeBee>

@@ -27,7 +27,7 @@ where,
 * c  -> the configuration file for SeeBee
 
 ## Configuring SeeBee
-The config file - .SBC (SeeBeeConfig) is a simple XML file and can be edited with any text editor.  Below is an example:
+The config file - .SBC (SeeBeeConfig) is a simple XML file and can be edited with any text editor.  Below is [an example](https://github.com/asquigglytwist/SeeBee/tree/master/Samples/SeeBee.SBC):
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <SeeBee>
