@@ -28,73 +28,51 @@ where,
 
 ## Configuring SeeBee
 The config file - .SBC (SeeBeeConfig) is a simple XML file and can be edited with any text editor.  The format is:
-<style type="text/css">
-span {
-	font-family: 'Courier New';
-	font-size: 10pt;
-	color: #000000;
-}
-.sc0 {
-	font-weight: bold;
-}
-.sc1 {
-	color: #0000FF;
-}
-.sc3 {
-	color: #FF0000;
-}
-.sc6 {
-	font-weight: bold;
-	color: #8000FF;
-}
-.sc8 {
-}
-.sc12 {
-	color: #FF0000;
-	background: #FFFF00;
-}
-.sc13 {
-	color: #FF0000;
-	background: #FFFF00;
-}
-</style>
-<div style="float: left; white-space: pre; line-height: 1; background: #FFFFFF; "><span class="sc12">&lt;?</span><span class="sc1">xml</span><span class="sc8"> </span><span class="sc3">version</span><span class="sc8">=</span><span class="sc6">"1.0"</span><span class="sc8"> </span><span class="sc3">encoding</span><span class="sc8">=</span><span class="sc6">"UTF-8"</span><span class="sc13">?&gt;</span><span class="sc0">
-</span><span class="sc1">&lt;SeeBee&gt;</span><span class="sc0">
-    </span><span class="sc1">&lt;Filters&gt;</span><span class="sc0">
-        </span><span class="sc1">&lt;Create&gt;</span><span class="sc0">
-            </span><span class="sc1">&lt;Filter</span><span class="sc8"> </span><span class="sc3">name</span><span class="sc8">=</span><span class="sc6">"DefaultUserProcesses"</span><span class="sc8"> </span><span class="sc3">appliesOn</span><span class="sc8">=</span><span class="sc6">"Processes"</span><span class="sc8"> </span><span class="sc3">property</span><span class="sc8">=</span><span class="sc6">"ProcessName"</span><span class="sc8"> </span><span class="sc3">operator</span><span class="sc8">=</span><span class="sc6">"Equals"</span><span class="sc1">&gt;</span><span class="sc0">
-                notepad.exe, explorer.exe, iexplore.exe, firefox.exe, chrome.exe
-            </span><span class="sc1">&lt;/Filter&gt;</span><span class="sc0">
-            </span><span class="sc1">&lt;Filter</span><span class="sc8"> </span><span class="sc3">name</span><span class="sc8">=</span><span class="sc6">"DefaultSystemProcesses"</span><span class="sc8"> </span><span class="sc3">appliesOn</span><span class="sc8">=</span><span class="sc6">"Processes"</span><span class="sc8"> </span><span class="sc3">property</span><span class="sc8">=</span><span class="sc6">"ImagePath"</span><span class="sc8"> </span><span class="sc3">operator</span><span class="sc8">=</span><span class="sc6">"StartsWith"</span><span class="sc1">&gt;</span><span class="sc0">
-                gpupdate.exe, conhost.exe, svchost.exe, winlogon.exe, csrss.exe, lsass.exe, WUDFHost.exe, spoolsv.exe, unsecapp.exe
-            </span><span class="sc1">&lt;/Filter&gt;</span><span class="sc0">
-            </span><span class="sc1">&lt;Filter</span><span class="sc8"> </span><span class="sc3">name</span><span class="sc8">=</span><span class="sc6">"RunningProcesses"</span><span class="sc8"> </span><span class="sc3">appliesOn</span><span class="sc8">=</span><span class="sc6">"Processes"</span><span class="sc8"> </span><span class="sc3">property</span><span class="sc8">=</span><span class="sc6">"FinishTime"</span><span class="sc8"> </span><span class="sc3">operator</span><span class="sc8">=</span><span class="sc6">"Equals"</span><span class="sc1">&gt;</span><span class="sc0">
-                0
-            </span><span class="sc1">&lt;/Filter&gt;</span><span class="sc0">
-            </span><span class="sc1">&lt;Filter</span><span class="sc8"> </span><span class="sc3">name</span><span class="sc8">=</span><span class="sc6">"CompletedProcesses"</span><span class="sc8"> </span><span class="sc3">appliesOn</span><span class="sc8">=</span><span class="sc6">"Processes"</span><span class="sc8"> </span><span class="sc3">property</span><span class="sc8">=</span><span class="sc6">"FinishTime"</span><span class="sc8"> </span><span class="sc3">operator</span><span class="sc8">=</span><span class="sc6">"NotEquals"</span><span class="sc1">&gt;</span><span class="sc0">
-                0
-            </span><span class="sc1">&lt;/Filter&gt;</span><span class="sc0">
-            </span><span class="sc1">&lt;Filter</span><span class="sc8"> </span><span class="sc3">name</span><span class="sc8">=</span><span class="sc6">"HasLoadedWindowsDlls"</span><span class="sc8"> </span><span class="sc3">appliesOn</span><span class="sc8">=</span><span class="sc6">"Processes"</span><span class="sc8"> </span><span class="sc3">property</span><span class="sc8">=</span><span class="sc6">"Modules"</span><span class="sc8"> </span><span class="sc3">operator</span><span class="sc8">=</span><span class="sc6">"Contains"</span><span class="sc1">&gt;</span><span class="sc0">
-                user32.dll, advapi32.dll
-            </span><span class="sc1">&lt;/Filter&gt;</span><span class="sc0">
-            </span><span class="sc1">&lt;Filter</span><span class="sc8"> </span><span class="sc3">name</span><span class="sc8">=</span><span class="sc6">"SomeGenericProcesses"</span><span class="sc8"> </span><span class="sc3">appliesOn</span><span class="sc8">=</span><span class="sc6">"Events"</span><span class="sc8"> </span><span class="sc3">property</span><span class="sc8">=</span><span class="sc6">"Operation"</span><span class="sc8"> </span><span class="sc3">operator</span><span class="sc8">=</span><span class="sc6">"Equals"</span><span class="sc1">&gt;</span><span class="sc0">
-                "Load Image", QueryBasicInformationFile
-            </span><span class="sc1">&lt;/Filter&gt;</span><span class="sc0">
-            </span><span class="sc1">&lt;Filter</span><span class="sc8"> </span><span class="sc3">name</span><span class="sc8">=</span><span class="sc6">"SomeGenericProcesses"</span><span class="sc8"> </span><span class="sc3">appliesOn</span><span class="sc8">=</span><span class="sc6">"Events"</span><span class="sc8"> </span><span class="sc3">property</span><span class="sc8">=</span><span class="sc6">"Operation"</span><span class="sc8"> </span><span class="sc3">operator</span><span class="sc8">=</span><span class="sc6">"Equals"</span><span class="sc1">&gt;</span><span class="sc0">
-                "Load Image", QueryBasicInformationFile
-            </span><span class="sc1">&lt;/Filter&gt;</span><span class="sc0">
-        </span><span class="sc1">&lt;/Create&gt;</span><span class="sc0">
-        </span><span class="sc1">&lt;Conditions&gt;</span><span class="sc0">
-            </span><span class="sc1">&lt;Condition</span><span class="sc8"> </span><span class="sc3">action</span><span class="sc8">=</span><span class="sc6">"Exclude"</span><span class="sc8"> </span><span class="sc3">operator</span><span class="sc8">=</span><span class="sc6">"And"</span><span class="sc1">&gt;</span><span class="sc0">
-                DefaultUserProcesses, DefaultSystemProcesses
-            </span><span class="sc1">&lt;/Condition&gt;</span><span class="sc0">
-            </span><span class="sc1">&lt;Condition</span><span class="sc8"> </span><span class="sc3">action</span><span class="sc8">=</span><span class="sc6">"Include"</span><span class="sc8"> </span><span class="sc3">operator</span><span class="sc8">=</span><span class="sc6">"Or"</span><span class="sc1">&gt;</span><span class="sc0">
-                RunningProcesses, HasLoadedWindowsDlls
-            </span><span class="sc1">&lt;/Condition&gt;</span><span class="sc0">
-            </span><span class="sc1">&lt;Condition</span><span class="sc8"> </span><span class="sc3">action</span><span class="sc8">=</span><span class="sc6">"Include"</span><span class="sc8"> </span><span class="sc3">operator</span><span class="sc8">=</span><span class="sc6">"Only"</span><span class="sc1">&gt;</span><span class="sc0">
-                HasLoadedWindowsDlls
-            </span><span class="sc1">&lt;/Condition&gt;</span><span class="sc0">
-        </span><span class="sc1">&lt;/Conditions&gt;</span><span class="sc0">
-    </span><span class="sc1">&lt;/Filters&gt;</span><span class="sc0">
-</span><span class="sc1">&lt;/SeeBee&gt;</span>
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<SeeBee>
+	<Filters>
+		<Create>
+			<Filter name="DefaultUserProcesses" appliesOn="Processes" property="ProcessName" operator="Equals">
+				notepad.exe, explorer.exe, iexplore.exe, firefox.exe, chrome.exe
+			</Filter>
+			<Filter name="DefaultSystemProcesses" appliesOn="Processes" property="ImagePath" operator="StartsWith">
+				gpupdate.exe, conhost.exe, svchost.exe, winlogon.exe, csrss.exe, lsass.exe, WUDFHost.exe, spoolsv.exe, unsecapp.exe
+			</Filter>
+			<Filter name="RunningProcesses" appliesOn="Processes" property="FinishTime" operator="Equals">
+				0
+			</Filter>
+			<Filter name="CompletedProcesses" appliesOn="Processes" property="FinishTime" operator="NotEquals">
+				0
+			</Filter>
+			<Filter name="HasLoadedWindowsDlls" appliesOn="Processes" property="Modules" operator="Contains">
+				user32.dll, advapi32.dll
+			</Filter>
+			<Filter name="SomeGenericProcesses" appliesOn="Events" property="Operation" operator="Equals">
+				"Load Image", QueryBasicInformationFile
+			</Filter>
+			<Filter name="SomeGenericProcesses" appliesOn="Events" property="Operation" operator="Equals">
+				"Load Image", QueryBasicInformationFile
+			</Filter>
+		</Create>
+		<Conditions>
+			<Condition action="Exclude" operator="And">
+				DefaultUserProcesses, DefaultSystemProcesses
+			</Condition>
+			<Condition action="Include" operator="Or">
+				RunningProcesses, HasLoadedWindowsDlls
+			</Condition>
+			<Condition action="Include" operator="Only">
+				HasLoadedWindowsDlls
+			</Condition>
+		</Conditions>
+	</Filters>
+</SeeBee>
+```
+
+## Sample Output
+<div class="consoleWindow">
+# of Processes read from file:  9.<br />
+# of Events that match the criteria:  108.<br />
+Press any key to continue...
 </div>
