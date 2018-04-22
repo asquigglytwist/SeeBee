@@ -20,6 +20,8 @@ namespace SeeBee.PMLParser.ConfigManager
         public const string ConditionActionAttribute = "action";
         public const string ConditionOperatorAttribute = "operator";
 
+        public static DateTime DateTimeZero = DateTime.FromFileTime(0L);
+
         public IFilter(string name, string propertyName, FilterOperators filterOperator, string[] filterValue)
         {
             Name = name;

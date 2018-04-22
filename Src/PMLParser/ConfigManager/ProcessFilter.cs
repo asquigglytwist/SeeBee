@@ -28,7 +28,14 @@ namespace SeeBee.PMLParser.ConfigManager
                     actualValue = ModuleList.GetModulePath(proc.ImageIndex);
                     break;
                 case "FinishTime":
-                    actualValue = proc.FinishTime.ToString();
+                    if (proc.FinishTime == DateTimeZero)
+                    {
+                        actualValue = "0";
+                    }
+                    else
+                    {
+                        actualValue = proc.FinishTime.ToString();
+                    }
                     break;
                 case "Modules":
                     if (FilterOperator != FilterOperators.Contains)
