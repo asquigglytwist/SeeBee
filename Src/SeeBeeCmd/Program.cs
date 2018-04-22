@@ -12,7 +12,7 @@ namespace SeeBee.SeeBeeCmd
             args = new string[] { "pm", @"C:\T\SeeBee\Procmon.exe", "in", @"C:\T\SeeBee\Logfile.XML", "c", @"C:\T\SeeBee\SeeBee.sbc" };
             for (int i = 0; i < args.Length; i++)
             {
-                Console.WriteLine("Arg at {0};\t{1}", i, args[i]);
+                Console.WriteLine("Arg at {0};\t\t{1}", i, args[i]);
             }
 #endif
             List<string> errorMsgs = PMLAnalyzer.InitAndAnalyze(out bool processingPMLResult, args);
@@ -21,9 +21,10 @@ namespace SeeBee.SeeBeeCmd
                 // [BIB]:  http://stackoverflow.com/questions/759133/how-to-display-list-items-on-console-window-in-c-sharp
                 errorMsgs.ForEach(Console.WriteLine);
             }
-#if DEBUG
+//#if DEBUG
+            Console.WriteLine("Press any key to continue...");
             Console.ReadKey(true);
-#endif
+//#endif
         }
     }
 }

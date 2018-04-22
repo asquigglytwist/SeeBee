@@ -19,8 +19,8 @@ namespace SeeBee.PMLParser.PMLEntities
             processes = procs;
             events = evts;
 #if DEBUG
-            Console.WriteLine("# of Processes that match the criteria {0}.", processes.Length);
-            Console.WriteLine("# of Events that match the criteria {0}.", events.Length);
+            Console.WriteLine("# of Processes read from file:  {0}.", processes.Length);
+            Console.WriteLine("# of Events that match the criteria:  {0}.", events.Length);
 #endif
         } 
         #endregion
