@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Xml;
 using SeeBee.FxUtils.Utils;
+using SeeBee.PMLParser.Analysis;
 using SeeBee.PMLParser.ManagedLists;
 
 namespace SeeBee.PMLParser.PMLEntities
@@ -43,12 +44,31 @@ namespace SeeBee.PMLParser.PMLEntities
             eventXMLDoc.Load(eventListReader);
             ProcessIndex = XMLUtils.ParseTagContentAsInt(eventXMLDoc, ProcMonXMLTagNames.Event_ProcessIndex);
             TimeOfDay = XMLUtils.ParseTagContentAsFileTime(eventXMLDoc, ProcMonXMLTagNames.Event_TimeOfDay);
-            ProcessNameIndex = ProcessNameList.AddProcessNameToList(XMLUtils.GetInnerText(eventXMLDoc, ProcMonXMLTagNames.Event_Process_Name));
+            var procName = XMLUtils.GetInnerText(eventXMLDoc, ProcMonXMLTagNames.Event_Process_Name);
+            ProcessNameIndex = ProcessNameList.AddProcessNameToList(procName);
             PID = XMLUtils.ParseTagContentAsInt(eventXMLDoc, ProcMonXMLTagNames.Event_PID);
             TID = XMLUtils.ParseTagContentAsInt(eventXMLDoc, ProcMonXMLTagNames.Event_TID);
-            Integrity = XMLUtils.GetInnerText(eventXMLDoc, ProcMonXMLTagNames.Event_Integrity).ToProcessIntegrityLevel();
+            var proc = ConvertedXMLProcessor.FindProcessByPID(PID);
+            var temp = XMLUtils.GetInnerText(eventXMLDoc, ProcMonXMLTagNames.Event_Integrity);
+            if (string.IsNullOrEmpty(temp))
+            {
+                Integrity = proc.ProcessIntegrity;
+            }
+            else
+            {
+                Integrity = temp.ToProcessIntegrityLevel();
+            }
             Sequence = XMLUtils.GetInnerText(eventXMLDoc, ProcMonXMLTagNames.Event_Sequence);
-            Virtualized = XMLUtils.ParseTagContentAsBoolean(eventXMLDoc, ProcMonXMLTagNames.Event_Virtualized);
+            temp = XMLUtils.GetInnerText(eventXMLDoc, ProcMonXMLTagNames.Event_Virtualized);
+            if (string.IsNullOrEmpty(temp))
+            {
+                Virtualized = proc.IsVirtualized;
+            }
+            else
+            {
+                Virtualized = temp.StringToBoolean();
+            }
+            //Virtualized = XMLUtils.ParseTagContentAsBoolean(eventXMLDoc, ProcMonXMLTagNames.Event_Virtualized);
             Operation = XMLUtils.GetInnerText(eventXMLDoc, ProcMonXMLTagNames.Event_Operation);
             pathIndex = FilePathList.AddFilePathToList(XMLUtils.GetInnerText(eventXMLDoc, ProcMonXMLTagNames.Event_Path));
             Result = XMLUtils.GetInnerText(eventXMLDoc, ProcMonXMLTagNames.Event_Result);
