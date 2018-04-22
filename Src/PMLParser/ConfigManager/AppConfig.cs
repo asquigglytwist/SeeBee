@@ -21,11 +21,13 @@ namespace SeeBee.PMLParser.ConfigManager
 
         public bool ShouldInclude(IPMLEntity pMLEntity)
         {
-            bool include = true;
+            // TODO:  Right now the Include filter doesn't make sense; But once an "Exclude *" filter is supported, Include will take effect.
+            //bool include = true;
             foreach(var execFilter in ExecFilters)
             {
-                include = include && execFilter.SatisfiesCondition(pMLEntity);
-                if (!include)
+                var thisFilterOutput = execFilter.SatisfiesCondition(pMLEntity);
+                //include = include || thisFilterOutput;
+                if (thisFilterOutput && execFilter.Inclusion == Inclusions.Exclude)
                 {
                     return false;
                 }
