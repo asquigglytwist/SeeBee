@@ -12,7 +12,7 @@ namespace SeeBee.PMLParser.PMLEntities
     internal class PMLModule
     {
         #region Members
-        internal protected const string UnknownValue = "Unknown";
+        protected internal const string UnknownValue = "Unknown";
         private int pathIndex;
         private string summary;
         internal protected static PMLModule System = new PMLModule(DateTime.MinValue, 0, 0, "System", UnknownValue, UnknownValue, UnknownValue);
@@ -21,7 +21,7 @@ namespace SeeBee.PMLParser.PMLEntities
         #region Static Methods
         internal static HashSet<int> LoadModules(XmlDocument processXMLDoc)
         {
-            ModuleList.AddModuleToList(PMLModule.System);
+            ModuleList.AddModuleToList(System);
             HashSet<int> processModuleList = new HashSet<int>();
             var modules = processXMLDoc.SelectNodes(ProcMonXMLTagNames.Module_XPathInXML);
             foreach (XmlElement module in modules)
@@ -39,6 +39,11 @@ namespace SeeBee.PMLParser.PMLEntities
                 }
             }
             return processModuleList;
+        }
+
+        internal static PMLModule CreateUnknownModule(string modulePath)
+        {
+            return new PMLModule(DateTime.MinValue, 0, 0, modulePath, UnknownValue, UnknownValue, UnknownValue);
         }
         #endregion
 
