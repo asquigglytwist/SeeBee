@@ -1,4 +1,5 @@
-﻿using SeeBee.PMLParser.ManagedLists;
+﻿using SeeBee.PMLParser.Analysis;
+using SeeBee.PMLParser.ManagedLists;
 using SeeBee.PMLParser.PMLEntities;
 using System;
 using System.Text;
@@ -15,7 +16,8 @@ namespace SeeBee.PMLParser.ConfigManager
 
         public override bool Matches(IPMLEntity pmlEntity)
         {
-            var proc = pmlEntity as PMLProcess;
+            var evt = pmlEntity as PMLEvent;
+            var proc = ConvertedXMLProcessor.FindProcessByPID(evt.PID);
             var actualValue = string.Empty;
             switch (PropertyName)
             {
