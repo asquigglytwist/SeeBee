@@ -77,6 +77,13 @@ namespace SeeBee.PMLParser.Analysis
 
         internal static PMLProcess[] Processes { get; set; }
         internal static PMLEvent[] Events { get; set; }
+
+        internal static PMLProcess FindProcessByPID(int processIndex)
+        {
+            var proc = from p in Processes
+                       where p.ProcessId == processIndex
+                       select p;
+            return proc.FirstOrDefault();
         }
         #endregion
     }
