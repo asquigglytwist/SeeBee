@@ -14,6 +14,16 @@ namespace SeeBee.PMLParser.ManagedLists
             return knownModules.FindIndex(module => module.Path.Equals(modulePath, StringComparison.CurrentCultureIgnoreCase));
         }
 
+        internal static int LocateInOrAddToModuleList(string modulePath)
+        {
+            var ix = knownModules.FindIndex(module => module.Path.Equals(modulePath, StringComparison.CurrentCultureIgnoreCase));
+            if (ix < 0)
+            {
+                return AddModuleToList(PMLModule.CreateUnknownModule(modulePath));
+            }
+            return ix;
+        }
+
         internal static int AddModuleToList(PMLModule module)
         {
             knownModules.Add(module);

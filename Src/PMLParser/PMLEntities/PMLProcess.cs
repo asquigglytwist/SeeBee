@@ -54,7 +54,8 @@ namespace SeeBee.PMLParser.PMLEntities
             ProcessNameIndex = ProcessNameList.AddProcessNameToList(XMLUtils.GetInnerText(processXMLDoc, ProcMonXMLTagNames.Process_ProcessName));
             CommandLine = (XMLUtils.GetInnerText(processXMLDoc, ProcMonXMLTagNames.Process_CommandLine)).HTMLUnEscape().Trim();
             LoadedModuleList = PMLModule.LoadModules(processXMLDoc);
-            ImageIndex = ModuleList.LocateModuleInList(XMLUtils.GetInnerText(processXMLDoc, ProcMonXMLTagNames.Process_ImagePath));
+            var image = XMLUtils.GetInnerText(processXMLDoc, ProcMonXMLTagNames.Process_ImagePath);
+            ImageIndex = ModuleList.LocateInOrAddToModuleList(image);
 
             StringBuilder buffer = new StringBuilder(string.Format(
                 "{0}{1} Process - {2} [{3}] with ID = {4} was created at {5} with {6} integrity, which loaded {7} modules, as a child of {8} by {9}",

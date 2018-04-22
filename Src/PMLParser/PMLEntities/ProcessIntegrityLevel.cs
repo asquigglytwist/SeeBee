@@ -28,19 +28,19 @@ namespace SeeBee.PMLParser.PMLEntities
         public static ProcessIntegrityLevel ToProcessIntegrityLevel(this string tempString)
         {
             ProcessIntegrityLevel integrityLevel = ProcessIntegrityLevel.None;
-            if (tempString.Equals(ProcessIntegrityLevelExtensions.System, StringComparison.CurrentCultureIgnoreCase))
+            if (tempString.Equals(System, StringComparison.CurrentCultureIgnoreCase))
             {
                 integrityLevel = ProcessIntegrityLevel.System;
             }
-            else if (tempString.Equals(ProcessIntegrityLevelExtensions.High, StringComparison.CurrentCultureIgnoreCase))
+            else if (tempString.Equals(High, StringComparison.CurrentCultureIgnoreCase))
             {
                 integrityLevel = ProcessIntegrityLevel.High;
             }
-            else if (tempString.Equals(ProcessIntegrityLevelExtensions.Medium, StringComparison.CurrentCultureIgnoreCase))
+            else if (tempString.Equals(Medium, StringComparison.CurrentCultureIgnoreCase))
             {
                 integrityLevel = ProcessIntegrityLevel.Medium;
             }
-            else if (tempString.Equals(ProcessIntegrityLevelExtensions.Low, StringComparison.CurrentCultureIgnoreCase))
+            else if (tempString.Equals(Low, StringComparison.CurrentCultureIgnoreCase))
             {
                 integrityLevel = ProcessIntegrityLevel.Low;
             }
