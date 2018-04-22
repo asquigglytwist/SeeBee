@@ -69,8 +69,14 @@ namespace SeeBee.PMLParser.Analysis
         {
             var appConfig = new AppConfig(appConfigFilePath);
             var procs = from p in LoadProcesses(xmlFilePath) where (!string.IsNullOrWhiteSpace(p.ProcessNameIndex.ToString())) select p;
-            var evts = from e in LoadEvents(xmlFilePath) where (!string.IsNullOrWhiteSpace(e.TimeOfDay.ToString())) select e;
-            return new PMLFile(xmlFilePath, procs.ToArray(), evts.ToArray());
+            Processes = procs.ToArray();
+            var evts = from e in LoadEvents(xmlFilePath) where (appConfig.ShouldInclude(e)) select e;
+            Events = evts.ToArray();
+            return new PMLFile(xmlFilePath, Processes, Events);
+        }
+
+        internal static PMLProcess[] Processes { get; set; }
+        internal static PMLEvent[] Events { get; set; }
         }
         #endregion
     }
