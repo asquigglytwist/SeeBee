@@ -13,7 +13,7 @@ namespace SeeBee.PMLParser.ManagedLists
         #region Static Constructor
         static ProcessNameList()
         {
-            ProcessNameList.AddProcessNameToList("System");
+            AddProcessNameToList("System");
         }
         #endregion
 

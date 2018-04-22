@@ -13,7 +13,7 @@ namespace SeeBee.PMLParser.ConfigManager
     {
         public const string FilterTagName = "Filter";
         public const string FilterNameAttribute = "name";
-        public const string FilterPropertyNameAttribute = "propertyName";
+        public const string FilterPropertyAttribute = "property";
         public const string FilterAppliesOnAttribute = "appliesOn";
         public const string FilterOperatorAttribute = "operator";
         public const string ConditionTagName = "Condition";
@@ -34,7 +34,7 @@ namespace SeeBee.PMLParser.ConfigManager
         public FilterTarget FilterAppliesOn { get; protected set; }
         public string[] FilterExpectedValue { get; protected set; }
 
-        protected abstract bool Matches(IPMLEntity pmlEntity);
+        public abstract bool Matches(IPMLEntity pmlEntity);
 
         internal static List<ExecutableFilter> ProcessAppConfig(XDocument xDoc)
         {
@@ -43,7 +43,7 @@ namespace SeeBee.PMLParser.ConfigManager
             foreach (var filterConfig in allFilterNodes)
             {
                 var name = filterConfig.Attribute(FilterNameAttribute).Value;
-                var propName = filterConfig.Attribute(FilterPropertyNameAttribute).Value;
+                var propName = filterConfig.Attribute(FilterPropertyAttribute).Value;
                 var filterTarget = filterConfig.Attribute(FilterAppliesOnAttribute).Value.StringToEnum<FilterTarget>();
                 var filterOperator = filterConfig.Attribute(FilterOperatorAttribute).Value.StringToEnum<FilterOperators>();
                 var filterValue = filterConfig.Value.CSVSplit();
@@ -132,7 +132,7 @@ namespace SeeBee.PMLParser.ConfigManager
                     case FilterOperators.None:
                         throw new Exception("FilterOperator cannot be empty.");
                     default:
-                        throw new Exception(string.Format("Unidentified FilterOperator {0}.", FilterOperator.ToString()));
+                        throw new Exception(string.Format("Unidentified FilterOperator {0}.", filter.FilterOperator.ToString()));
                 }
             }
             return true;

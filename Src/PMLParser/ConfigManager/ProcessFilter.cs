@@ -13,7 +13,7 @@ namespace SeeBee.PMLParser.ConfigManager
             FilterAppliesOn = FilterTarget.Processes;
         }
 
-        protected override bool Matches(IPMLEntity pmlEntity)
+        public override bool Matches(IPMLEntity pmlEntity)
         {
             var proc = pmlEntity as PMLProcess;
             var actualValue = string.Empty;

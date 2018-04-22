@@ -15,7 +15,7 @@ namespace SeeBee.PMLParser.ConfigManager
             FilterAppliesOn = FilterTarget.Events;
         }
 
-        protected override bool Matches(IPMLEntity pmlEntity)
+        public override bool Matches(IPMLEntity pmlEntity)
         {
             var evt = pmlEntity as PMLEvent;
             var actualValue = string.Empty;
