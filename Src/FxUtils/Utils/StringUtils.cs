@@ -68,7 +68,7 @@ namespace SeeBee.FxUtils.Utils
         public static string[] CSVSplit(this string source, bool ignoreEmptyStrings = true)
         {
             StringSplitOptions splitOptions = ignoreEmptyStrings ? StringSplitOptions.RemoveEmptyEntries : StringSplitOptions.None;
-            return source.Split(new char[] { ',' }, splitOptions);
+            return source.Split(new char[] { ',', ' ', '\r', '\n', '\t' }, splitOptions);
         }
 
         public static T StringToEnum<T>(this string text) where T : struct, IConvertible
